@@ -51,27 +51,78 @@ int vt_print_char(char ch, char attr, int r, int c) {
 	*address = ch;
 	address++;
 	*address = attr;
-	return 0; //asdasdasdasdasdasdasdasdasd
+	return 0;
 
   /* To complete ... */
 
 }
 
 int vt_print_string(char *str, char attr, int r, int c) {
-
+	char *address;
+	address = (2 * r * scr_width + 2 * c) + video_mem;
+	do
+	{
+		*address = *str;
+		address++;
+		*address = attr;
+		address++;
+		str++;
+	}
+	while (0 != (*str));
+	return 0;
   /* To complete ... */
 
 }
 
 int vt_print_int(int num, char attr, int r, int c) {
+	char *address;
+	address = (2 * r * scr_width + 2 * c) + video_mem;
+	int num_temp;
+	num_temp = 0;
 
+	//inverte o numero dado
+	do
+	{
+	num_temp = num_temp * 10;
+	num_temp = num_temp + (num % 10);
+	num = num / 10;
+	}
+	while (num != 0);
+
+	//escreve o numero normalmente (apesar de estar invertido)
+	do
+	{
+	*address = num_temp % 10 + '0';
+	address++;
+	*address = attr;
+	address++;
+	num_temp = (num_temp / 10);
+	}
+	while (num_temp != 0);
+	return 0;
   /* To complete ... */
 
 }
 
 
 int vt_draw_frame(int width, int height, char attr, int r, int c) {
+	char *address;
+	address = (2 * r * scr_width + 2 * c) + video_mem;
+	address++; //esta a apontar para o atributo
+	int linha;
+	int coluna;
 
+	for (linha = 0; linha < height; linha++)
+	{
+		for (coluna = 0; coluna < width; coluna++)
+			{
+				*address = attr;
+				address = address + 2;
+			}
+		address = address + (scr_width - width) * 2;
+		//address = address - 2;
+	}
+	return 0;
   /* To complete ... */
 
 }
