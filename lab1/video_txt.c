@@ -45,7 +45,14 @@ void vt_blank() {
 }
 
 int vt_print_char(char ch, char attr, int r, int c) {
-  
+	char *address;
+	address = video_mem;
+	address = address + 2 * r * scr_width + 2 * c;
+	*address = ch;
+	address++;
+	*address = attr;
+	return 0;
+
   /* To complete ... */
 
 }
