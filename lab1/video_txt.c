@@ -1,6 +1,7 @@
 #include <minix/drivers.h>
 #include <sys/video.h>
 #include <sys/mman.h>
+#include "math.h"
 
 #include <assert.h>
 
@@ -78,8 +79,28 @@ int vt_print_int(int num, char attr, int r, int c) {
 	char *address;
 	address = (2 * r * scr_width + 2 * c) + video_mem;
 	int num_temp;
-	num_temp = 0;
+	num_temp = num;
+	int i;
+	i = 0;
 
+	do
+	{
+		i++;
+		num_temp = num_temp / 10;
+	}
+	while (num_temp != 0);
+
+	i--;
+
+	for (i; i >= 0; i--)
+	{
+		*address = num / (pow(10,i)) + '0';
+		address++;
+		*address = attr;
+		address++;
+		num = num % ((int)(pow(10,i)));
+	}
+/*
 	//inverte o numero dado
 	do
 	{
@@ -99,7 +120,7 @@ int vt_print_int(int num, char attr, int r, int c) {
 	num_temp = (num_temp / 10);
 	}
 	while (num_temp != 0);
-	return 0;
+	return 0;*/
   /* To complete ... */
 
 }
