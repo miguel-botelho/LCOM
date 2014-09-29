@@ -79,10 +79,14 @@ int vt_print_int(int num, char attr, int r, int c) {
 	char *address;
 	address = (2 * r * scr_width + 2 * c) + video_mem;
 	int num_temp;
-	num_temp = num;
+
+	if (num < 0)
+	num_temp = -num;
+	else num_temp = num;
 	int i;
 	i = 0;
 
+	//quanto o numero de digitos
 	do
 	{
 		i++;
@@ -92,6 +96,15 @@ int vt_print_int(int num, char attr, int r, int c) {
 
 	i--;
 
+	//imprime os digitos
+	if (num < 0)
+	{
+		*address = '-';
+		address++;
+		*address = attr;
+		address++;
+		num = -num;
+	}
 	for (i; i >= 0; i--)
 	{
 		*address = num / (pow(10,i)) + '0';
@@ -100,27 +113,7 @@ int vt_print_int(int num, char attr, int r, int c) {
 		address++;
 		num = num % ((int)(pow(10,i)));
 	}
-/*
-	//inverte o numero dado
-	do
-	{
-	num_temp = num_temp * 10;
-	num_temp = num_temp + (num % 10);
-	num = num / 10;
-	}
-	while (num != 0);
 
-	//escreve o numero normalmente (apesar de estar invertido)
-	do
-	{
-	*address = num_temp % 10 + '0';
-	address++;
-	*address = attr;
-	address++;
-	num_temp = (num_temp / 10);
-	}
-	while (num_temp != 0);
-	return 0;*/
   /* To complete ... */
 
 }
@@ -135,9 +128,21 @@ int vt_draw_frame(int width, int height, char attr, int r, int c) {
 
 	for (linha = 0; linha < height; linha++)
 	{
+		if ((linha == (height - 1)) || (linha == 0))
+		{
+			for (coluna = 0; coluna < width; coluna++)
+						{
+								*address = attr;
+								address = address + 2;
+						}
+		}
+		else
 		for (coluna = 0; coluna < width; coluna++)
 			{
-				*address = attr;
+				if (coluna == 0 || coluna == (width - 1))
+				{
+					*address = attr;
+				}
 				address = address + 2;
 			}
 		address = address + (scr_width - width) * 2;
