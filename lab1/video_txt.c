@@ -51,7 +51,7 @@ int vt_print_char(char ch, char attr, int r, int c) {
 	*address = ch;
 	address++;
 	*address = attr;
-	return 0;
+	return 0; //asdasdasdasdasdasdasdasdasd
 
   /* To complete ... */
 
