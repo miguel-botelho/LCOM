@@ -100,7 +100,7 @@ int timer_test_square(unsigned long freq) {
 
 	sys_outb(TIMER_0, freq);
 
-	return 1;
+	return 0;
 }
 
 int timer_test_int(unsigned long time) {
