@@ -7,8 +7,6 @@
  * Constants for programming the i8254 Timer. Needs to be completed.
  */
 
-unsigned char timerConf; //global variable .. Address of memory position to be filled with the timer config
-
 #define TIMER_FREQ  1193182    /**< @brief clock frequency for timer in PC and AT */
 
 #define BIT(n) (0x01<<(n))
