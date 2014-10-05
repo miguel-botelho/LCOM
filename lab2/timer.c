@@ -28,21 +28,21 @@ int timer_get_conf(unsigned long timer, unsigned char *st) {
 	{
 		(*tempByte) = 0x0C2;
 		sys_outb(TIMER_CTRL, *tempByte);
-		sys_inb(TIMER_CTRL, st);
+		sys_inb(TIMER_0, st);
 		return 0;
 	}
 	else if (timer == 1)
 	{
 		(*tempByte) = 0x0C4;
 		sys_outb(TIMER_CTRL, *tempByte);
-		sys_inb(TIMER_CTRL, st);
+		sys_inb(TIMER_1, st);
 		return 0;
 	}
 	else if (timer == 2)
 	{
 		(*tempByte) = 0x0C8;
 		sys_outb(TIMER_CTRL, *tempByte);
-		sys_inb(TIMER_CTRL, st);
+		sys_inb(TIMER_2, st);
 		return 0;
 	}
 
@@ -96,7 +96,7 @@ int timer_test_square(unsigned long freq) {
 
 	(*tempByte) = 0x03E;
 
-	sys_outb(TIMER_CTRL, *tempByte); //timer 0 in mode 3
+	sys_outb(TIMER_CTRL, *tempByte); //timer 0 in mode 3, instrucao esta mal, falta mudar o modo
 
 	sys_outb(TIMER_0, freq);
 
