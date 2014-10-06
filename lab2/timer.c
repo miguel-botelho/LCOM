@@ -1,5 +1,6 @@
 #include <minix/syslib.h>
 #include <minix/drivers.h>
+#include"i8254.h"
 
 int timer_set_square(unsigned long timer, unsigned long freq) {
 
@@ -22,27 +23,31 @@ void timer_int_handler() {
 
 int timer_get_conf(unsigned long timer, unsigned char *st) {
 	
-	unsigned long *tempByte;
+	unsigned long tempByte;
+	unsigned long temp;
 
-	if (timer == 0)
+	if (timer == TIMER_0)
 	{
-		(*tempByte) = 0x0C2;
-		sys_outb(TIMER_CTRL, *tempByte);
-		sys_inb(TIMER_0, st);
+		tempByte = TIMER_RB_CMD | TIMER_RB_COUNT_ | TIMER_RB_SEL(0); //read-back command for timer 0
+		sys_outb(TIMER_CTRL, tempByte);
+		sys_inb(TIMER_0, &temp);
+		*st = (unsigned char) temp;
 		return 0;
 	}
-	else if (timer == 1)
+	else if (timer == TIMER_1)
 	{
-		(*tempByte) = 0x0C4;
-		sys_outb(TIMER_CTRL, *tempByte);
-		sys_inb(TIMER_1, st);
+		tempByte = TIMER_RB_CMD | TIMER_RB_COUNT_ | TIMER_RB_SEL(1); //read-back command for timer 1
+		sys_outb(TIMER_CTRL, tempByte);
+		sys_inb(TIMER_1, &temp);
+		*st = (unsigned char) temp;
 		return 0;
 	}
-	else if (timer == 2)
+	else if (timer == TIMER_2)
 	{
-		(*tempByte) = 0x0C8;
-		sys_outb(TIMER_CTRL, *tempByte);
-		sys_inb(TIMER_2, st);
+		tempByte = TIMER_RB_CMD | TIMER_RB_COUNT_ | TIMER_RB_SEL(2); //read-back command for timer 2
+		sys_outb(TIMER_CTRL, tempByte);
+		sys_inb(TIMER_2, &temp);
+		*st = (unsigned char) temp;
 		return 0;
 	}
 
@@ -55,37 +60,46 @@ int timer_display_conf(unsigned char conf) {
 	temp = conf;
 	int number;
 
-	if (0x80 == (0x80 & temp))
+	/*
+	 * the following operations where is in use 0xyy (where y is a number)
+	 * is used to get the value of a single bit
+	 */
+
+	if (BIT(7) == (BIT(7) & temp))
 		printf("Output pin: 1\n");
 	else printf("Output pin: 0\n");
 
 	temp = conf;
-	if (0x40 == (0x40 & temp))
+	if (BIT(6) == (BIT(6) & temp))
 		printf("Null Count: 1\n");
 	else printf("Null Count: 0\n");
 
 	temp = conf;
-	temp = temp & 0x30;
-	if (temp == 0x30)
-		printf("Counter Initialization: 3\n");
-	else if (temp == 0x20)
-		printf("Counter Initialization: 2\n");
-	else if (temp == 0x10)
-		printf("Counter Initialization: 1\n");
-	else printf("Counter Initialization: 0\n");
+	temp = temp & (BIT(5) | BIT(4));
+	temp = temp >> 4;
+	number = temp;
+	if (number == 1)
+	printf("Counter Initialization: LSB\n");
+	else if (number == 2)
+		printf("Counter Initialization: MSB\n");
+	else printf("Counter Initialization: LSB followed by MSB\n");
 
 	temp = conf;
-	temp = temp & 0x0E;
+	temp = temp & (BIT(3) | BIT(2) | BIT(1));
 	temp = temp >> 1;
-	number = temp;
-
-	printf("Programmed Mode: %u \n", number);
+	number = temp; //to display (interpret) an int
+	if (number == 2 || number == 6)
+		printf("Programmed Mode: 2\n");
+	else if (number == 3 || number == 7)
+		printf("Programmed Mode: 3\n");
+	else printf("Programmed Mode: %u \n", number);
 
 	temp = conf;
-	temp = temp & 0x01;
-	number = temp;
-
-	printf("BCD: %u \n \n", number);
+	temp = temp & BIT(0);
+	number = temp; //to display (interpret) an int
+	if (number == 1)
+	printf("Counting Mode: BCD \n \n");
+	else printf("Counting Mode: Binary \n \n");
 
 	return 0;
 }
@@ -112,8 +126,9 @@ int timer_test_config(unsigned long timer) {
 	
 	int errorCall1;
 	int errorCall2;
+	unsigned char timerConf;
 
-	if ((timer >= 0) || (timer <= 2))
+	if ((timer >= TIMER_0) || (timer <= TIMER_CTRL))
 	{
 		errorCall1 = timer_get_conf(timer, &timerConf);
 		if (errorCall1 == 1)
