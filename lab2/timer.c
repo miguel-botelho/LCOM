@@ -69,7 +69,6 @@ int timer_display_conf(unsigned char conf) {
 		printf("Output pin: 1\n");
 	else printf("Output pin: 0\n");
 
-	temp = conf;
 	if (BIT(6) == (BIT(6) & temp))
 		printf("Null Count: 1\n");
 	else printf("Null Count: 0\n");
