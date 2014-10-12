@@ -1,6 +1,10 @@
 #include <minix/syslib.h>
 #include <minix/drivers.h>
+#include <minix/com.h>
 #include"i8254.h"
+
+int hook_id = 0x00;
+unsigned long global_counter = 0;
 
 int timer_set_square(unsigned long timer, unsigned long freq) {
 
@@ -43,15 +47,26 @@ int timer_set_square(unsigned long timer, unsigned long freq) {
 
 int timer_subscribe_int(void ) {
 
-	return 1;
+	int hook_temp;
+	hook_temp = hook_id;
+
+	if (OK == sys_irqsetpolicy(TIMER0_IRQ, IRQ_REENABLE, &hook_id))
+		if (OK == sys_irqenable(&hook_id))
+			return BIT(hook_temp);
+	return -1;
 }
 
 int timer_unsubscribe_int() {
 
-	return 1;
+	if (OK == sys_irqdisable(&hook_id))
+		if (OK == sys_irqrmpolicy(&hook_id))
+			return 0;
+	return -1;
 }
 
 void timer_int_handler() {
+
+		global_counter++;
 
 }
 
@@ -147,6 +162,50 @@ int timer_test_square(unsigned long freq) {
 
 int timer_test_int(unsigned long time) {
 	
+	int r;
+	int ipc_status;
+	int temp_counter = 0;
+	unsigned long freq = 60;
+	message msg;
+
+	timer_test_square(freq);
+	int irq_set = BIT(hook_id);
+
+	if (-1 == timer_subscribe_int())
+	{
+		printf("Fail to subscribe Timer 0!\n\n");
+		return 1;
+	}
+
+	while( global_counter < time ) { /* You may want to use a different condition */
+		/* Get a request message. */
+		if ( (r = driver_receive(ANY, &msg, &ipc_status)) != 0 ) {
+			printf("driver_receive failed with: %d", r);
+			continue;
+		}
+		if (is_ipc_notify(ipc_status)) { /* received notification */
+			switch (_ENDPOINT_P(msg.m_source)) {
+			case HARDWARE: /* hardware interrupt notification */
+				if (msg.NOTIFY_ARG & irq_set) { /* subscribed interrupt */
+					temp_counter++;
+					if ((temp_counter/freq) == 1)
+					{
+						printf("Notification %lu \n", global_counter+1);
+						temp_counter = 0;
+						timer_int_handler();
+					}
+					/* process it */
+				}
+				break;
+			default:
+				break; /* no other notifications expected: do nothing */
+			}
+		} else { /* received a standard message, not a notification */
+			/* no standard messages expected: do nothing */
+		}
+	}
+
+	timer_unsubscribe_int();
 	return 1;
 }
 
