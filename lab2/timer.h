@@ -1,7 +1,6 @@
 #ifndef __TIMER_H
 #define __TIMER_H
 
-unsigned char timerConf; //global variable .. Address of memory position to be filled with the timer config
 
 /** @defgroup timer timer
  * @{
