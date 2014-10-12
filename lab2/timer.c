@@ -4,6 +4,31 @@
 
 int timer_set_square(unsigned long timer, unsigned long freq) {
 
+	unsigned long tempByte;
+
+	if (timer == TIMER_0)
+		{
+			tempByte = (TIMER_SEL0 | TIMER_LSB | TIMER_MSB | TIMER_SQR_WAVE);
+			sys_outb(TIMER_CTRL, tempByte);
+			sys_outb(TIMER_0, freq);
+			sys_outb(TIMER_0, 0);
+			return 0;
+		}
+		else if (timer == TIMER_1)
+		{
+			tempByte = (TIMER_SEL1 | TIMER_LSB | TIMER_MSB | TIMER_SQR_WAVE);
+			sys_outb(TIMER_CTRL, tempByte);
+			sys_outb(TIMER_1, freq/60);
+			return 0;
+		}
+		else if (timer == TIMER_2)
+		{
+			tempByte = (TIMER_SEL2 | TIMER_LSB | TIMER_MSB | TIMER_SQR_WAVE);
+			sys_outb(TIMER_CTRL, tempByte);
+			sys_outb(TIMER_2, freq/60);
+			return 0;
+		}
+
 	return 1;
 }
 
@@ -105,15 +130,10 @@ int timer_display_conf(unsigned char conf) {
 
 int timer_test_square(unsigned long freq) {
 	
-	unsigned long *tempByte;
+	if (timer_set_square(TIMER_0, freq) == 0)
+		return 0;
 
-	(*tempByte) = 0x03E;
-
-	sys_outb(TIMER_CTRL, *tempByte); //timer 0 in mode 3, instrucao esta mal, falta mudar o modo
-
-	sys_outb(TIMER_0, freq);
-
-	return 0;
+	return 1;
 }
 
 int timer_test_int(unsigned long time) {

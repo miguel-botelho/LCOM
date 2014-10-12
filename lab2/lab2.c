@@ -8,6 +8,7 @@ int main(int argc, char *argv[])
 
 	if (argc == 1)
 	{
+	timer_set_square(TIMER_0, 1);
 	printf("\tTimer 0 \n");
 	timer_test_config(TIMER_0);
 
