@@ -8,23 +8,24 @@ int timer_set_square(unsigned long timer, unsigned long freq) {
 
 	if (timer == TIMER_0)
 		{
-			tempByte = (TIMER_SEL0 | TIMER_LSB | TIMER_MSB | TIMER_SQR_WAVE);
+			tempByte = (TIMER_SEL0 | TIMER_LSB_MSB | TIMER_SQR_WAVE);
 			sys_outb(TIMER_CTRL, tempByte);
-			sys_outb(TIMER_0, 1193181/freq);
+			sys_outb(TIMER_0, TIMER_FREQ/freq);
+			sys_outb(TIMER_0, (TIMER_FREQ/freq >> 8));
 			return 0;
 		}
 		else if (timer == TIMER_1)
 		{
-			tempByte = (TIMER_SEL1 | TIMER_LSB | TIMER_MSB | TIMER_SQR_WAVE);
+			tempByte = (TIMER_SEL1 | TIMER_LSB_MSB | TIMER_SQR_WAVE);
 			sys_outb(TIMER_CTRL, tempByte);
-			sys_outb(TIMER_1, 1193181/freq);
+			sys_outb(TIMER_1, TIMER_FREQ/freq);
 			return 0;
 		}
 		else if (timer == TIMER_2)
 		{
-			tempByte = (TIMER_SEL2 | TIMER_LSB | TIMER_MSB | TIMER_SQR_WAVE);
+			tempByte = (TIMER_SEL2 | TIMER_LSB_MSB | TIMER_SQR_WAVE);
 			sys_outb(TIMER_CTRL, tempByte);
-			sys_outb(TIMER_2, 1193181/freq);
+			sys_outb(TIMER_2, TIMER_FREQ/freq);
 			return 0;
 		}
 

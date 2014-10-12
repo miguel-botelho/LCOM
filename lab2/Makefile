@@ -18,3 +18,6 @@ MAN=
 
 .include <bsd.prog.mk>
 .include <bsd.gcc.mk>
+
+clean:
+	rm -rf *o *d ${PROG}
