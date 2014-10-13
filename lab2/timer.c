@@ -190,8 +190,7 @@ int timer_test_int(unsigned long time) {
 	}
 
 	timer_unsubscribe_int();
-	printf("Press the Enter key to exit\n");
-	return 1;
+	return 0;
 }
 
 int timer_test_config(unsigned long timer) {
@@ -199,7 +198,7 @@ int timer_test_config(unsigned long timer) {
 	int errorCall;
 	unsigned char timerConf;
 
-	if ((timer >= 0) || (timer <= 2))
+	if ((timer >= 0) && (timer <= 2))
 	{
 		errorCall = timer_get_conf(timer, &timerConf);
 		if (errorCall == 1)
