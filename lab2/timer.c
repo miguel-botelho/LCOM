@@ -3,7 +3,7 @@
 #include <minix/com.h>
 #include"i8254.h"
 
-int hook_id = 0x00;
+int hook_id = 0x00; //hook_id tem de estar entre [0..7]
 unsigned long global_counter = 0;
 
 int timer_set_square(unsigned long timer, unsigned long freq) {
@@ -14,31 +14,31 @@ int timer_set_square(unsigned long timer, unsigned long freq) {
 	if (timer == 0)
 		{
 			timer_get_conf(timer, &st);
-			st = 0x0F & st; //*st fica com os ultimos 4 bits
-			tempByte = (TIMER_SEL0 | TIMER_LSB_MSB | st);
+			st = 0x0F & st; //st fica com os ultimos 4 bits
+			tempByte = (TIMER_SEL0 | TIMER_LSB_MSB | st); // seleciona o TIMER_0 e ativa LSB followed by MSB
 			sys_outb(TIMER_CTRL, tempByte);
-			sys_outb(TIMER_0, TIMER_FREQ/freq);
-			sys_outb(TIMER_0, (TIMER_FREQ/freq >> 8));
+			sys_outb(TIMER_0, TIMER_FREQ/freq); //manda LSB
+			sys_outb(TIMER_0, (TIMER_FREQ/freq >> 8)); //manda MSB
 			return 0;
 		}
 		else if (timer == 1)
 		{
 			timer_get_conf(timer, &st);
-			st = 0x0F & st; //*st fica com os ultimos 4 bits
-			tempByte = (TIMER_SEL1 | TIMER_LSB_MSB | st);
+			st = 0x0F & st; //st fica com os ultimos 4 bits
+			tempByte = (TIMER_SEL1 | TIMER_LSB_MSB | st); // seleciona o TIMER_1 e ativa LSB followed by MSB
 			sys_outb(TIMER_CTRL, tempByte);
-			sys_outb(TIMER_1, TIMER_FREQ/freq);
-			sys_outb(TIMER_1, (TIMER_FREQ/freq >> 8));
+			sys_outb(TIMER_1, TIMER_FREQ/freq); //manda LSB
+			sys_outb(TIMER_1, (TIMER_FREQ/freq >> 8)); // manda MSB
 			return 0;
 		}
 		else if (timer == 2)
 		{
 			timer_get_conf(timer, &st);
-			st = 0x0F & st; //*st fica com os ultimos 4 bits
-			tempByte = (TIMER_SEL2 | TIMER_LSB_MSB | st);
+			st = 0x0F & st; //st fica com os ultimos 4 bits
+			tempByte = (TIMER_SEL2 | TIMER_LSB_MSB | st); // seleciona o TIMER_2 e ativa LSB followed by MSB
 			sys_outb(TIMER_CTRL, tempByte);
-			sys_outb(TIMER_2, TIMER_FREQ/freq);
-			sys_outb(TIMER_2, (TIMER_FREQ/freq >> 8));
+			sys_outb(TIMER_2, TIMER_FREQ/freq); //manda LSB
+			sys_outb(TIMER_2, (TIMER_FREQ/freq >> 8)); //manda MSB
 			return 0;
 		}
 
@@ -47,8 +47,8 @@ int timer_set_square(unsigned long timer, unsigned long freq) {
 
 int timer_subscribe_int(void ) {
 
-	int hook_temp;
-	hook_temp = hook_id;
+	//para nao perder o valor original de hook_id (vai ser preciso para depois reconhecer a notificacao)
+	int hook_temp = hook_id;
 
 	if (OK == sys_irqsetpolicy(TIMER0_IRQ, IRQ_REENABLE, &hook_id))
 		if (OK == sys_irqenable(&hook_id))
@@ -73,30 +73,29 @@ void timer_int_handler() {
 int timer_get_conf(unsigned long timer, unsigned char *st) {
 	
 	unsigned long tempByte;
-	unsigned long temp;
 
 	if (timer == 0)
 	{
-		tempByte = TIMER_RB_CMD | TIMER_RB_COUNT_ | TIMER_RB_SEL(0); //read-back command for timer 0
+		tempByte = TIMER_RB_CMD | TIMER_RB_COUNT_ | TIMER_RB_SEL(0); //read-back command for timer 0, ativa o status e desativa o count
 		sys_outb(TIMER_CTRL, tempByte);
-		sys_inb(TIMER_0, &temp);
-		*st = (unsigned char) temp;
+		sys_inb(TIMER_0, &tempByte);
+		*st = (unsigned char) tempByte; //trunca o valor de tempByte para char (8 bits)
 		return 0;
 	}
 	else if (timer == 1)
 	{
-		tempByte = TIMER_RB_CMD | TIMER_RB_COUNT_ | TIMER_RB_SEL(1); //read-back command for timer 1
+		tempByte = TIMER_RB_CMD | TIMER_RB_COUNT_ | TIMER_RB_SEL(1); //read-back command for timer 1, ativa o status e desativa o count
 		sys_outb(TIMER_CTRL, tempByte);
-		sys_inb(TIMER_1, &temp);
-		*st = (unsigned char) temp;
+		sys_inb(TIMER_1, &tempByte);
+		*st = (unsigned char) tempByte; //trunca o valor de tempByte para char (8 bits)
 		return 0;
 	}
 	else if (timer == 2)
 	{
-		tempByte = TIMER_RB_CMD | TIMER_RB_COUNT_ | TIMER_RB_SEL(2); //read-back command for timer 2
+		tempByte = TIMER_RB_CMD | TIMER_RB_COUNT_ | TIMER_RB_SEL(2); //read-back command for timer 2, ativa o status e desativa o count
 		sys_outb(TIMER_CTRL, tempByte);
-		sys_inb(TIMER_2, &temp);
-		*st = (unsigned char) temp;
+		sys_inb(TIMER_2, &tempByte);
+		*st = (unsigned char) tempByte; //trunca o valor de tempByte para char (8 bits)
 		return 0;
 	}
 
@@ -105,46 +104,31 @@ int timer_get_conf(unsigned long timer, unsigned char *st) {
 
 int timer_display_conf(unsigned char conf) {
 	
-	unsigned char temp;
-	temp = conf;
-	int number;
+	int number; //esta variavel vai ser usada para fazer printf de um decimal
 
-	/*
-	 * the following operations where is in use 0xyy (where y is a number)
-	 * is used to get the value of a single bit
-	 */
-
-	if (BIT(7) == (BIT(7) & temp))
+	if (BIT(7) == (BIT(7) & conf)) //para ver se o BIT(7) esta a 1
 		printf("Output pin: 1\n");
 	else printf("Output pin: 0\n");
 
-	if (BIT(6) == (BIT(6) & temp))
+	if (BIT(6) == (BIT(6) & conf)) //para ver se o BIT(6) esta a 1
 		printf("Null Count: 1\n");
 	else printf("Null Count: 0\n");
 
-	temp = conf;
-	temp = temp & (BIT(5) | BIT(4));
-	temp = temp >> 4;
-	number = temp;
+	number = (conf & (BIT(5) | BIT(4))) >> 4; //desloca os BITS 5 e 4 para as posicoes 0 e 1
 	if (number == 1)
 	printf("Counter Initialization: LSB\n");
 	else if (number == 2)
 		printf("Counter Initialization: MSB\n");
 	else printf("Counter Initialization: LSB followed by MSB\n");
 
-	temp = conf;
-	temp = temp & (BIT(3) | BIT(2) | BIT(1));
-	temp = temp >> 1;
-	number = temp; //to display (interpret) an int
+	number = (conf & (BIT(3) | BIT(2) | BIT(1))) >> 1; //desloca os BITS 3, 2 e 1 para as posicoes 0, 1 e 2
 	if (number == 2 || number == 6)
 		printf("Programmed Mode: 2\n");
 	else if (number == 3 || number == 7)
 		printf("Programmed Mode: 3\n");
 	else printf("Programmed Mode: %u \n", number);
 
-	temp = conf;
-	temp = temp & BIT(0);
-	number = temp; //to display (interpret) an int
+	number = conf & BIT(0); //vai buscar o BIT 0
 	if (number == 1)
 	printf("Counting Mode: BCD \n \n");
 	else printf("Counting Mode: Binary \n \n");
@@ -162,14 +146,14 @@ int timer_test_square(unsigned long freq) {
 
 int timer_test_int(unsigned long time) {
 	
-	int r;
+	int r; //vai ter o codigo do erro driver_receive(ANY, &msg, &ipc_status)
 	int ipc_status;
-	int temp_counter = 0;
-	unsigned long freq = 60;
+	int temp_counter = 0; //contador de tiques
+	unsigned long freq = 60; //frequencia normal
 	message msg;
 
-	timer_test_square(freq);
-	int irq_set = BIT(hook_id);
+	timer_test_square(freq); //para funcionar a frequencia normal
+	char irq_set = BIT(hook_id);
 
 	if (-1 == timer_subscribe_int())
 	{
@@ -188,10 +172,10 @@ int timer_test_int(unsigned long time) {
 			case HARDWARE: /* hardware interrupt notification */
 				if (msg.NOTIFY_ARG & irq_set) { /* subscribed interrupt */
 					temp_counter++;
-					if ((temp_counter/freq) == 1)
+					if ((temp_counter/freq) == 1) //se for true quer dizer que passou um segundo
 					{
 						printf("Notification %lu \n", global_counter+1);
-						temp_counter = 0;
+						temp_counter = 0; //reset do temp_counter para voltar a contar os primeiros freq tiques
 						timer_int_handler();
 					}
 					/* process it */
@@ -212,18 +196,17 @@ int timer_test_int(unsigned long time) {
 
 int timer_test_config(unsigned long timer) {
 	
-	int errorCall1;
-	int errorCall2;
+	int errorCall;
 	unsigned char timerConf;
 
 	if ((timer >= 0) || (timer <= 2))
 	{
-		errorCall1 = timer_get_conf(timer, &timerConf);
-		if (errorCall1 == 1)
+		errorCall = timer_get_conf(timer, &timerConf);
+		if (errorCall == 1)
 			return 1;
 
-		errorCall2 = timer_display_conf(timerConf);
-		if (errorCall2 == 1)
+		errorCall = timer_display_conf(timerConf);
+		if (errorCall == 1)
 			return 1;
 
 		return 0;
