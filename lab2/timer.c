@@ -206,6 +206,7 @@ int timer_test_int(unsigned long time) {
 	}
 
 	timer_unsubscribe_int();
+	printf("Press the Enter key to exit\n");
 	return 1;
 }
 
