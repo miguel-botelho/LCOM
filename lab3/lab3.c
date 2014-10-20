@@ -1,6 +1,7 @@
 #include <minix/drivers.h>
 
 #include"test3.h"
+#include"keyboard.h"
 
 static int proc_args(int argc, char *argv[]);
 static unsigned long parse_ulong(char *str, int base);
@@ -42,6 +43,10 @@ int main(int argc, char **argv) {
  	 "\t service run %s -args \"test_leds <array [0..2]>\" \n"
  	 "\t service run %s -args \"test_timed_scan <time>\" \n",
  	 argv[0], argv[0], argv[0]);
+   printf("\n Example: \n"
+		   "\t test_scan 0\n"
+		   "\t test_leds 1 2 2 1\n"
+		   "\t test_timed_scan 1\n");
  }
 
  static int proc_args(int argc, char *argv[]) {
@@ -72,7 +77,7 @@ int main(int argc, char **argv) {
  	  }
  	  //if((size_of_array = parse_ushort(argv[2], 10)) == USHRT_MAX) //completar o array
  	  	//	  return 1;
- 	  printf("Keyboard:: kbd_test_leds(array_of_size: %s)\n\n", argv[2]);
+ 	  printf("Keyboard:: kbd_test_leds(array_of_size: %u)\n\n", (argc - 2));
  	  return kbd_test_leds(argc - 2, a);
    } else if (strncmp(argv[1], "test_timed_scan", strlen("test_timed_scan")) == 0) {
  	  if( argc != 3 ) {
