@@ -19,7 +19,7 @@ int kbd_test_scan(unsigned short ass) {
 		return 1;
 	}
 
-	while(0x81 != key) { /* When ESC key is pressed */
+	while(KBD_ESC_KEY != key) { /* When ESC key is pressed */
 		/* Get a request message. */
 		if ( (r = driver_receive(ANY, &msg, &ipc_status)) != 0 ) {
 			printf("driver_receive failed with: %d", r);

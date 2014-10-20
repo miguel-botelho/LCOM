@@ -44,6 +44,8 @@
 #define ACK			0x00FA
 #define RESEND		0xFE
 #define ERROR		0xFC
+#define KBD_ESC_KEY 0x81
+
 
 ////////////////////////////////////////// GLOBAL VARIABLES //////////////////////////////////////////
 
