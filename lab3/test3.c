@@ -98,6 +98,8 @@ int kbd_test_leds(unsigned short n, unsigned short *leds) {
 		return 1;
 	}
 
+	elem = 0;
+	kbd_int_handler();
 
 	////////////////////////////////////////////////////////////////////////////////////////////////
 	int r; //vai ter o codigo do erro driver_receive(ANY, &msg, &ipc_status)
