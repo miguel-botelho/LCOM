@@ -33,7 +33,7 @@ int kbd_test_scan(unsigned short ass) {
 					{
 						if (ass == 0)
 							return_byte = kbd_scan_c(&key);
-						else key = kbd_scan_ass();
+						else return_byte = kbd_scan_ass(&key);
 						if (return_byte == 0)
 						{
 							if (0x0080 == (0x0080 & key))
