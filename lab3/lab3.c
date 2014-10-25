@@ -2,6 +2,7 @@
 
 #include"test3.h"
 #include"keyboard.h"
+#include"assembly.S" //está bem?
 
 static int proc_args(int argc, char *argv[]);
 static unsigned long parse_ulong(char *str, int base);
