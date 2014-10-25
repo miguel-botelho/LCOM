@@ -15,7 +15,7 @@ int main(int argc, char **argv) {
 
   /* Enable IO-sensitive operations for ourselves */
 
-  //sys_iopenable(SELF);
+  sys_enable_iop(SELF);
 
   /*unsigned short a[] = {1,2,2,1};
 
