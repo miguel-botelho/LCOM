@@ -9,6 +9,7 @@ int kbd_test_scan(unsigned short ass) {
 	int return_byte;
 	int ipc_status;
 	int msb;
+	char assembly = '0';
 	msb = 0;
 	message msg;
 	char irq_set = BIT(khook_id);
@@ -33,7 +34,11 @@ int kbd_test_scan(unsigned short ass) {
 					{
 						if (ass == 0)
 							return_byte = kbd_scan_c(&key);
-						else return_byte = kbd_scan_ass(&key);
+						else
+							{
+								return_byte = kbd_scan_ass(&key);
+								assembly = '1';
+							}
 						if (return_byte == 0)
 						{
 							if (0x0080 == (0x0080 & key))
@@ -53,7 +58,11 @@ int kbd_test_scan(unsigned short ass) {
 					{
 						msb = key;
 						msb = msb << 8;
-						return_byte = kbd_scan_c(&key);
+
+						if (assembly == '1')
+						return_byte = kbd_scan_ass(&key);
+						else return_byte = kbd_scan_c(&key);
+
 						key = key & 0x00FF;
 						key = key + msb;
 						if (0x0080 == (0x0080 & key))
@@ -116,7 +125,7 @@ int kbd_test_leds(unsigned short n, unsigned short *leds) {
 		printf("Fail to subscribe Timer 0!\n\n");
 		return 1;
 	}
-	for (i; i < n; i++)
+	for (i; i < n; i++) //percorre o array
 	{
 		global_counter = 0;
 		while( global_counter < 1 ) { /* You may want to use a different condition */
@@ -152,7 +161,6 @@ int kbd_test_leds(unsigned short n, unsigned short *leds) {
 							elem = l0 + l1 + l2;
 
 							kbd_int_handler();
-							timer_test_square(60);
 							temp_counter = 0; //reset do temp_counter para voltar a contar os primeiros freq tiques
 							timer_int_handler();
 						}
@@ -201,7 +209,7 @@ int kbd_test_timed_scan(unsigned short n) {
 			printf("Fail to subscribe Keyboard!\n\n");
 			return 1;
 		}
-		while((KBD_ESC_KEY != key) && (counter < n) ) { /* When ESC key is pressed */
+		while((KBD_ESC_KEY != key) && (counter < n) ) { /* When ESC key is pressed or it has reached the limit "n" */
 			/* Get a request message. */
 			if ( (r = driver_receive(ANY, &msg, &ipc_status)) != 0 ) {
 				printf("driver_receive failed with: %d", r);
@@ -232,7 +240,6 @@ int kbd_test_timed_scan(unsigned short n) {
 								}
 								else
 								{
-									//if (key == 0)
 									{
 										printf("Makecode: 0x%x\n", key);
 									}

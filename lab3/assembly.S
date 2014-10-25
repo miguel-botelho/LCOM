@@ -1,7 +1,8 @@
 #include"test3.h"
 #include"keyboard.h"
 
-int kbd_scan_ass(int *apt){
+	.text
+	_kbd_scan_ass:
 		push %ebp
 		mov %esp, %ebp
 		sub $8, %esp
@@ -22,4 +23,3 @@ int kbd_scan_ass(int *apt){
 		ret
 		two_bytes: mov %eax, 1
 				   ret
-}
