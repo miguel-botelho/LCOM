@@ -52,7 +52,7 @@ int kbd_test_scan(unsigned short ass) {
 							}
 						}
 					}
-					else
+					else //a tecla tem 2 bytes, volta a chamar a funcao de read
 					{
 						msb = key;
 						msb = msb << 8;

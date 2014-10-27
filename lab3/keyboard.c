@@ -46,30 +46,7 @@ int kbd_scan_c(int *apt){
 	}
 	return 0;
 }
-/*
-int kbd_scan_ass(int *apt){
 
-	unsigned long key_register;
-
-		//1 byte
-
-		IN 0x64, eax
-		mov eax, key_register
-		sys_inb(OUT_BUF, &key_register);
-		*apt = (unsigned int) key_register;
-		tickdelay(micros_to_ticks(DELAY_US));
-		if (0xE0 == (0xE0 & *apt))
-		{
-			//2 bytes
-			return 1;
-
-		}
-		return 0;
-
-//ESCREVER TUDO EM ASSEMBLY
-	return 0;
-}
-*/
 int kbc_cmd_send(unsigned long cmd){
 
 	unsigned long stat = 0;
