@@ -1,15 +1,14 @@
 #include"test3.h"
 #include"keyboard.h"
 
-
+int key = 0;
 
 int kbd_test_scan(unsigned short ass) {
+
 	int r;
-	int key = 0;
 	int return_byte;
 	int ipc_status;
 	int msb;
-	char assembly = '0';
 	msb = 0;
 	message msg;
 	char irq_set = BIT(khook_id);
@@ -36,8 +35,7 @@ int kbd_test_scan(unsigned short ass) {
 							return_byte = kbd_scan_c(&key);
 						else
 							{
-								return_byte = kbd_scan_ass(&key);
-								assembly = '1';
+								return_byte = kbd_scan_ass();
 							}
 						if (return_byte == 0)
 						{
@@ -59,8 +57,8 @@ int kbd_test_scan(unsigned short ass) {
 						msb = key;
 						msb = msb << 8;
 
-						if (assembly == '1')
-						return_byte = kbd_scan_ass(&key);
+						if (ass == 1)
+						return_byte = kbd_scan_ass();
 						else return_byte = kbd_scan_c(&key);
 
 						key = key & 0x00FF;

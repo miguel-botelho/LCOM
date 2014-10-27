@@ -1,23 +1,24 @@
 #include"test3.h"
 #include"keyboard.h"
 
+	.global _kbd_scan_ass
+
 	.text
 	_kbd_scan_ass:
-		push %ebp
-		mov %esp, %ebp
-		sub $8, %esp
-		mov -4(%ebp), %eax  //variavel local :DD
-		mov %eax, 0
-		leave
-		IN 0x60, %eax
 
-		mov 20000, %ecx
+		movl %ebx, 0
+		movl %eax, 0
+		IN 0x60, %ebx
+		movw key, %bx
+
+
+		mov %ecx, 20000
 		salto: sub %ecx, 1  //TickDelay :D
 		loop salto
 
 		mov %dx, 0xE0
-		and %ax, %dx
-		cmp %ax, %dx  //o IF :p
+		and %bx, %dx //bx = 0xED ?
+		cmp %bx, %dx  //o IF :p
 		je two_bytes
 		mov %eax, 0
 		ret

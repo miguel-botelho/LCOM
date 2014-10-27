@@ -46,10 +46,9 @@ int kbd_scan_c(int *apt){
 	}
 	return 0;
 }
-
+/*
 int kbd_scan_ass(int *apt){
 
-/*
 	unsigned long key_register;
 
 		//1 byte
@@ -67,10 +66,10 @@ int kbd_scan_ass(int *apt){
 		}
 		return 0;
 
-*/ //ESCREVER TUDO EM ASSEMBLY
+//ESCREVER TUDO EM ASSEMBLY
 	return 0;
 }
-
+*/
 int kbc_cmd_send(unsigned long cmd){
 
 	unsigned long stat = 0;
@@ -83,7 +82,6 @@ int kbc_cmd_send(unsigned long cmd){
 		if ((stat & IBF) == 0)
 		{
 			sys_outb(OUT_BUF, cmd);
-			//sys_outb(KBC_CMD_REG, cmd); /*no args command*/
 			return 0;
 		}
 		tickdelay(micros_to_ticks(DELAY_US));
