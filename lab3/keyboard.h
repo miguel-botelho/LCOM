@@ -62,7 +62,7 @@ int kbd_subscribe_int(void ); //Ativa a subscrição das interrupções do keybo
 
 int kbd_scan_c(int *apt); //Lê a tecla em C
 
-int kbd_scan_ass(); //Lê a tecla em assembly
+//int kbd_scan_ass(); //Lê a tecla em assembly
 
 int kbc_cmd_send(unsigned long cmd); //envia o comando para o input
 

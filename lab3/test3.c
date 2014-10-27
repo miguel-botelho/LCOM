@@ -1,16 +1,17 @@
 #include"test3.h"
 #include"keyboard.h"
 
-int key = 0;
+int key;
 
 int kbd_test_scan(unsigned short ass) {
-
+	key = 0;
 	int r;
 	int return_byte;
 	int ipc_status;
 	int msb;
 	msb = 0;
 	message msg;
+
 	char irq_set = BIT(khook_id);
 
 	if (-1 == kbd_subscribe_int())
@@ -45,7 +46,6 @@ int kbd_test_scan(unsigned short ass) {
 							}
 							else
 							{
-								//if (key == 0)
 								{
 									printf("Makecode: 0x%x\n", key);
 								}
@@ -57,9 +57,12 @@ int kbd_test_scan(unsigned short ass) {
 						msb = key;
 						msb = msb << 8;
 
-						if (ass == 1)
-						return_byte = kbd_scan_ass();
-						else return_byte = kbd_scan_c(&key);
+						if (ass == 0)
+						{
+							return_byte = kbd_scan_c(&key);
+						}
+
+						else return_byte = kbd_scan_ass();
 
 						key = key & 0x00FF;
 						key = key + msb;
