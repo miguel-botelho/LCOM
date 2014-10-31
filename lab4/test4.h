@@ -1,6 +1,8 @@
 #ifndef __TEST4_H
 #define __TEST4_H
 
+#include"mouse.h"
+
 /** @defgroup test4 test4
  * @{
  *
@@ -61,3 +63,5 @@ int test_config(void);
 
 
 int test_gesture(short length, unsigned short tolerance);
+
+#endif
