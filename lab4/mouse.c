@@ -1,7 +1,29 @@
 #include"mouse.h"
 
 int mhook_id = 0x01;
+int hook_id = 0x00;
 
+char global_bool1 = 0;
+char global_bool2 = 0;
+
+int timer_subscribe_int(void ) {
+
+	//para nao perder o valor original de hook_id (vai ser preciso para depois reconhecer a notificacao)
+	int hook_temp = hook_id;
+
+	if (OK == sys_irqsetpolicy(TIMER0_IRQ, IRQ_REENABLE, &hook_id))
+		if (OK == sys_irqenable(&hook_id))
+			return BIT(hook_temp);
+	return -1;
+}
+
+int timer_unsubscribe_int() {
+
+	if (OK == sys_irqdisable(&hook_id))
+		if (OK == sys_irqrmpolicy(&hook_id))
+			return 0;
+	return -1;
+}
 
 int mouse_subscribe_int(){
 	//para nao perder o valor original de khook_id (vai ser preciso para depois reconhecer a notificacao)
@@ -149,4 +171,41 @@ void mouse_printf(char a[]){
 		printf("Y=%3u", a[2]);
 	}
 	printf("\n");
+}
+
+int get_packets(char mouse)
+{
+	char byte;
+
+	if (global_bool1 == 0)
+	{
+		if (0x08 == (0x08 & mouse))
+		{
+			global_bool1 = 1;
+			byte = mouse;
+			return 0;
+		}
+		else return -1;
+
+	}
+	else
+	{
+		if (global_bool2 == 0)
+		{
+			global_bool2 = 1;
+			byte = mouse;
+			return 1;
+		}
+		else
+		{
+
+			//bool3 = 1;
+			byte = mouse;
+			bool1 = 0;
+			bool2 = 0;
+			return 2;
+		}
+	}
+
+	return -1;
 }

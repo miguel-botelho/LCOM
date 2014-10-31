@@ -7,6 +7,10 @@
 #include <minix/com.h>
 
 extern int mhook_id;
+extern int hook_id;
+
+extern char global_bool1;
+extern char global_bool2;
 
 #define MOUSE_IRQ	12
 #define DELAY_US 	20000
@@ -23,6 +27,9 @@ extern int mhook_id;
 #define DISABLE_STREAM	0xF5
 #define SET_STREAM	0xEA
 #define STAT_REG	0x64
+#define STATUS_REQUEST 0xE9
+
+#define TIMER0_IRQ	        0    /**< @brief Timer 0 IRQ line */
 
 
 #define ACK			0xFA
@@ -38,7 +45,9 @@ int mouse_send_command(unsigned long cmd);
 int mouse_send_first_command();
 int mouse_cmd_receive();
 void mouse_printf(char a[]);
-
+int timer_subscribe_int(void );
+int timer_unsubscribe_int();
+int get_packets(char a[]);
 
 
 #endif
