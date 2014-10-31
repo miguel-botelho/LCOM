@@ -22,15 +22,11 @@ int test_packet(unsigned short cnt){
 		printf("Fail to subscribe Mouse!\n \n");
 		return 1;
 	}
-	printf("subscribe!\n");
 	mouse_int_handler(SET_STREAM);
 	mouse_int_handler(ESDP);
-	printf("handler!\n");
-
 
 	while( i < cnt ) { /* You may want to use a different condition */
 		/* Get a request message. */
-		printf("while\n");
 
 		if ( driver_receive(ANY, &msg, &ipc_status) != 0 ) {
 			printf("driver_receive failed with: %d", r);
@@ -40,31 +36,16 @@ int test_packet(unsigned short cnt){
 			switch (_ENDPOINT_P(msg.m_source)) {
 			case HARDWARE: /* hardware interrupt notification */
 				if (msg.NOTIFY_ARG & irq_set) { /* subscribed interrupt */
-					printf("INTERRUPCAO! \n");
 					sys_inb(OUT_BUF, &key_register);
 					mouse = (unsigned int) key_register;
 					tickdelay(micros_to_ticks(DELAY_US));
+
+					printf("mouse: %x", mouse);
+
 					if (bool1 == 0)
 					{
-
-						printf("mouse: %x\n", mouse);
-						tickdelay(micros_to_ticks(DELAY_US));
-
-						sys_inb(STAT_REG, &key_register);
-						mouse = (unsigned int) key_register;
-						printf("stat: %x\n", mouse);
-						tickdelay(micros_to_ticks(DELAY_US));
-
-						sys_inb(OUT_BUF, &key_register);
-						mouse = (unsigned int) key_register;
-						printf("mouse2: %x\n", mouse);
-
-						continue;
-
-
 						if (0x08 == (0x08 & mouse))
 						{
-							printf("mouse: %x\n", mouse);
 							bool1 = 1;
 							byte1 = mouse;
 						}
@@ -73,7 +54,6 @@ int test_packet(unsigned short cnt){
 					}
 					else
 					{
-						printf("mouse2: %x\n", mouse);
 						if (bool2 == 0)
 						{
 
@@ -82,7 +62,6 @@ int test_packet(unsigned short cnt){
 						}
 						else
 						{
-							printf("mouse3: %x\n", mouse);
 
 							//bool3 = 1;
 							byte3 = mouse;

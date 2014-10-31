@@ -34,23 +34,20 @@ int mouse_int_handler(unsigned long cmd){
 
 	while(1)
 	{
-			mouse_send_first_command();
-			printf("mouse_send_first_command();\n");
-		printf("send cmd2\n");
+		mouse_send_first_command();
 
 		while (nr_tentativas < 5)
 		{
 			mouse_send_command(cmd);
 
+			tickdelay(micros_to_ticks(DELAY_US));
+
 			cmd_receive2 = mouse_cmd_receive();
-			printf("mouse_cmd_receive();\n");
 
 			if(MOUSE_DATA == (MOUSE_DATA & cmd_receive2))
 			{
-				printf("arroz");
 				if (cmd_receive2 == ERROR)
 				{
-					printf("gggggg");
 					nr_tentativas++;
 					continue;
 				}

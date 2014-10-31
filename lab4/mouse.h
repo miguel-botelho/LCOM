@@ -8,7 +8,7 @@
 
 extern int mhook_id;
 
-#define MOUSE_IRQ	0x0C
+#define MOUSE_IRQ	12
 #define DELAY_US 	20000
 #define BIT(n) 		(0x01<<(n))
 #define OUT_BUF		0x64
@@ -37,7 +37,7 @@ int mouse_int_handler(unsigned long cmd);
 int mouse_send_command(unsigned long cmd);
 int mouse_send_first_command();
 int mouse_cmd_receive();
-void mouse_printf(char byte1, char byte2, char byte3);
+void mouse_printf(char a[]);
 
 
 
