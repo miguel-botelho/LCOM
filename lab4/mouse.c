@@ -119,34 +119,34 @@ int mouse_cmd_receive(){
 	}
 }
 
-void mouse_printf(char byte1, char byte2, char byte3){
+void mouse_printf(char a[]){
 
-	printf("B1=0x%2x",(byte1 & 0x0F));
-	printf("B2=0x%3x", byte2);
-	printf("B3=0x%3x", byte3);
-	printf("LB=%2u", (byte1 & 0x01));
-	printf("MB=%2u", (byte1 & 0x04));
-	printf("RB=%2u", (byte1 & 0x02));
-	printf("XOV=%2u", (byte1 & 0x40));
-	printf("YOV=%2u", (byte1 & 0x80));
+	printf("B1=0x%2x",(a[0] & 0x0F));
+	printf("B2=0x%3x", a[1]);
+	printf("B3=0x%3x", a[2]);
+	printf("LB=%2u", (a[0] & 0x01));
+	printf("MB=%2u", (a[0] & 0x04));
+	printf("RB=%2u", (a[0] & 0x02));
+	printf("XOV=%2u", (a[0] & 0x40));
+	printf("YOV=%2u", (a[0] & 0x80));
 
 
-	if (0x10 == (0x10 & byte1))
+	if (0x10 == (0x10 & a[0]))
 	{
-		printf("X=-%3u", byte2);
+		printf("X=-%3u", a[1]);
 	}
 	else
 	{
-		printf("X=%3u", byte2);
+		printf("X=%3u", a[1]);
 	}
 
-	if (0x20 == (0x20 & byte1))
+	if (0x20 == (0x20 & a[0]))
 	{
-		printf("Y=-%3u", byte3);
+		printf("Y=-%3u", a[2]);
 	}
 	else
 	{
-		printf("Y=%3u", byte3);
+		printf("Y=%3u", a[2]);
 	}
 	printf("\n");
 }
