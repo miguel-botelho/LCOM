@@ -12,7 +12,11 @@ int main(int argc, char **argv) {
 
 	sef_startup();
 
-	printf("lab4: Mouse \n");
+	//test_packet(20); //working (small bug)
+	//test_async(2); //working
+	//test_config(); //working
+	//test_gesture(-10, 500); //working (negative numbers (small bug))
+
 
 	if ( argc == 1 ) {
 		print_usage(argv);
@@ -35,7 +39,7 @@ static void print_usage(char *argv[]) {
 			"\t test_packet 5\n"
 			"\t test_async 2\n"
 			"\t test_config\n"
-			"\t test_gesture (this example needs to be made)\n");
+			"\t test_gesture (-10, 50)\n");
 }
 
 static int proc_args(int argc, char *argv[]) {

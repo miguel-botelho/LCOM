@@ -24,13 +24,16 @@ int test_packet(unsigned short cnt){
 		printf("Fail to subscribe Mouse!\n \n");
 		return 1;
 	}
+
 	mouse_int_handler(SET_STREAM);
 	mouse_int_handler(ESDP);
+
+	//mouse_clean_buffer();
 
 	while( i < cnt ) { /* You may want to use a different condition */
 		/* Get a request message. */
 
-		if ( driver_receive(ANY, &msg, &ipc_status) != 0 ) {
+		if ( r = driver_receive(ANY, &msg, &ipc_status) != 0 ) {
 			printf("driver_receive failed with: %d", r);
 			continue;
 		}
@@ -40,9 +43,6 @@ int test_packet(unsigned short cnt){
 				if (msg.NOTIFY_ARG & irq_set) { /* subscribed interrupt */
 					sys_inb(OUT_BUF, &key_register);
 					mouse = (unsigned int) key_register;
-					tickdelay(micros_to_ticks(DELAY_US));
-
-					printf("mouse: %x", mouse);
 
 					if (bool1 == 0)
 					{
@@ -73,6 +73,7 @@ int test_packet(unsigned short cnt){
 							a[0] = byte1;
 							a[1] = byte2;
 							a[2] = byte3;
+							i++;
 							mouse_printf(a);
 						}
 					}
@@ -127,17 +128,14 @@ int test_async(unsigned short idle_time) {
 		return 1;
 	}
 
-	printf("subscribe!\n");
 	mouse_int_handler(SET_STREAM);
 	mouse_int_handler(ESDP);
-	printf("handler!\n");
 
 
 	while(counter < idle_time ) { /* You may want to use a different condition */
 		/* Get a request message. */
-		printf("while\n");
 
-		if ( driver_receive(ANY, &msg, &ipc_status) != 0 ) {
+		if ( r = driver_receive(ANY, &msg, &ipc_status) != 0 ) {
 			printf("driver_receive failed with: %d", r);
 			continue;
 		}
@@ -155,31 +153,13 @@ int test_async(unsigned short idle_time) {
 				}
 				if (msg.NOTIFY_ARG & irq_set) { /* subscribed interrupt */
 					counter = 0;
-					printf("INTERRUPCAO! \n");
 					sys_inb(OUT_BUF, &key_register);
 					mouse = (unsigned int) key_register;
-					tickdelay(micros_to_ticks(DELAY_US));
+					//tickdelay(micros_to_ticks(DELAY_US));
 					if (bool1 == 0)
 					{
-
-						printf("mouse: %x\n", mouse);
-						tickdelay(micros_to_ticks(DELAY_US));
-
-						sys_inb(STAT_REG, &key_register);
-						mouse = (unsigned int) key_register;
-						printf("stat: %x\n", mouse);
-						tickdelay(micros_to_ticks(DELAY_US));
-
-						sys_inb(OUT_BUF, &key_register);
-						mouse = (unsigned int) key_register;
-						printf("mouse2: %x\n", mouse);
-
-						continue;
-
-
 						if (0x08 == (0x08 & mouse))
 						{
-							printf("mouse: %x\n", mouse);
 							bool1 = 1;
 							byte1 = mouse;
 						}
@@ -188,7 +168,6 @@ int test_async(unsigned short idle_time) {
 					}
 					else
 					{
-						printf("mouse2: %x\n", mouse);
 						if (bool2 == 0)
 						{
 
@@ -197,8 +176,6 @@ int test_async(unsigned short idle_time) {
 						}
 						else
 						{
-							printf("mouse3: %x\n", mouse);
-
 							//bool3 = 1;
 							byte3 = mouse;
 							bool1 = 0;
@@ -312,7 +289,7 @@ int test_gesture(short length, unsigned short tolerance) {
 	int r;
 	int ipc_status;
 	message msg;
-	char mouse;
+	unsigned int mouse;
 	char a[3];
 	unsigned long key_register;
 	int i = 0;
@@ -322,6 +299,12 @@ int test_gesture(short length, unsigned short tolerance) {
 	left_key = 0;
 	int conf_temp;
 	char conf;
+
+	char deltax = 0;
+	char deltay = 0;
+	char olddeltax = 0;
+	char olddeltay = 0;
+	char firstpos = 0;
 
 	char negative_length;
 
@@ -340,10 +323,10 @@ int test_gesture(short length, unsigned short tolerance) {
 	mouse_int_handler(SET_STREAM);
 	mouse_int_handler(ESDP);
 
-	while( i < cnt ) { /* You may want to use a different condition */
+	while( 1 ) { /* You may want to use a different condition */
 		/* Get a request message. */
 
-		if ( driver_receive(ANY, &msg, &ipc_status) != 0 ) {
+		if ( r = driver_receive(ANY, &msg, &ipc_status) != 0 ) {
 			printf("driver_receive failed with: %d", r);
 			continue;
 		}
@@ -352,55 +335,72 @@ int test_gesture(short length, unsigned short tolerance) {
 			case HARDWARE: /* hardware interrupt notification */
 				if (msg.NOTIFY_ARG & irq_set) { /* subscribed interrupt */
 					sys_inb(OUT_BUF, &key_register);
-					mouse = (char) key_register;
-					tickdelay(micros_to_ticks(DELAY_US));
+					mouse = (unsigned int) key_register;
 
 					counter = get_packets(mouse);
 					if (counter != -1)
 					{
 						a[counter] = mouse;
 					}
+					if (firstpos == 0)
+					{
+						if (counter == 2)
+						{
+							firstpos = 1;
+							deltax = a[1];
+							deltay = a[2];
+						}
+					}
+					else
+					{
+						if (counter == 2)
+						{
+							olddeltax = deltax;
+							olddeltay = deltay;
+							deltax = a[1];
+							deltay = a[2];
+						}
+					}
 
 					if (counter == 2) //it means that the 3 packets have been successfully received
 					{
 						mouse_printf(a); //to print the values
 
-						mouse_int_handler(STATUS_REQUEST);
-						conf_temp = mouse_cmd_receive();
-						conf = (char) conf_temp;
-						tickdelay(micros_to_ticks(DELAY_US));
-
-						conf_temp = mouse_cmd_receive();
-						conf = (char) conf_temp; //this byte is the one that matters
-
-						conf_temp = mouse_cmd_receive();
 
 						if (left_key == 0) //left key was released
 						{
-							left_key = (BIT(2) & conf);
+							left_key = (BIT(0) & a[0]);
 
 							if (left_key == 1) //left key is pressed
 							{
 								mouse_int_handler(DISABLE_STREAM);
 								mouse_int_handler(SET_STREAM); //movement reseted
+								mouse_int_handler(ESDP);
 							}
 						}
 						else //left key was pressed
 						{
-							left_key = (BIT(2) & conf);
+							left_key = (BIT(0) & a[0]);
 
-							if (left_key == 0) //left key is released
+							if ((left_key == 0) && (deltax != olddeltax) && (deltay != olddeltay) && (firstpos == 1)) //left key is released
 							{
 								continue;
 							}
 							else //left key still pressed
 							{
-								if (tolerance < a[2])
+								if (abs(a[2]) < tolerance)
 								{
-									if (length >= a[1]) //respect the length
+									if (abs(a[1]) >= length) //respect the length
 									{
-										if (((a[0] & BIT(4) > 0) && (negative_length == 1)) || ((a[0] & BIT(4) == 0) && (negative_length == 0)))
+										/*printf("2\n");
+										printf("a[0] = %x\n", a[0]);
+										printf("asd: %d\n", ((a[0] & BIT(4) )));
+										printf("negative: %d\n\n", negative_length);*/
+										if ((((a[0] & BIT(4)) > 0) && (negative_length == 1)) || ((a[0] & BIT(4) == 0) && (negative_length == 0)))
 										{
+											mouse_int_handler(DISABLE_STREAM);
+											mouse_int_handler(SET_STREAM);
+											mouse_unsubscribe_int();
 											return 0;
 										}
 									}
@@ -423,8 +423,4 @@ int test_gesture(short length, unsigned short tolerance) {
 
 		}
 	}
-
-	mouse_int_handler(DISABLE_STREAM);
-	mouse_int_handler(SET_STREAM);
-	mouse_unsubscribe_int();
 }

@@ -56,19 +56,38 @@ int mouse_int_handler(unsigned long cmd){
 
 	while(1)
 	{
-		mouse_send_first_command();
+		while(nr_tentativas < 5)
+		{
+   			mouse_send_first_command();
+
+			/*cmd_receive = mouse_cmd_receive();
+
+			printf("done\n");
+
+			if(MOUSE_DATA == (MOUSE_DATA & cmd_receive))
+			{
+				if (NACK == cmd_receive || ERROR == cmd_receive)
+				{
+					printf("cmd1\n");
+					nr_tentativas++;
+					continue;
+				}
+			} else continue;
+*/
+			break;
+		}
+
+		nr_tentativas = 0;
 
 		while (nr_tentativas < 5)
 		{
 			mouse_send_command(cmd);
 
-			tickdelay(micros_to_ticks(DELAY_US));
-
 			cmd_receive2 = mouse_cmd_receive();
 
 			if(MOUSE_DATA == (MOUSE_DATA & cmd_receive2))
 			{
-				if (cmd_receive2 == ERROR)
+				if (cmd_receive2 == NACK)
 				{
 					nr_tentativas++;
 					continue;
@@ -77,11 +96,16 @@ int mouse_int_handler(unsigned long cmd){
 			}
 			else continue;
 		}
-		if (cmd_receive2 == NACK)
+
+		if (cmd_receive2 == ERROR)
+		{
 			continue;
+		}
+
 		break;
 	}
 
+	return 0;
 }
 
 int mouse_send_command(unsigned long cmd){
@@ -141,48 +165,63 @@ int mouse_cmd_receive(){
 	}
 }
 
+int mouse_clean_buffer(){
+	unsigned long stat = 0;
+	unsigned long data = 0;
+
+	while(1)
+	{
+		sys_inb(STAT_REG, &stat); /*assuming it returns OK*/
+		/*loop while 8042 input buffer is not empty*/
+		if ((stat & OBF) == 0)
+		{
+			return 0;
+		}
+		tickdelay(micros_to_ticks(DELAY_US));
+		printf("clean\n");
+	}
+}
+
 void mouse_printf(char a[]){
 
-	printf("B1=0x%2x",(a[0] & 0x0F));
-	printf("B2=0x%3x", a[1]);
-	printf("B3=0x%3x", a[2]);
-	printf("LB=%2u", (a[0] & 0x01));
-	printf("MB=%2u", (a[0] & 0x04));
-	printf("RB=%2u", (a[0] & 0x02));
-	printf("XOV=%2u", (a[0] & 0x40));
-	printf("YOV=%2u", (a[0] & 0x80));
+	printf("B1=0x%x ",(a[0] & 0x0F));
+	printf("B2=0x%x ", a[1]);
+	printf("B3=0x%x ", a[2]);
+	printf("LB=%u ", (a[0] & 0x01));
+	printf("MB=%u ", ((a[0] & 0x04) >> 2));
+	printf("RB=%u ", ((a[0] & 0x02) >> 1));
+	printf("XOV=%u ", (a[0] & 0x40));
+	printf("YOV=%u ", (a[0] & 0x80));
 
 
 	if (0x10 == (0x10 & a[0]))
 	{
-		printf("X=-%3u", a[1]);
+		printf("X=-%u ", -a[1]);
 	}
 	else
 	{
-		printf("X=%3u", a[1]);
+		printf("X=%u ", a[1]);
 	}
 
 	if (0x20 == (0x20 & a[0]))
 	{
-		printf("Y=-%3u", a[2]);
+		printf("Y=-%u ", -a[2]);
 	}
 	else
 	{
-		printf("Y=%3u", a[2]);
+		printf("Y=%u ", a[2]);
 	}
 	printf("\n");
 }
 
 int get_packets(char mouse)
 {
-	char byte;
 
 	if (global_bool1 == 0)
 	{
 		if (0x08 == (0x08 & mouse))
 		{
 			global_bool1 = 1;
-			byte = mouse;
 			return 0;
 		}
 		else return -1;
@@ -193,16 +232,14 @@ int get_packets(char mouse)
 		if (global_bool2 == 0)
 		{
 			global_bool2 = 1;
-			byte = mouse;
 			return 1;
 		}
 		else
 		{
 
 			//bool3 = 1;
-			byte = mouse;
-			bool1 = 0;
-			bool2 = 0;
+			global_bool1 = 0;
+			global_bool2 = 0;
 			return 2;
 		}
 	}
