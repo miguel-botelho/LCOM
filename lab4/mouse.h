@@ -15,7 +15,7 @@ extern char global_bool2;
 #define MOUSE_IRQ	12
 #define DELAY_US 	20000
 #define BIT(n) 		(0x01<<(n))
-#define OUT_BUF		0x64
+#define OUT_BUF		0x60
 #define ESDP		0xF4
 #define IBF			0x02
 #define OBF			0x01
@@ -47,7 +47,8 @@ int mouse_cmd_receive();
 void mouse_printf(char a[]);
 int timer_subscribe_int(void );
 int timer_unsubscribe_int();
-int get_packets(char a[]);
+int get_packets(char mouse);
+int mouse_clean_buffer();
 
 
 #endif
