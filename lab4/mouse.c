@@ -85,7 +85,7 @@ int mouse_int_handler(unsigned long cmd){
 
 			cmd_receive2 = mouse_cmd_receive();
 
-			if(MOUSE_DATA == (MOUSE_DATA & cmd_receive2))
+			if(MOUSE_DATA == (MOUSE_DATA & cmd_receive2)) //verificar se o que estou a ler é do mouse
 			{
 				if (cmd_receive2 == NACK) // se e NACK, então repete só o cmd enviado, não necessita de enviar 0xD4
 				{
