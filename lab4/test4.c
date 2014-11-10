@@ -292,13 +292,19 @@ int test_gesture(short length, unsigned short tolerance) {
 	unsigned int mouse;
 	char a[3];
 	unsigned long key_register;
-	int i = 0;
-	int counter;
 	char irq_set = BIT(mhook_id);
 	char left_key;
-	left_key = 0;
+	left_key = 0; //!!!!!!!!!
 	int conf_temp;
 	char conf;
+
+	char bool1 = 0; //0 = true, nao 0 = true
+	char bool2 = 0;
+	//char bool3 = 0;
+
+	char byte1;
+	char byte2;
+	char byte3;
 
 	char deltax = 0;
 	char deltay = 0;
@@ -334,84 +340,42 @@ int test_gesture(short length, unsigned short tolerance) {
 			switch (_ENDPOINT_P(msg.m_source)) {
 			case HARDWARE: /* hardware interrupt notification */
 				if (msg.NOTIFY_ARG & irq_set) { /* subscribed interrupt */
+
+					//***************************codigo da test_packet***************************
+					//ler os packets
 					sys_inb(OUT_BUF, &key_register);
 					mouse = (unsigned int) key_register;
 
-					counter = get_packets(mouse);
-					if (counter != -1)
+					if (bool1 == 0)
 					{
-						a[counter] = mouse;
-					}
-					if (firstpos == 0)
-					{
-						if (counter == 2)
+						if (0x08 == (0x08 & mouse))
 						{
-							firstpos = 1;
-							deltax = a[1];
-							deltay = a[2];
+							bool1 = 1;
+							byte1 = mouse;
 						}
+						else continue;
+
 					}
 					else
 					{
-						if (counter == 2)
+						if (bool2 == 0)
 						{
-							olddeltax = deltax;
-							olddeltay = deltay;
-							deltax = a[1];
-							deltay = a[2];
+
+							bool2 = 1;
+							byte2 = mouse;
 						}
-					}
-
-					if (counter == 2) //it means that the 3 packets have been successfully received
-					{
-						mouse_printf(a); //to print the values
-
-
-						if (left_key == 0) //left key was released
+						else
 						{
-							left_key = (BIT(0) & a[0]);
+							//este e o ultimo byte
+							//bool3 = 1;
+							byte3 = mouse;
+							bool1 = 0;
+							bool2 = 0;
 
-							if (left_key == 1) //left key is pressed
-							{
-								mouse_int_handler(DISABLE_STREAM);
-								mouse_int_handler(SET_STREAM); //movement reseted
-								mouse_int_handler(ESDP);
-							}
-						}
-						else //left key was pressed
-						{
-							left_key = (BIT(0) & a[0]);
-
-							if ((left_key == 0) && (deltax != olddeltax) && (deltay != olddeltay) && (firstpos == 1)) //left key is released
-							{
-								continue;
-							}
-							else //left key still pressed
-							{
-								if (abs(a[2]) < tolerance)
-								{
-									if (abs(a[1]) >= length) //respect the length
-									{
-										/*printf("2\n");
-										printf("a[0] = %x\n", a[0]);
-										printf("asd: %d\n", ((a[0] & BIT(4) )));
-										printf("negative: %d\n\n", negative_length);*/
-										if ((((a[0] & BIT(4)) > 0) && (negative_length == 1)) || ((a[0] & BIT(4) == 0) && (negative_length == 0)))
-										{
-											mouse_int_handler(DISABLE_STREAM);
-											mouse_int_handler(SET_STREAM);
-											mouse_unsubscribe_int();
-											return 0;
-										}
-									}
-									else continue;
-								}
-								else
-								{
-									left_key = 0; //to reset the values
-									continue;
-								}
-							}
+							a[0] = byte1;
+							a[1] = byte2;
+							a[2] = byte3;
+							mouse_printf(a);
 						}
 					}
 				}
