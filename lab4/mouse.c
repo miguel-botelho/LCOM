@@ -26,7 +26,7 @@ int timer_unsubscribe_int() {
 }
 
 int mouse_subscribe_int(){
-	//para nao perder o valor original de khook_id (vai ser preciso para depois reconhecer a notificacao)
+	//para nao perder o valor original de mhook_id (vai ser preciso para depois reconhecer a notificacao)
 	int hook_temp = mhook_id;
 
 	if (OK == sys_irqsetpolicy(MOUSE_IRQ, IRQ_REENABLE | IRQ_EXCLUSIVE, &mhook_id))
@@ -87,7 +87,7 @@ int mouse_int_handler(unsigned long cmd){
 
 			if(MOUSE_DATA == (MOUSE_DATA & cmd_receive2))
 			{
-				if (cmd_receive2 == NACK)
+				if (cmd_receive2 == NACK) // se e NACK, então repete só o cmd enviado, não necessita de enviar 0xD4
 				{
 					nr_tentativas++;
 					continue;
@@ -97,7 +97,7 @@ int mouse_int_handler(unsigned long cmd){
 			else continue;
 		}
 
-		if (cmd_receive2 == ERROR)
+		if (cmd_receive2 == ERROR) //erro, volta a repetir todo o processo
 		{
 			continue;
 		}
@@ -165,64 +165,46 @@ int mouse_cmd_receive(){
 	}
 }
 
-int mouse_clean_buffer(){
-	unsigned long stat = 0;
-	unsigned long data = 0;
-
-	while(1)
-	{
-		sys_inb(STAT_REG, &stat); /*assuming it returns OK*/
-		/*loop while 8042 input buffer is not empty*/
-		if ((stat & OBF) == 0)
-		{
-			return 0;
-		}
-		tickdelay(micros_to_ticks(DELAY_US));
-		printf("clean\n");
-	}
-}
-
 void mouse_printf(char a[]){
 
-	printf("B1=0x%02x ",(a[0] & 0x0F));
-	printf("B2=0x%02x ", (0xFF & a[1]));
-	printf("B3=0x%02x ", (0xFF & a[2]));
-	printf("LB=%u ", (a[0] & BIT(0)));
-	printf("MB=%u ", ((a[0] & BIT(2)) >> 2));
-	printf("RB=%u ", ((a[0] & BIT(1)) >> 1));
-	printf("XOV=%u ", ((a[0] & BIT(6)) >> 2));
-	printf("YOV=%u ", ((a[0] & BIT(7)) >> 3));
+	printf("B1=0x%02x ",(a[0] & 0x0F)); //obtem um byte
+	printf("B2=0x%02x ", (0xFF & a[1])); //obtem um byte
+	printf("B3=0x%02x ", (0xFF & a[2])); //obtem um byte
+	printf("LB=%u ", (a[0] & BIT(0))); //obtem o o primeiro bit
+	printf("MB=%u ", ((a[0] & BIT(2)) >> 2)); //obtem o terceiro bit
+	printf("RB=%u ", ((a[0] & BIT(1)) >> 1)); //obtem o segundo bit
+	printf("XOV=%u ", ((a[0] & BIT(6)) >> 2)); //obtem o setimo bit
+	printf("YOV=%u ", ((a[0] & BIT(7)) >> 3)); //obtem o oitavo bit
 
-
-	if (BIT(4) == (BIT(4) & a[0]))
+	if (BIT(4) == (BIT(4) & a[0])) // se for negativo
 	{
 		printf("X=-%u ", neg8bits(a[1]));
 	}
-	else
+	else //nr positivo
 	{
 		printf("X=%u ", a[1]);
 	}
 
-	if (BIT(5) == (BIT(5) & a[0]))
+	if (BIT(5) == (BIT(5) & a[0])) //negativo
 	{
 		printf("Y=-%u ", neg8bits(a[2]));
 	}
-	else
+	else //positivo
 	{
 		printf("Y=%u ", a[2]);
 	}
 	printf("\n");
 }
 
-char neg8bits(char neg)
+char neg8bits(char neg) //transforma um char de 8 bits em complemento para 2, para o seu equivalente positivo; i.e -24 transforma-se em 24
 {
 	int i = 0;
 	char ret = 0;
-	char negative = 0;
+	char negative = 0; //flag que verifica se foi encontrado o primeiro 1
 
 	for (i; i < 8; i++)
 	{
-		if (negative == 0)
+		if (negative == 0) //se não foi encontrado o primeiro 1, então copia o bit
 		{
 			if (BIT(i) == (BIT(i) & neg))
 			{
@@ -231,43 +213,10 @@ char neg8bits(char neg)
 			}
 			else ret = ret + (BIT(i) & neg);
 		}
-		else ret = ret + !(BIT(i) & neg);
+		else ret = ret + !(BIT(i) & neg); //troca o bit
 	}
 
 	return ret;
-}
-
-int get_packets(char mouse)
-{
-
-	if (global_bool1 == 0)
-	{
-		if (BIT(3) == (BIT(3) & mouse))
-		{
-			global_bool1 = 1;
-			return 0;
-		}
-		else return -1;
-
-	}
-	else
-	{
-		if (global_bool2 == 0)
-		{
-			global_bool2 = 1;
-			return 1;
-		}
-		else
-		{
-
-			//bool3 = 1;
-			global_bool1 = 0;
-			global_bool2 = 0;
-			return 2;
-		}
-	}
-
-	return -1;
 }
 
 /*typedef enum {INIT, DRAW, COMP} state_t;
