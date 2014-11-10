@@ -138,7 +138,7 @@ int mouse_send_first_command(){
 		/*loop while 8042 input buffer is not empty*/
 		if ((stat & IBF) == 0)
 		{
-			sys_outb(0x64, MC);
+			sys_outb(STAT_REG, MC);
 			return 0;
 		}
 		tickdelay(micros_to_ticks(DELAY_US));
@@ -246,3 +246,26 @@ int get_packets(char mouse)
 
 	return -1;
 }
+
+/*typedef enum {INIT, DRAW, COMP} state_t;
+typedef enum {LDOW, LUP, MOVE} ev_type_t;
+
+void check_hor_line(event_t *evt)
+{
+	static state_t st = INIT; //initial state; keep state
+	switch (st) {
+	case INIT:
+		if (evt->type == LDOWN)
+			state = DRAW;
+		break;
+	case DRAW:
+		if (evt->type == MOVE){
+			//need to check if HOR_LINE event occurs
+		} else if (evt->type == LUP)
+			state = INIT;
+		break;
+	default:
+		break;
+		}
+	}
+}*/

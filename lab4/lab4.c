@@ -39,7 +39,7 @@ static void print_usage(char *argv[]) {
 			"\t test_packet 5\n"
 			"\t test_async 2\n"
 			"\t test_config\n"
-			"\t test_gesture (-10, 50)\n");
+			"\t test_gesture -10, 50\n");
 }
 
 static int proc_args(int argc, char *argv[]) {
