@@ -25,8 +25,8 @@ int test_packet(unsigned short cnt){
 		return 1;
 	}
 
-	mouse_int_handler(SET_STREAM);
-	mouse_int_handler(ESDP);
+	mouse_int_handler(SET_STREAM); //define o rato como stream mode
+	mouse_int_handler(ESDP); //ativa o envio dos dados por parte do rato
 
 	//mouse_clean_buffer();
 
@@ -44,11 +44,12 @@ int test_packet(unsigned short cnt){
 					sys_inb(OUT_BUF, &key_register);
 					mouse = (unsigned int) key_register;
 
+					//le o packet
 					if (bool1 == 0)
 					{
 						if (BIT(3) == (BIT(3) & mouse))
 						{
-							bool1 = 1;
+							bool1 = 1; //o primeiro byte
 							byte1 = mouse;
 						}
 						else continue;
@@ -59,22 +60,25 @@ int test_packet(unsigned short cnt){
 						if (bool2 == 0)
 						{
 
-							bool2 = 1;
+							bool2 = 1; //o segundo byte
 							byte2 = mouse;
 						}
 						else
 						{
 
+							//este e o 3 byte
+							//estao todos lidos
 							//bool3 = 1;
 							byte3 = mouse;
 							bool1 = 0;
 							bool2 = 0;
 
+							//os bytes passam para um array
 							a[0] = byte1;
 							a[1] = byte2;
 							a[2] = byte3;
-							i++;
-							mouse_printf(a);
+							i++; //contador de packets
+							mouse_printf(a); //imprime o packet
 						}
 					}
 
@@ -88,8 +92,9 @@ int test_packet(unsigned short cnt){
 		}
 	}
 
-	mouse_int_handler(DISABLE_STREAM);
-	mouse_int_handler(SET_STREAM);
+	//estas duas opearacoes sao feitas para assegurar o normal funcionamento do rato quando acabar a funcao
+	mouse_int_handler(DISABLE_STREAM); //desativa a stream
+	mouse_int_handler(SET_STREAM); //volta a ativar a stream, isto foi feito para desativar o envio dos pacotes
 	mouse_unsubscribe_int();
 }
 
@@ -101,8 +106,8 @@ int test_async(unsigned short idle_time) {
 	message msg;
 	unsigned int mouse;
 	unsigned long key_register;
-	unsigned int counter = 0;
-	int temp_counter = 0;
+	unsigned int counter = 0; //contador de segundos
+	int temp_counter = 0; //contador de ticks
 	int i = 0;
 	char bool1 = 0; //0 = true, nao 0 = true
 	char bool2 = 0;
@@ -132,8 +137,7 @@ int test_async(unsigned short idle_time) {
 	mouse_int_handler(ESDP);
 
 
-	while(counter < idle_time ) { /* You may want to use a different condition */
-		/* Get a request message. */
+	while(counter < idle_time ) { //so para quando nao enviar packets durante idle_time segundos
 
 		if ( r = driver_receive(ANY, &msg, &ipc_status) != 0 ) {
 			printf("driver_receive failed with: %d", r);
@@ -152,10 +156,11 @@ int test_async(unsigned short idle_time) {
 					}
 				}
 				if (msg.NOTIFY_ARG & irq_set) { /* subscribed interrupt */
-					counter = 0;
+					counter = 0; //faz reset ao contador
 					sys_inb(OUT_BUF, &key_register);
 					mouse = (unsigned int) key_register;
 					//tickdelay(micros_to_ticks(DELAY_US));
+					//funcionamento semelhante a funcao test_packets
 					if (bool1 == 0)
 					{
 						if (BIT(3) == (BIT(3) & mouse))
@@ -294,8 +299,6 @@ int test_gesture(short length, unsigned short tolerance) {
 	unsigned long key_register;
 	char irq_set = BIT(mhook_id);
 	char leftkey;
-	int conf_temp;
-	char conf;
 
 	char bool1 = 0; //0 = true, nao 0 = true
 	char bool2 = 0;
@@ -305,9 +308,8 @@ int test_gesture(short length, unsigned short tolerance) {
 	char byte2;
 	char byte3;
 
-	char firstpos;
-	short tamanho_h;
-	short tamanho_v;
+	short tamanho_h; //contador horizontal
+	short tamanho_v; //contador vertical
 	leftkey = 0;
 	char estado = 'i';
 	//'i' = inicial
@@ -369,6 +371,7 @@ int test_gesture(short length, unsigned short tolerance) {
 							a[1] = byte2;
 							a[2] = byte3;
 							mouse_printf(a);
+							//***************************acaba aqui o codigo da test_packet***************************
 							//botao esquerdo
 							leftkey = a[0] & BIT(0);
 							//desenho na horizontal
@@ -390,41 +393,42 @@ int test_gesture(short length, unsigned short tolerance) {
 
 							switch (estado)
 							{
-							case 'i':
+							case 'i': //estado inicial
 								if (leftkey == 1)
 								{
+									//reset dos contadores
 									tamanho_h = 0;
 									tamanho_v = 0;
 									estado = 'd';
 								}
 								break;
-							case 'd':
-								if (leftkey == 0 || abs(tamanho_v) > abs(tolerance))
+							case 'd': //estado de desenho
+								if (leftkey == 0 || abs(tamanho_v) > abs(tolerance)) //o botao esquerdo foi libertado ou a tolerancia foi ultrapassada
 								{
 									estado = 'i';
 								}
-								else if (length < 0)
+								else if (length < 0) // length e negativo (deslocacao negativa) -> lado esquerdo
 								{
-									if (0 == (BIT(4) & a[0])) //deslocacao positiva
+									if (0 == (BIT(4) & a[0])) //deslocacao positiva -> lado direito
 									{
 										estado = 'i';
 									}
-									else if (tamanho_h <= length)
+									else if (tamanho_h <= length) //ultrapassou length (negativamente)
 									{
 										estado = 'f';
 									}
 								}
-								else
+								else // length e positivo (deslocacao positivo) -> lado direito
 									if (0 != (BIT(4) & a[0])) //deslocacao negativa
 									{
 										estado = 'i';
 									}
-									else if (tamanho_h >= length)
+									else if (tamanho_h >= length) //ultrapassou length (positivamente)
 									{
 										estado = 'f';
 									}
 								break;
-							case 'f':
+							case 'f': //estado final
 								return 0;
 								break;
 							}
