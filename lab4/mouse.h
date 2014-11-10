@@ -49,6 +49,7 @@ int timer_subscribe_int(void );
 int timer_unsubscribe_int();
 int get_packets(char mouse);
 int mouse_clean_buffer();
+char neg8bits(char neg);
 //void check_hor_line(event_t *evt);
 
 
