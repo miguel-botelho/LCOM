@@ -46,7 +46,7 @@ int test_packet(unsigned short cnt){
 
 					if (bool1 == 0)
 					{
-						if (0x08 == (0x08 & mouse))
+						if (BIT(3) == (BIT(3) & mouse))
 						{
 							bool1 = 1;
 							byte1 = mouse;
@@ -158,7 +158,7 @@ int test_async(unsigned short idle_time) {
 					//tickdelay(micros_to_ticks(DELAY_US));
 					if (bool1 == 0)
 					{
-						if (0x08 == (0x08 & mouse))
+						if (BIT(3) == (BIT(3) & mouse))
 						{
 							bool1 = 1;
 							byte1 = mouse;
@@ -293,8 +293,7 @@ int test_gesture(short length, unsigned short tolerance) {
 	char a[3];
 	unsigned long key_register;
 	char irq_set = BIT(mhook_id);
-	char left_key;
-	left_key = 0; //!!!!!!!!!
+	char leftkey;
 	int conf_temp;
 	char conf;
 
@@ -306,20 +305,14 @@ int test_gesture(short length, unsigned short tolerance) {
 	char byte2;
 	char byte3;
 
-	char deltax = 0;
-	char deltay = 0;
-	char olddeltax = 0;
-	char olddeltay = 0;
-	char firstpos = 0;
-
-	char negative_length;
-
-	if (length < 0)
-	{
-		negative_length = 1;
-		length = -length;
-	}
-	else negative_length = 0;
+	char firstpos;
+	short tamanho_h;
+	short tamanho_v;
+	leftkey = 0;
+	char estado = 'i';
+	//'i' = inicial
+	//'d' = desenho
+	//'f' = final
 
 	if (mouse_subscribe_int() == -1)
 	{
@@ -348,10 +341,10 @@ int test_gesture(short length, unsigned short tolerance) {
 
 					if (bool1 == 0)
 					{
-						if (0x08 == (0x08 & mouse))
+						if (BIT(3) == (BIT(3) & mouse))
 						{
 							bool1 = 1;
-							byte1 = mouse;
+							byte1 = (char)mouse;
 						}
 						else continue;
 
@@ -362,13 +355,13 @@ int test_gesture(short length, unsigned short tolerance) {
 						{
 
 							bool2 = 1;
-							byte2 = mouse;
+							byte2 = (char)mouse;
 						}
 						else
 						{
 							//este e o ultimo byte
 							//bool3 = 1;
-							byte3 = mouse;
+							byte3 = (char)mouse;
 							bool1 = 0;
 							bool2 = 0;
 
@@ -376,6 +369,65 @@ int test_gesture(short length, unsigned short tolerance) {
 							a[1] = byte2;
 							a[2] = byte3;
 							mouse_printf(a);
+							//botao esquerdo
+							leftkey = a[0] & BIT(0);
+							//desenho na horizontal
+							if (BIT(4) == (BIT(4) & a[0])) //-x
+							{
+								tamanho_h = tamanho_h - neg8bits(a[1]);
+							} else
+							{
+								tamanho_h = tamanho_h + a[1];
+							}
+							//desenho na vertical
+							if (BIT(5) == (BIT(5) & a[0])) //-y
+							{
+								tamanho_v = tamanho_v -neg8bits(a[2]);
+							} else
+							{
+								tamanho_v = tamanho_v + a[2];
+							}
+
+							switch (estado)
+							{
+							case 'i':
+								if (leftkey == 1)
+								{
+									tamanho_h = 0;
+									tamanho_v = 0;
+									estado = 'd';
+								}
+								break;
+							case 'd':
+								if (leftkey == 0 || abs(tamanho_v) > abs(tolerance))
+								{
+									estado = 'i';
+								}
+								else if (length < 0)
+								{
+									if (0 == (BIT(4) & a[0])) //deslocacao positiva
+									{
+										estado = 'i';
+									}
+									else if (tamanho_h <= length)
+									{
+										estado = 'f';
+									}
+								}
+								else
+									if (0 != (BIT(4) & a[0])) //deslocacao negativa
+									{
+										estado = 'i';
+									}
+									else if (tamanho_h >= length)
+									{
+										estado = 'f';
+									}
+								break;
+							case 'f':
+								return 0;
+								break;
+							}
 						}
 					}
 				}

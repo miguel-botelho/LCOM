@@ -39,7 +39,7 @@ static void print_usage(char *argv[]) {
 			"\t test_packet 5\n"
 			"\t test_async 2\n"
 			"\t test_config\n"
-			"\t test_gesture -10, 50\n");
+			"\t test_gesture -10 50\n");
 }
 
 static int proc_args(int argc, char *argv[]) {
@@ -64,6 +64,8 @@ static int proc_args(int argc, char *argv[]) {
 		}
 		if((time = parse_ulong(argv[2], 10)) == ULONG_MAX)
 					return 1;
+		if(time <= 0)
+			return 1;
 		printf("Mouse:: test_async(%u)\n\n", time);
 		return test_async(time);
 	} else if (strncmp(argv[1], "test_config", strlen("test_config")) == 0) {

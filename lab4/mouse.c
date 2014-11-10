@@ -1,6 +1,6 @@
 #include"mouse.h"
 
-int mhook_id = 0x01;
+int mhook_id = BIT(0);
 int hook_id = 0x00;
 
 char global_bool1 = 0;
@@ -184,28 +184,28 @@ int mouse_clean_buffer(){
 
 void mouse_printf(char a[]){
 
-	printf("B1=0x%x ",(a[0] & 0x0F));
-	printf("B2=0x%x ", a[1]);
-	printf("B3=0x%x ", a[2]);
-	printf("LB=%u ", (a[0] & 0x01));
-	printf("MB=%u ", ((a[0] & 0x04) >> 2));
-	printf("RB=%u ", ((a[0] & 0x02) >> 1));
-	printf("XOV=%u ", (a[0] & 0x40));
-	printf("YOV=%u ", (a[0] & 0x80));
+	printf("B1=0x%02x ",(a[0] & 0x0F));
+	printf("B2=0x%02x ", (0xFF & a[1]));
+	printf("B3=0x%02x ", (0xFF & a[2]));
+	printf("LB=%u ", (a[0] & BIT(0)));
+	printf("MB=%u ", ((a[0] & BIT(2)) >> 2));
+	printf("RB=%u ", ((a[0] & BIT(1)) >> 1));
+	printf("XOV=%u ", ((a[0] & BIT(6)) >> 2));
+	printf("YOV=%u ", ((a[0] & BIT(7)) >> 3));
 
 
-	if (0x10 == (0x10 & a[0]))
+	if (BIT(4) == (BIT(4) & a[0]))
 	{
-		printf("X=-%u ", -a[1]);
+		printf("X=-%u ", neg8bits(a[1]));
 	}
 	else
 	{
 		printf("X=%u ", a[1]);
 	}
 
-	if (0x20 == (0x20 & a[0]))
+	if (BIT(5) == (BIT(5) & a[0]))
 	{
-		printf("Y=-%u ", -a[2]);
+		printf("Y=-%u ", neg8bits(a[2]));
 	}
 	else
 	{
@@ -214,12 +214,35 @@ void mouse_printf(char a[]){
 	printf("\n");
 }
 
+char neg8bits(char neg)
+{
+	int i = 0;
+	char ret = 0;
+	char negative = 0;
+
+	for (i; i < 8; i++)
+	{
+		if (negative == 0)
+		{
+			if (BIT(i) == (BIT(i) & neg))
+			{
+				negative = 1;
+				ret = ret + (BIT(i) & neg);
+			}
+			else ret = ret + (BIT(i) & neg);
+		}
+		else ret = ret + !(BIT(i) & neg);
+	}
+
+	return ret;
+}
+
 int get_packets(char mouse)
 {
 
 	if (global_bool1 == 0)
 	{
-		if (0x08 == (0x08 & mouse))
+		if (BIT(3) == (BIT(3) & mouse))
 		{
 			global_bool1 = 1;
 			return 0;
