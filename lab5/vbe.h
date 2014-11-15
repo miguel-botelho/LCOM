@@ -1,7 +1,36 @@
 #ifndef __VBE_H
 #define __VBE_H
 
-#include <stdint.h>
+#define VBE_MODE 0x4F02 //4f para escrever na bios, 02 vbe mode
+#define VBE_GET_MODE 0x4F01
+#define INTERRUPT_VBE 0x10
+#define GRAPHIC_MODE 0x105
+
+#define BIT(n) 		(0x01<<(n))
+
+#define TIMER0_IRQ 0
+
+#define LINEAR_MODEL_BIT 14
+
+#define PB2BASE(x) (((x) >> 4) & 0x0F000)
+#define PB2OFF(x) ((x) & 0x0FFFF)
+
+#define STAT_REG	0X64
+#define KBC_CMD_REG	0x64
+#define OUT_BUF		0x60
+#define PAR_ERR		0x80
+#define TO_ERR		0x40
+#define CBUFFER_EKBD	0xF4
+#define LEDS		0xED
+#define ACK			0x00FA
+#define RESEND		0xFE
+#define ERROR		0xFC
+#define KBD_ESC_KEY 0x81
+#define DELAY_US 	20000
+#define KBC_IRQ		0x01
+
+extern int hook_id;
+extern int khook_id;
 
 /** @defgroup vbe vbe
  * @{
@@ -90,6 +119,19 @@ typedef struct {
  */
 int vbe_get_mode_info(unsigned short mode, vbe_mode_info_t *vmi_p);
 
- /** @} end of vbe */
+
+int vbe_set_mode(unsigned short function, unsigned short mode);
+
+int timer_subscribe_int(void );
+int timer_unsubscribe_int();
+
+
+int kbd_unsubscribe_int(); //Cancela a subscrição das interrupções do keyboard
+int kbd_subscribe_int(void ); //Ativa a subscrição das interrupções do keyboard
+int kbc_cmd_send(unsigned long cmd); //envia o comando para o input
+int kbc_cmd_receive(); //recebe todo o output
+int kbd_scan_c(int *apt);
+
+/** @} end of vbe */
 
 #endif /* __VBE_H */
