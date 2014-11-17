@@ -41,14 +41,14 @@ void *vg_init(unsigned short mode) {
 		/* Allow memory mapping */
 
 		mr.mr_base = (phys_bytes)(VRAM_PHYS_ADDR);
-		mr.mr_limit = mr.mr_base + 1024*768;
+		mr.mr_limit = mr.mr_base + h_res*v_res;
 
 		if( OK != (r = sys_privctl(SELF, SYS_PRIV_ADD_MEM, &mr)))
 			panic("video_txt: sys_privctl (ADD_MEM) failed: %d\n", r);
 
 		/* Map memory */
 
-		video_mem = vm_map_phys(SELF, (void *)mr.mr_base, 1024*768);
+		video_mem = vm_map_phys(SELF, (void *)mr.mr_base, h_res * v_res);
 
 		if(video_mem == MAP_FAILED)
 			panic("video_txt couldn't map video memory");
