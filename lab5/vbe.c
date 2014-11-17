@@ -40,6 +40,19 @@ int vbe_set_mode(unsigned short function, unsigned short mode) {
 	r.u.w.ax = function; // VBE call, function 02 -- set VBE mode
 	r.u.w.bx = 1<<14| mode; // set bit 14: linear framebuffer
 	r.u.b.intno = INTERRUPT_VBE;
+
+	if (r.u.b.ah == 0x01 )
+	{
+		printf("Function call failed!\n");
+	}
+	else if (r.u.b.ah == 0x02)
+	{
+		printf("Function is not supported in current HW configuration!\n");
+	}
+	else if (r.u.b.ah == 0x03)
+	{
+		printf("Function is invalid in current video mode!\n");
+	}
 	if( sys_int86(&r) != OK ) {
 		printf("set_vbe_mode: sys_int86() failed \n");
 		return 1;

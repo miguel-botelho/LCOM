@@ -19,8 +19,8 @@
 
 static char *video_mem;		/* Process address to which VRAM is mapped */
 
-static unsigned h_res = 1024;		/* Horizontal screen resolution in pixels */
-static unsigned v_res = 768;		/* Vertical screen resolution in pixels */
+static unsigned h_res = H_RES;		/* Horizontal screen resolution in pixels */
+static unsigned v_res = V_RES;		/* Vertical screen resolution in pixels */
 static unsigned bits_per_pixel; /* Number of VRAM bits per pixel */
 
 

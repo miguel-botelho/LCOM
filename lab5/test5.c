@@ -165,12 +165,22 @@ int test_line(unsigned short xi, unsigned short yi,
 
 	video_mem = vg_init(GRAPHIC_MODE);
 
+
+	if ( (xf >= h_res) || (xi < 0) || (yf >= v_res) || (yi < 0) ) // o utilizador introduziu coordenadas erradas
+	{
+		vg_exit();
+		printf("Coordenadas erradas!\n");
+		kbd_unsubscribe_int();
+		return 1;
+	}
+
+
 	unsigned char *video_copy;
 	video_copy = video_mem;
 
-	video_copy = video_copy + (h_res * yi) + xi;
+	video_copy = video_copy + (h_res * yi) + xi; //inicializa video_copy no sítio onde é suposto a linha começar
 
-	if ((xf < xi) && (yf < yi)) // trocar os 2 pontos
+	if ((xf < xi) && (yf < yi)) // trocar os 2 pontos, quando o ponto final é menor do que o ponto inicial
 	{
 		unsigned short temp;
 		temp = xf;
@@ -193,13 +203,27 @@ int test_line(unsigned short xi, unsigned short yi,
 			{
 				i = (double)i + 1/declive;
 				*video_copy = color;
-				video_copy = video_copy - h_res;
-				yi--;
+				video_copy = video_copy - h_res; //pintou o pixel, então sobe uma posição
+				yi--; //yi começa a aproximar-se de yf
+				if (yi < 0) //passou o limite do ecrâ
+				{
+					vg_exit();
+					printf("Passou os limites do ecrâ!\n");
+					kbd_unsubscribe_int();
+					return 1;
+				}
 				if (i >= 1)
 				{
 					i = 0;
-					xi++;
-					video_copy = video_copy + 1;
+					xi++; //xi aproxima-se de xf
+					if (xi > h_res) //passou o limite do ecrâ
+					{
+						vg_exit();
+						printf("Passou os limites do ecrâ!\n");
+						kbd_unsubscribe_int();
+						return 1;
+					}
+					video_copy = video_copy + 1; //anda uma posição para a direita
 				}
 			}
 		}
@@ -209,13 +233,27 @@ int test_line(unsigned short xi, unsigned short yi,
 			{
 				i = (double) i + declive;
 				*video_copy = color;
-				video_copy = video_copy + 1;
+				video_copy = video_copy + 1; //anda uma posição para a direita
 				xi++;
+				if (xi > h_res) //passou os limites do ecrâ
+				{
+					vg_exit();
+					printf("Passou os limites do ecrâ!\n");
+					kbd_unsubscribe_int();
+					return 1;
+				}
 				if (i >= 1)
 				{
 					i = 0;
 					yi--;
-					video_copy = video_copy - h_res;
+					if (yi < 0) //passou os limites do ecrâ
+					{
+						vg_exit();
+						printf("Passou os limites do ecrâ!\n");
+						kbd_unsubscribe_int();
+						return 1;
+					}
+					video_copy = video_copy - h_res; //sobe uma posição
 				}
 			}
 		}
@@ -232,13 +270,27 @@ int test_line(unsigned short xi, unsigned short yi,
 			{
 				i = (double)i + 1/declive;
 				*video_copy = color;
-				video_copy = video_copy + h_res;
+				video_copy = video_copy + h_res; //desce uma posição
 				yi++;
+				if (yi > v_res) //passou os limites do ecrâ
+				{
+					vg_exit();
+					printf("Passou os limites do ecrâ!\n");
+					kbd_unsubscribe_int();
+					return 1;
+				}
 				if (i >= 1)
 				{
 					i = 0;
 					xi--;
-					video_copy = video_copy - 1;
+					if (xi < 0) //passou os limites do ecrâ
+					{
+						vg_exit();
+						printf("Passou os limites do ecrâ!\n");
+						kbd_unsubscribe_int();
+						return 1;
+					}
+					video_copy = video_copy - 1; //anda uma posição para a esquerda
 				}
 			}
 		}
@@ -248,13 +300,27 @@ int test_line(unsigned short xi, unsigned short yi,
 			{
 				i = (double) i + declive;
 				*video_copy = color;
-				video_copy = video_copy - 1;
+				video_copy = video_copy - 1; //anda uma posição para a esquerda
 				xi--;
+				if (xi < 0) //passou os limites do ecrâ
+				{
+					vg_exit();
+					printf("Passou os limites do ecrâ!\n");
+					kbd_unsubscribe_int();
+					return 1;
+				}
 				if (i >= 1)
 				{
 					i = 0;
 					yi++;
-					video_copy = video_copy + h_res;
+					if (yi > v_res) //passou os limites do ecrâ
+					{
+						vg_exit();
+						printf("Passou os limites do ecrâ!\n");
+						kbd_unsubscribe_int();
+						return 1;
+					}
+					video_copy = video_copy + h_res; //desce uma posição
 				}
 			}
 		}
@@ -268,13 +334,27 @@ int test_line(unsigned short xi, unsigned short yi,
 			{
 				i = (double)i + 1/declive;
 				*video_copy = color;
-				video_copy = video_copy + h_res;
+				video_copy = video_copy + h_res; //desce uma posição
 				yi++;
+				if (yi > v_res)
+				{
+					vg_exit();
+					printf("Passou os limites do ecrâ!\n");
+					kbd_unsubscribe_int();
+					return 1;
+				}
 				if (i >= 1)
 				{
 					i = 0;
 					xi++;
-					video_copy = video_copy + 1;
+					if (xi > h_res)
+					{
+						vg_exit();
+						printf("Passou os limites do ecrâ!\n");
+						kbd_unsubscribe_int();
+						return 1;
+					}
+					video_copy = video_copy + 1; //anda uma posição para a direita
 				}
 			}
 		}
@@ -284,13 +364,27 @@ int test_line(unsigned short xi, unsigned short yi,
 			{
 				i = (double) i + declive;
 				*video_copy = color;
-				video_copy = video_copy + 1;
+				video_copy = video_copy + 1; //anda uma posição para a direita
 				xi++;
+				if (xi > h_res)
+				{
+					vg_exit();
+					printf("Passou os limites do ecrâ!\n");
+					kbd_unsubscribe_int();
+					return 1;
+				}
 				if (i >= 1)
 				{
 					i = 0;
 					yi++;
-					video_copy = video_copy + h_res;
+					if (yi > v_res)
+					{
+						vg_exit();
+						printf("Passou os limites do ecrâ!\n");
+						kbd_unsubscribe_int();
+						return 1;
+					}
+					video_copy = video_copy + h_res; //desce uma posição
 				}
 			}
 		}
