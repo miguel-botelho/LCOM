@@ -84,6 +84,14 @@ int test_square(unsigned short x, unsigned short y, unsigned short size, unsigne
 	unsigned char *video_copy;
 	video_copy = video_mem;
 
+	if ( (x >= h_res) || (x < 0) || (y >= v_res) || (y < 0) || ((x + size) >= h_res) || ((y + size) >= v_res) ) // o utilizador introduziu coordenadas erradas
+		{
+			vg_exit();
+			printf("Coordenadas erradas!\n");
+			kbd_unsubscribe_int();
+			return 1;
+		}
+
 	video_copy = video_copy + (h_res * y) + x;
 	/*for (i; i < size; i++,video_copy++)
 	{
@@ -166,6 +174,7 @@ int test_line(unsigned short xi, unsigned short yi,
 	video_mem = vg_init(GRAPHIC_MODE);
 
 
+
 	if ( (xf >= h_res) || (xi < 0) || (yf >= v_res) || (yi < 0) ) // o utilizador introduziu coordenadas erradas
 	{
 		vg_exit();
@@ -179,6 +188,45 @@ int test_line(unsigned short xi, unsigned short yi,
 	video_copy = video_mem;
 
 	video_copy = video_copy + (h_res * yi) + xi; //inicializa video_copy no sítio onde é suposto a linha começar
+
+	if ((xi == xf) && (yi == yf))
+	{
+		*video_copy = color;
+	}
+
+	if (xi == xf)
+	{
+		if (yi > yf)
+		{
+			unsigned short temp;
+			temp = yf;
+			yf = yi;
+			yi = temp;
+		}
+		while (yi < yf)
+		{
+			*video_copy = color;
+			video_copy = video_copy + h_res;
+			yi++;
+		}
+	}
+
+	if (yi == yf)
+	{
+		if (xi > xf)
+		{
+			unsigned short temp;
+			temp = xf;
+			xf = xi;
+			xi = temp;
+		}
+		while (xi < xf)
+		{
+			*video_copy = color;
+			video_copy = video_copy + 1;
+			xi++;
+		}
+	}
 
 	if ((xf < xi) && (yf < yi)) // trocar os 2 pontos, quando o ponto final é menor do que o ponto inicial
 	{
