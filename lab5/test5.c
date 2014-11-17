@@ -84,7 +84,7 @@ int test_square(unsigned short x, unsigned short y, unsigned short size, unsigne
 	unsigned char *video_copy;
 	video_copy = video_mem;
 
-	if ( (x >= h_res) || (x < 0) || (y >= v_res) || (y < 0) || ((x + size) >= h_res) || ((y + size) >= v_res) ) // o utilizador introduziu coordenadas erradas
+	if ( (x >= h_res) || (x < 0) || (y >= v_res) || (y < 0) || ((x + size) >= h_res) || ((y + size) >= v_res) || (size <= 0) ) // o utilizador introduziu coordenadas erradas
 		{
 			vg_exit();
 			printf("Coordenadas erradas!\n");
@@ -174,7 +174,7 @@ int test_line(unsigned short xi, unsigned short yi,
 	video_mem = vg_init(GRAPHIC_MODE); //inicializa o minix em modo gráfico e diz qual o endereço de memória virtual
 
 
-	if ( (xf >= h_res) || (xi < 0) || (yf >= v_res) || (yi < 0) ) // o utilizador introduziu coordenadas erradas
+	if ( (xf >= h_res) || (xi < 0) || (yf >= v_res) || (yi < 0) || (xf < 0) || (yf < 0) ) // o utilizador introduziu coordenadas erradas
 	{
 		vg_exit();
 		printf("Coordenadas erradas!\n");
