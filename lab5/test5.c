@@ -18,18 +18,18 @@ void *test_init(unsigned short mode, unsigned short delay) {
 	message msg;
 	int i = 0;
 	int counter = 0;
-	int temp_counter = 0;
+	int temp_counter = 0; // conta tique segundos
 	char irq_set = BIT(hook_id);
 
-	if (-1 == timer_subscribe_int())
+	if (-1 == timer_subscribe_int()) //subscrição do timer
 	{
 		printf("Timer not subscribed!\n");
 		return NULL;
 	}
 
-	video_mem = vg_init(GRAPHIC_MODE);
+	video_mem = vg_init(GRAPHIC_MODE); //inicializa o minix em modo 105 (gráfico) e retorna video_mem
 
-	while(counter < delay)
+	while(counter < delay) // enquanto não passar o tempo que o utilizador quer
 	{
 		if ( (r = driver_receive(ANY, &msg, &ipc_status)) != 0 ) {
 			printf("driver_receive failed with: %d", r);
@@ -39,8 +39,8 @@ void *test_init(unsigned short mode, unsigned short delay) {
 			switch (_ENDPOINT_P(msg.m_source)) {
 			case HARDWARE: /* hardware interrupt notification */
 				if (msg.NOTIFY_ARG & irq_set) { /* subscribed interrupt */
-					temp_counter++;
-					if (temp_counter/60 == 1)
+					temp_counter++; //tique segundos
+					if (temp_counter/60 == 1) // se contar 60 tiques, significa que passou um segundo
 					{
 						temp_counter = 0;
 						counter++;
@@ -71,7 +71,7 @@ int test_square(unsigned short x, unsigned short y, unsigned short size, unsigne
 	int key = 0;
 	char irq_set = BIT(khook_id);
 
-	if (-1 == kbd_subscribe_int())
+	if (-1 == kbd_subscribe_int()) //subscrição do keyboard
 	{
 		printf("Keyboard not subscribed!\n");
 		return 0;
@@ -79,7 +79,7 @@ int test_square(unsigned short x, unsigned short y, unsigned short size, unsigne
 
 
 
-	video_mem = vg_init(GRAPHIC_MODE);
+	video_mem = vg_init(GRAPHIC_MODE); // inicializa em modo gráfico e retorna video_mem
 
 	unsigned char *video_copy;
 	video_copy = video_mem;
@@ -92,7 +92,7 @@ int test_square(unsigned short x, unsigned short y, unsigned short size, unsigne
 			return 1;
 		}
 
-	video_copy = video_copy + (h_res * y) + x;
+	video_copy = video_copy + (h_res * y) + x; //coloca o endereço virtual na posição em que o utilizador pretende que comece
 	/*for (i; i < size; i++,video_copy++)
 	{
 	 *video_copy = color;
@@ -118,19 +118,19 @@ int test_square(unsigned short x, unsigned short y, unsigned short size, unsigne
 		video_copy = video_copy - h_res;
 	} */
 
-	for (i; i < size; i++)
+	for (i; i < size; i++) // pinta linhas verticais
 	{
-		for (j; j < size; j++)
+		for (j; j < size; j++) // pinta linhas horizontais
 		{
 			*video_copy = color;
 			video_copy++;
 		}
 		j = 0;
-		video_copy = video_copy + h_res -size;
+		video_copy = video_copy + h_res -size; // linha seguinte
 	}
 
 
-	while(key != KBD_ESC_KEY)
+	while(key != KBD_ESC_KEY) // condição de saída
 	{
 		if ( (r = driver_receive(ANY, &msg, &ipc_status)) != 0 ) {
 			printf("driver_receive failed with: %d", r);
@@ -165,14 +165,13 @@ int test_line(unsigned short xi, unsigned short yi,
 	double declive = (yf - yi)/(xf -xi);
 	char irq_set = BIT(khook_id);
 
-	if (-1 == kbd_subscribe_int())
+	if (-1 == kbd_subscribe_int()) //subscrição do keyboard
 	{
 		printf("Keyboard not subscribed!\n");
 		return 0;
 	}
 
-	video_mem = vg_init(GRAPHIC_MODE);
-
+	video_mem = vg_init(GRAPHIC_MODE); //inicializa o minix em modo gráfico e diz qual o endereço de memória virtual
 
 
 	if ( (xf >= h_res) || (xi < 0) || (yf >= v_res) || (yi < 0) ) // o utilizador introduziu coordenadas erradas
@@ -189,14 +188,14 @@ int test_line(unsigned short xi, unsigned short yi,
 
 	video_copy = video_copy + (h_res * yi) + xi; //inicializa video_copy no sítio onde é suposto a linha começar
 
-	if ((xi == xf) && (yi == yf))
+	if ((xi == xf) && (yi == yf)) //o utilizador apenas quer um ponto de uma linha
 	{
 		*video_copy = color;
 	}
 
-	if (xi == xf)
+	if (xi == xf) // linha vertical
 	{
-		if (yi > yf)
+		if (yi > yf) // se o inicial é menor que o final, troca
 		{
 			unsigned short temp;
 			temp = yf;
@@ -206,14 +205,14 @@ int test_line(unsigned short xi, unsigned short yi,
 		while (yi < yf)
 		{
 			*video_copy = color;
-			video_copy = video_copy + h_res;
+			video_copy = video_copy + h_res; //desce uma posição
 			yi++;
 		}
 	}
 
-	if (yi == yf)
+	if (yi == yf) //linha horizontal
 	{
-		if (xi > xf)
+		if (xi > xf) //se inicial é menor que o final, troca
 		{
 			unsigned short temp;
 			temp = xf;
@@ -223,7 +222,7 @@ int test_line(unsigned short xi, unsigned short yi,
 		while (xi < xf)
 		{
 			*video_copy = color;
-			video_copy = video_copy + 1;
+			video_copy = video_copy + 1; //anda uma posição para a direita
 			xi++;
 		}
 	}
@@ -438,7 +437,7 @@ int test_line(unsigned short xi, unsigned short yi,
 		}
 	}
 
-	while(key != KBD_ESC_KEY)
+	while(key != KBD_ESC_KEY) //condição de saída
 	{
 		if ( (r = driver_receive(ANY, &msg, &ipc_status)) != 0 ) {
 			printf("driver_receive failed with: %d", r);

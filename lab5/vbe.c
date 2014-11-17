@@ -27,7 +27,7 @@ int vbe_get_mode_info(unsigned short mode, vbe_mode_info_t *vmi_p) {
 	r.u.b.intno = INTERRUPT_VBE;
 	if( sys_int86(&r) != OK ) { /* call BIOS */
 
-
+//NOT COMPLETED YET
 	}
 
 	return 1;
