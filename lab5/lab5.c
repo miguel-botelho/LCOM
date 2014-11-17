@@ -7,6 +7,6 @@ int main()
 
 	sef_startup();
 
-	test_line(100, 100, 200, 300, 0x3F);
+	test_square(0, 0, 767, 0x3F);
 	return 0;
 }
