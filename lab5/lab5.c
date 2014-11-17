@@ -12,7 +12,16 @@ int main(int argc, char **argv) {
 
 	sef_startup();
 
-	test_line(20, -20, 500, 700, 0x3F);
+	printf("lab5: Video Card \n");
+
+	   if ( argc == 1 ) {
+	       print_usage(argv);
+	       return 0;
+	   } else {
+	       proc_args(argc, argv);
+	   }
+	   return 0;
+
 	return 0;
 
 }
