@@ -29,8 +29,8 @@
 #define DELAY_US 	20000
 #define KBC_IRQ		0x01
 
-extern int hook_id;
-extern int khook_id;
+extern int hook_id; //hook_id do timer
+extern int khook_id; //hook_id do keyboard
 
 /** @defgroup vbe vbe
  * @{
@@ -117,10 +117,10 @@ typedef struct {
  * @param vmi_p address of vbe_mode_info_t structure to be initialized
  * @return 0 on success, non-zero otherwise
  */
-int vbe_get_mode_info(unsigned short mode, vbe_mode_info_t *vmi_p);
+int vbe_get_mode_info(unsigned short mode, vbe_mode_info_t *vmi_p); //NOT COMPLETED
 
 
-int vbe_set_mode(unsigned short function, unsigned short mode);
+int vbe_set_mode(unsigned short function, unsigned short mode); //sets the mode mode in the function that the user sets
 
 int timer_subscribe_int(void );
 int timer_unsubscribe_int();
