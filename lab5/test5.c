@@ -409,7 +409,7 @@ int test_line(unsigned short xi, unsigned short yi,
 		{
 			while( (xi <= xf) && (yi <= yf) )
 			{
-				i = (double) i + declive;
+				i = (double) i + 1/declive;
 				*video_copy = color;
 				video_copy = video_copy + 1; //anda uma posição para a direita
 				xi++;
