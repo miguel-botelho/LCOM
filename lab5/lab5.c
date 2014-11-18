@@ -14,32 +14,36 @@ int main(int argc, char **argv) {
 
 	printf("lab5: Video Card \n");
 
-	   if ( argc == 1 ) {
-	       print_usage(argv);
-	       return 0;
-	   } else {
-	       proc_args(argc, argv);
-	   }
-	   return 0;
+	if ( argc == 1 ) {
+		print_usage(argv);
+		return 0;
+	} else {
+		proc_args(argc, argv);
+	}
+	return 0;
 
 	return 0;
 
 }
 
 static void print_usage(char *argv[]) {
+
 	printf("Usage: one of the following:\n"
 			"\t service run %s -args \"test_init <mode> <delay>\" \n"
 			"\t service run %s -args \"test_square <x_coord> <y_coord> <size> <color>\" \n"
-			"\t service run %s -args \"test_line <xi_point> <yi_point> <xf_point> <yf_point> < color>\" \n"
-			"\t service run %s -args \"test_xpm <x_coord> <y_coord> <*img[]>\" \n",
-			"\t service run %s -args \"test_move <x_coord> <x_coord> <img> <hor> <delta> <time>\" \n",
+			"\t service run %s -args \"test_line <xi_point> <yi_point> <xf_point> <yf_point> <color>\" \n"
+			"\t service run %s -args \"test_xpm <x_coord> <y_coord> <*img[]>\" \n"
+			"\t service run %s -args \"test_move <x_coord> <x_coord> <img> <hor> <delta> <time>\" \n"
 			"\t service run %s -args \"test_controller\" \n",
-			argv[0], argv[0], argv[0], argv[0]);
+			argv[0], argv[0], argv[0], argv[0], argv[0], argv[0]);
+
 	printf("\n Example: \n"
-			"\t test_packet 5\n"
-			"\t test_async 2\n"
-			"\t test_config\n"
-			"\t test_gesture -10 50\n");
+			"\t test_init 105 2\n"
+			"\t test_square 100 100 50 23\n"
+			"\t test_line 100 100 200 200 23\n"
+			"\t test_xpm <- needs to be implemented\n"
+			"\t test_move <- needs to be implemented\n"
+			"\t test_controller <- needs to be implemented\n");
 }
 
 static int proc_args(int argc, char *argv[]) {
@@ -69,13 +73,13 @@ static int proc_args(int argc, char *argv[]) {
 			return 1;
 		}
 		if((x_coord = parse_ulong(argv[2], 10)) == ULONG_MAX)
-					return 1;
+			return 1;
 		if((y_coord = parse_ulong(argv[3], 10)) == ULONG_MAX)
-					return 1;
+			return 1;
 		if((size = parse_ulong(argv[4], 10)) == ULONG_MAX)
-					return 1;
+			return 1;
 		if((color = parse_ulong(argv[5], 16)) == ULONG_MAX)
-					return 1;
+			return 1;
 		printf("Video Card:: test_square(%u, %u, %u, %x)\n\n", x_coord, y_coord, size, color);
 		return test_square(x_coord, y_coord, size, color);
 	} else if (strncmp(argv[1], "test_line", strlen("test_line")) == 0) {
@@ -84,15 +88,15 @@ static int proc_args(int argc, char *argv[]) {
 			return 1;
 		}
 		if((xi_coord = parse_ulong(argv[2], 10)) == ULONG_MAX)
-					return 1;
+			return 1;
 		if(((yi_coord) = parse_ulong(argv[3], 10)) == ULONG_MAX)
-					return 1;
+			return 1;
 		if((xf_coord = parse_ulong(argv[4], 10)) == ULONG_MAX)
-					return 1;
+			return 1;
 		if((yf_coord = parse_ulong(argv[5], 10)) == ULONG_MAX)
-					return 1;
+			return 1;
 		if((color = parse_ulong(argv[6], 16)) == ULONG_MAX)
-					return 1;
+			return 1;
 		printf("Video Card:: test_line(%u, %u, %u, %u, %x)\n\n", xi_coord, yi_coord, xf_coord, yf_coord, color);
 		return test_line(xi_coord, yi_coord, xf_coord, yf_coord, color);
 	} else if (strncmp(argv[1], "test_xpm", strlen("test_xpm")) == 0) {
@@ -101,9 +105,9 @@ static int proc_args(int argc, char *argv[]) {
 			return 1;
 		}
 		if((x_coord = parse_ulong(argv[2], 10)) == ULONG_MAX)
-							return 1;
+			return 1;
 		if((y_coord = parse_ulong(argv[3], 10)) == ULONG_MAX)
-							return 1;
+			return 1;
 
 		char *img = malloc (sizeof(char) * (argc - 4));
 		unsigned int i = 0;
@@ -121,9 +125,9 @@ static int proc_args(int argc, char *argv[]) {
 			return 1;
 		}
 		if((x_coord = parse_ulong(argv[2], 10)) == ULONG_MAX)
-							return 1;
+			return 1;
 		if((y_coord = parse_ulong(argv[3], 10)) == ULONG_MAX)
-							return 1;
+			return 1;
 		char *img = malloc (sizeof(char) * (argc - 4));
 		unsigned int i = 0;
 		unsigned int n = (argc - 4);
