@@ -3,6 +3,7 @@
 #include <machine/int86.h>
 #include <minix/sysutil.h>
 #include <minix/com.h>
+#include <math.h>
 
 #include "vbe.h"
 #include "video_gr.h"
@@ -85,12 +86,12 @@ int test_square(unsigned short x, unsigned short y, unsigned short size, unsigne
 	video_copy = video_mem;
 
 	if ( (x >= h_res) || (x < 0) || (y >= v_res) || (y < 0) || ((x + size) >= h_res) || ((y + size) >= v_res) || (size <= 0) ) // o utilizador introduziu coordenadas erradas
-		{
-			vg_exit();
-			printf("Coordenadas erradas!\n");
-			kbd_unsubscribe_int();
-			return 1;
-		}
+	{
+		vg_exit();
+		printf("Coordenadas erradas!\n");
+		kbd_unsubscribe_int();
+		return 1;
+	}
 
 	video_copy = video_copy + (h_res * y) + x; //coloca o endereço virtual na posição em que o utilizador pretende que comece
 	/*for (i; i < size; i++,video_copy++)
@@ -159,7 +160,6 @@ int test_line(unsigned short xi, unsigned short yi,
 	int r;
 	int ipc_status;
 	message msg;
-	double i = 0;
 	int j = 0;
 	int key = 0;
 	double declive = (yf - yi)/(xf -xi);
@@ -187,10 +187,10 @@ int test_line(unsigned short xi, unsigned short yi,
 	video_copy = video_mem;
 
 	video_copy = video_copy + (h_res * yi) + xi; //inicializa video_copy no sítio onde é suposto a linha começar
-
+	/*
 	if ((xi == xf) && (yi == yf)) //o utilizador apenas quer um ponto de uma linha
 	{
-		*video_copy = color;
+	 *video_copy = color;
 	}
 
 	if (xi == xf) // linha vertical
@@ -204,7 +204,7 @@ int test_line(unsigned short xi, unsigned short yi,
 		}
 		while (yi < yf)
 		{
-			*video_copy = color;
+	 *video_copy = color;
 			video_copy = video_copy + h_res; //desce uma posição
 			yi++;
 		}
@@ -221,7 +221,7 @@ int test_line(unsigned short xi, unsigned short yi,
 		}
 		while (xi < xf)
 		{
-			*video_copy = color;
+	 *video_copy = color;
 			video_copy = video_copy + 1; //anda uma posição para a direita
 			xi++;
 		}
@@ -249,7 +249,7 @@ int test_line(unsigned short xi, unsigned short yi,
 			while( (xi <= xf) && (yi >= yf) )
 			{
 				i = (double)i + 1/declive;
-				*video_copy = color;
+	 *video_copy = color;
 				video_copy = video_copy - h_res; //pintou o pixel, então sobe uma posição
 				yi--; //yi começa a aproximar-se de yf
 				if (yi < 0) //passou o limite do ecrâ
@@ -279,7 +279,7 @@ int test_line(unsigned short xi, unsigned short yi,
 			while( (xi <= xf) && (yi >= yf) )
 			{
 				i = (double) i + declive;
-				*video_copy = color;
+	 *video_copy = color;
 				video_copy = video_copy + 1; //anda uma posição para a direita
 				xi++;
 				if (xi > h_res) //passou os limites do ecrâ
@@ -316,7 +316,7 @@ int test_line(unsigned short xi, unsigned short yi,
 			while( (xi >= xf) && (yi <= yf) )
 			{
 				i = (double)i + 1/declive;
-				*video_copy = color;
+	 *video_copy = color;
 				video_copy = video_copy + h_res; //desce uma posição
 				yi++;
 				if (yi > v_res) //passou os limites do ecrâ
@@ -346,7 +346,7 @@ int test_line(unsigned short xi, unsigned short yi,
 			while( (xi >= xf) && (yi <= yf) )
 			{
 				i = (double) i + declive;
-				*video_copy = color;
+	 *video_copy = color;
 				video_copy = video_copy - 1; //anda uma posição para a esquerda
 				xi--;
 				if (xi < 0) //passou os limites do ecrâ
@@ -380,7 +380,7 @@ int test_line(unsigned short xi, unsigned short yi,
 			while( (xi <= xf) && (yi <= yf) )
 			{
 				i = (double)i + 1/declive;
-				*video_copy = color;
+	 *video_copy = color;
 				video_copy = video_copy + h_res; //desce uma posição
 				yi++;
 				if (yi > v_res)
@@ -410,7 +410,7 @@ int test_line(unsigned short xi, unsigned short yi,
 			while( (xi <= xf) && (yi <= yf) )
 			{
 				i = (double) i + 1/declive;
-				*video_copy = color;
+	 *video_copy = color;
 				video_copy = video_copy + 1; //anda uma posição para a direita
 				xi++;
 				if (xi > h_res)
@@ -434,6 +434,136 @@ int test_line(unsigned short xi, unsigned short yi,
 					video_copy = video_copy + h_res; //desce uma posição
 				}
 			}
+		}
+	}
+	 */
+	/*
+	unsigned long dx,dy;
+	int d,flag,incremento,incremento1;
+	int var = 0;
+	dx=abs(xi-xf);dy=abs(yi-yf);
+
+	 *video_copy = color;
+	if(dy>dx)
+	{
+		unsigned short temp;
+		temp = xi;
+		xi = yi;
+		yi = temp;
+		temp = xf;
+		xf = yf;
+		yf = temp;
+		temp = dy;
+		dy = dx;
+		dx = temp;
+		var=1;
+	}
+	if(xi>xf)
+	{
+		unsigned short temp;
+		temp = xi;
+		xi = xf;
+		xf = temp;
+		temp = yi;
+		yi = yf;
+		yf = temp;
+	}
+	if(yi>yf)
+		flag=-1;
+	else
+		flag=1;
+	d=2*dy-dx;
+	incremento=2*dy;
+	incremento1=2*(dy-dx);
+	while(xi<xf)
+	{
+		if(d<=0)
+			d+=incremento;
+		else
+		{
+			d+=incremento1;
+			yi+=flag;
+		}
+		xi++;
+		if(var)
+		{
+			video_copy = video_mem;
+			video_copy = video_copy + (h_res * xi) + yi;
+	 *video_copy = color;
+		}
+		else
+		{
+			video_copy = video_mem;
+			video_copy = video_copy + (h_res * yi) + xi;
+	 *video_copy = color;
+		}
+
+	}
+	 */
+
+	int dx = abs(xf-xi);
+	int dy = abs(yf-yi);
+	int i;
+	if(dx > dy)
+	{
+		if(xf - xi < 0)
+		{
+			int temp = xi;
+			xi = xf;
+			xf = temp;
+			temp = yi;
+			yi = yf;
+			yf = temp;
+		}
+		for(i = 0; i <=dx; i++)
+		{
+			double y = (double)dy * (double)i / (double)dx;
+			if(yf - yi < 0)
+			{
+				video_copy = video_mem;
+				video_copy = video_copy + (h_res * (yi - (int)(y + 0.5))) + xi + i;
+				*video_copy = color;
+			}
+			//set_pixel(xi + i, yi - (int)(y_point + 0.5), color, base);
+			else
+			{
+				video_copy = video_mem;
+				video_copy = video_copy + (h_res * (yi + (int)(y + 0.5))) + xi + i;
+				*video_copy = color;
+			}
+			//set_pixel(xi + i, yi + (int)(y_point + 0.5), color, base);
+		}
+	}
+
+	else
+	{
+		if(yf - yi < 0)
+		{
+			int temp = xi;
+			xi = xf;
+			xf = temp;
+			temp = yi;
+			yi = yf;
+			yf = temp;
+		}
+
+		for(i = 0; i <= dy; i++)
+		{
+			double x = (double)dx * (double)i / (double)dy;
+			if(xf - xi < 0)
+			{
+				video_copy = video_mem;
+				video_copy = video_copy + (h_res * (yi + i)) + xi - (int)(x + 0.5);
+				*video_copy = color;
+			}
+			//set_pixel(xi - (int)(x_point + 0.5), yi + i, color, base);
+			else
+			{
+				video_copy = video_mem;
+				video_copy = video_copy + (h_res * (yi + i)) + xi + (int)(x + 0.5);
+				*video_copy = color;
+			}
+			//set_pixel(xi + (int)(x_point + 0.5), yi + i, color, base);
 		}
 	}
 
