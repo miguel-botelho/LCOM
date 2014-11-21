@@ -50,7 +50,10 @@ int test_square(unsigned short x, unsigned short y, unsigned short size, unsigne
  * @return 0 upon success, non-zero upon failure
  */
 int test_line(unsigned short xi, unsigned short yi, 
-		           unsigned short xf, unsigned short yf, unsigned long color);
+		unsigned short xf, unsigned short yf, unsigned long color);
+
+
+int xpm_cre(int *altura, int *largura, unsigned short x, unsigned short y, char *xpm[]);
 
 /**
  * @brief Tests drawing XPM on the screen at specified coordinates
@@ -81,7 +84,6 @@ int test_xpm(unsigned short xi, unsigned short yi, char *xpm[]);
 int test_move(unsigned short xi, unsigned short yi, char *xpm[], unsigned short hor, short delta, unsigned short time);
 
 int test_controller();
+/** @} end of video_gr */
 
- /** @} end of video_gr */
- 
 #endif /* __TEST5_H */

@@ -1,6 +1,9 @@
 #include <minix/drivers.h>
 
 #include"test5.h"
+#include"video_gr.h"
+#include"vbe.h"
+#include "pixmap.h"
 
 static int proc_args(int argc, char *argv[]);
 static unsigned long parse_ulong(char *str, int base);
@@ -11,17 +14,18 @@ int main(int argc, char **argv) {
 	/* Initialize service */
 
 	sef_startup();
-
-	printf("lab5: Video Card \n");
-
+	lm_init();
+	test_xpm(200,200, penguin);
+	int j = 0;
+	printf("\n\nlab5: Video Card \n");
+/*
 	if ( argc == 1 ) {
 		print_usage(argv);
 		return 0;
 	} else {
 		proc_args(argc, argv);
 	}
-	return 0;
-
+*/
 	return 0;
 
 }

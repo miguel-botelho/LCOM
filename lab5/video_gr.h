@@ -17,11 +17,6 @@
 
 /* Private global variables */
 
-static char *video_mem;		/* Process address to which VRAM is mapped */
-
-static unsigned h_res = H_RES;		/* Horizontal screen resolution in pixels */
-static unsigned v_res = V_RES;		/* Vertical screen resolution in pixels */
-static unsigned bits_per_pixel; /* Number of VRAM bits per pixel */
 
 
 /** @defgroup video_gr video_gr
@@ -49,6 +44,10 @@ void *vg_init(unsigned short mode);
  * @return 0 upon success, non-zero upon failure
  */
 int vg_exit(void);
+
+char* getVideoMem();
+unsigned getHRes();
+unsigned getVRes();
 
 /** @} end of video_gr */
 
