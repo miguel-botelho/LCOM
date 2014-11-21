@@ -5,12 +5,13 @@
 #define VBE_GET_MODE 0x4F01
 #define INTERRUPT_VBE 0x10
 #define GRAPHIC_MODE 0x105
+#define VBE_MODE_SIZE 256
 
 #define BIT(n) 		(0x01<<(n))
 
 #define TIMER0_IRQ 0
 
-#define LINEAR_MODEL_BIT 14
+#define LINEAR_MODEL_BIT BIT(14)
 
 #define PB2BASE(x) (((x) >> 4) & 0x0F000)
 #define PB2OFF(x) ((x) & 0x0FFFF)
@@ -131,6 +132,7 @@ int kbd_subscribe_int(void ); //Ativa a subscrição das interrupções do keybo
 int kbc_cmd_send(unsigned long cmd); //envia o comando para o input
 int kbc_cmd_receive(); //recebe todo o output
 int kbd_scan_c(int *apt);
+
 
 /** @} end of vbe */
 

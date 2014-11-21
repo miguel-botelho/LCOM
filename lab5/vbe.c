@@ -5,9 +5,11 @@
 #include <minix/com.h>
 
 #include "vbe.h"
+#include "read_xpm.h"
 #include "video_gr.h"
 #include "test5.h"
 #include "lmlib.h"
+#include "pixmap.h"
 #include <stdint.h>
 
 int hook_id = 0x00;
@@ -16,34 +18,32 @@ int khook_id = 0x01;
 int vbe_get_mode_info(unsigned short mode, vbe_mode_info_t *vmi_p) {
 
 	/* To be completed */
-
-	phys_bytes buf; /* to store the VBE Mode Info desired */
+	/* to store the VBE Mode Info desired */
 	struct reg86u r;
+
+	mmap_t map;
+
+	if (lm_alloc(sizeof(vbe_mode_info_t), &map) == NULL)
+	{
+		printf("Bad allocation of memory!\n");
+		return 1;
+	}
 	r.u.w.ax = VBE_GET_MODE; /* VBE get mode info */
 	/* translate the buffer linear address to a far pointer */
-	r.u.w.es = PB2BASE(buf); /* set a segment base */
-	r.u.w.di = PB2OFF(buf); /* set the offset accordingly */
+	r.u.w.es = PB2BASE(map.phys); /* set a segment base */
+	r.u.w.di = PB2OFF(map.phys); /* set the offset accordingly */
 	r.u.w.cx = mode;
 	r.u.b.intno = INTERRUPT_VBE;
 	if( sys_int86(&r) != OK ) { /* call BIOS */
 
-//NOT COMPLETED YET
+		printf("Error. Video Mode Wrong!\n");
+		lm_free(&map);
+		return -1;
 	}
-
-	return 1;
-}
-
-
-int vbe_set_mode(unsigned short function, unsigned short mode) {
-
-	struct reg86u r;
-	r.u.w.ax = function; // VBE call, function 02 -- set VBE mode
-	r.u.w.bx = 1<<14| mode; // set bit 14: linear framebuffer
-	r.u.b.intno = INTERRUPT_VBE;
 
 	if (r.u.b.ah == 0x01 )
 	{
-		printf("Function call failed!\n");
+		printf("Function call mapping failed!\n");
 	}
 	else if (r.u.b.ah == 0x02)
 	{
@@ -53,10 +53,44 @@ int vbe_set_mode(unsigned short function, unsigned short mode) {
 	{
 		printf("Function is invalid in current video mode!\n");
 	}
+
+	*vmi_p = *(vbe_mode_info_t*) map.virtual;
+	lm_free(&map);
+	return 0;
+}
+
+
+int vbe_set_mode(unsigned short function, unsigned short mode) {
+
+
+	struct reg86u r;
+
+
+	r.u.w.ax = function; // VBE call, function 02 -- set VBE mode
+	r.u.w.bx = LINEAR_MODEL_BIT | mode; // set bit 14: linear framebuffer
+	r.u.b.intno = INTERRUPT_VBE;
+
+
 	if( sys_int86(&r) != OK ) {
 		printf("set_vbe_mode: sys_int86() failed \n");
 		return 1;
 	}
+	if (r.u.b.ah == 0x01 )
+	{
+		printf("Function call failed!\n");
+		return 1;
+	}
+	else if (r.u.b.ah == 0x02)
+	{
+		printf("Function is not supported in current HW configuration!\n");
+		return 1;
+	}
+	else if (r.u.b.ah == 0x03)
+	{
+		printf("Function is invalid in current video mode!\n");
+		return 1;
+	}
+
 	return 0;
 }
 
@@ -82,24 +116,24 @@ int timer_unsubscribe_int(){
 int kbd_unsubscribe_int(){
 
 	if (OK == sys_irqdisable(&khook_id))
-			if (OK == sys_irqrmpolicy(&khook_id))
-				return 0;
-		return -1;
+		if (OK == sys_irqrmpolicy(&khook_id))
+			return 0;
+	return -1;
 }
 
 int kbd_subscribe_int(void ){
 
 	//para nao perder o valor original de khook_id (vai ser preciso para depois reconhecer a notificacao)
-		int hook_temp = khook_id;
+	int hook_temp = khook_id;
 
-		if (OK == sys_irqsetpolicy(KBC_IRQ, IRQ_REENABLE | IRQ_EXCLUSIVE, &khook_id))
+	if (OK == sys_irqsetpolicy(KBC_IRQ, IRQ_REENABLE | IRQ_EXCLUSIVE, &khook_id))
+	{
+		if (OK == sys_irqenable(&khook_id))
 		{
-			if (OK == sys_irqenable(&khook_id))
-			{
-				return BIT(hook_temp);
-			}
+			return BIT(hook_temp);
 		}
-		return -1;
+	}
+	return -1;
 }
 
 int kbc_cmd_send(unsigned long cmd){
@@ -159,3 +193,4 @@ int kbd_scan_c(int *apt){
 	}
 	return 0;
 }
+

@@ -5,12 +5,18 @@
 #include <sys/types.h>
 
 #include "video_gr.h"
+#include "read_xpm.h"
 #include "vbe.h"
 #include "test5.h"
 #include "lmlib.h"
+#include "pixmap.h"
 #include <stdint.h>
 
-
+static char *video_mem;		/* Process address to which VRAM is mapped */
+static long vram_size;
+static unsigned h_res;		/* Horizontal screen resolution in pixels */
+static unsigned v_res;		/* Vertical screen resolution in pixels */
+static unsigned bits_per_pixel; /* Number of VRAM bits per pixel */
 
 int vg_exit() {
 	struct reg86u reg86;
@@ -30,31 +36,67 @@ int vg_exit() {
 void *vg_init(unsigned short mode) {
 
 
-	struct vbe_mode_info_t *config;
+	vbe_mode_info_t config;
+
 	if ( vbe_set_mode(VBE_MODE, mode) == 1)
 		return NULL;
-	else
+
+	if (vbe_get_mode_info(mode, &config) != 0)
 	{
-		int r;
-		struct mem_range mr;
-
-		/* Allow memory mapping */
-
-		mr.mr_base = (phys_bytes)(VRAM_PHYS_ADDR);
-		mr.mr_limit = mr.mr_base + h_res*v_res;
-
-		if( OK != (r = sys_privctl(SELF, SYS_PRIV_ADD_MEM, &mr)))
-			panic("video_txt: sys_privctl (ADD_MEM) failed: %d\n", r);
-
-		/* Map memory */
-
-		video_mem = vm_map_phys(SELF, (void *)mr.mr_base, h_res * v_res);
-
-		if(video_mem == MAP_FAILED)
-			panic("video_txt couldn't map video memory");
-
-		return video_mem;
-
+		return NULL;
 	}
 
+
+
+
+
+	printf("CONFIG: %x\n", config.XResolution);
+
+	h_res = config.XResolution;
+	v_res = config.YResolution;
+	bits_per_pixel = config.BitsPerPixel;
+	vram_size = (config.XResolution * config.YResolution * config.BitsPerPixel) / 8;
+
+
+	int r;
+	struct mem_range mr;
+
+	/* Allow memory mapping */
+
+	mr.mr_base = (config.PhysBasePtr);
+	mr.mr_limit = mr.mr_base + (config.XResolution * config.YResolution * config.BitsPerPixel) / 8;
+
+	if( OK != (r = sys_privctl(SELF, SYS_PRIV_ADD_MEM, &mr)))
+		panic("video_txt: sys_privctl (ADD_MEM) failed: %d\n", r);
+
+	/* Map memory */
+
+	video_mem = vm_map_phys(SELF, (void *)mr.mr_base, (config.XResolution * config.YResolution * config.BitsPerPixel) / 8);
+
+	if(video_mem == MAP_FAILED)
+		panic("video_txt couldn't map video memory");
+
+
+	if (video_mem == NULL)
+	{
+		printf("vg_init: Error!\n");
+		vg_exit();
+		return NULL;
+	}
+	return video_mem;
+}
+
+char* getVideoMem(){
+
+	return video_mem;
+}
+
+unsigned getHRes(){
+
+	return h_res;
+}
+
+unsigned getVRes(){
+
+	return v_res;
 }
