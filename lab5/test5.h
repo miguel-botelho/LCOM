@@ -52,9 +52,6 @@ int test_square(unsigned short x, unsigned short y, unsigned short size, unsigne
 int test_line(unsigned short xi, unsigned short yi, 
 		unsigned short xf, unsigned short yf, unsigned long color);
 
-
-int xpm_cre(int *altura, int *largura, unsigned short x, unsigned short y, char *xpm[]);
-
 /**
  * @brief Tests drawing XPM on the screen at specified coordinates
  * 
