@@ -90,7 +90,7 @@ int test_square(unsigned short x, unsigned short y, unsigned short size,
 	if (vg_init(GRAPHIC_MODE) == NULL)
 	{
 		vg_exit();
-		printf("erro\n");
+		printf("Graphic mode failed!\n");
 		return 1;
 	}
 	// inicializa em modo gráfico e retorna video_mem
@@ -171,12 +171,19 @@ int test_square(unsigned short x, unsigned short y, unsigned short size,
 int test_line(unsigned short xi, unsigned short yi, unsigned short xf,
 		unsigned short yf, unsigned long color) {
 
+
+	if (vg_init(GRAPHIC_MODE) == NULL)
+	{
+		vg_exit();
+		printf("Graphic mode failed!\n");
+		return 1;
+	} //inicializa o minix em modo gráfico e diz qual o endereço de memória virtual
+
 	int r;
 	int ipc_status;
 	message msg;
 	int j = 0;
 	int key = 0;
-	double declive = (yf - yi) / (xf - xi);
 	char irq_set = BIT(khook_id);
 
 
@@ -185,8 +192,6 @@ int test_line(unsigned short xi, unsigned short yi, unsigned short xf,
 		printf("Keyboard not subscribed!\n");
 		return 0;
 	}
-
-	vg_init(GRAPHIC_MODE); //inicializa o minix em modo gráfico e diz qual o endereço de memória virtual
 
 	unsigned h_res = getHRes();
 	unsigned v_res = getVRes();
@@ -534,18 +539,14 @@ int test_line(unsigned short xi, unsigned short yi, unsigned short xf,
 			double y = (double) dy * (double) i / (double) dx;
 			if (yf - yi < 0) {
 				video_copy = getVideoMem();
-				video_copy = video_copy + (h_res * (yi - (int) (y + 0.5))) + xi
-						+ i;
+				video_copy = video_copy + (h_res * (yi - (int) (y + 0.5))) + xi + i;
 				*video_copy = color;
 			}
-			//set_pixel(xi + i, yi - (int)(y_point + 0.5), color, base);
 			else {
 				video_copy = getVideoMem();
-				video_copy = video_copy + (h_res * (yi + (int) (y + 0.5))) + xi
-						+ i;
+				video_copy = video_copy + (h_res * (yi + (int) (y + 0.5))) + xi + i;
 				*video_copy = color;
 			}
-			//set_pixel(xi + i, yi + (int)(y_point + 0.5), color, base);
 		}
 	}
 
@@ -563,18 +564,14 @@ int test_line(unsigned short xi, unsigned short yi, unsigned short xf,
 			double x = (double) dx * (double) i / (double) dy;
 			if (xf - xi < 0) {
 				video_copy = getVideoMem();
-				video_copy = video_copy + (h_res * (yi + i)) + xi
-						- (int) (x + 0.5);
+				video_copy = video_copy + (h_res * (yi + i)) + xi - (int) (x + 0.5);
 				*video_copy = color;
 			}
-			//set_pixel(xi - (int)(x_point + 0.5), yi + i, color, base);
 			else {
 				video_copy = getVideoMem();
-				video_copy = video_copy + (h_res * (yi + i)) + xi
-						+ (int) (x + 0.5);
+				video_copy = video_copy + (h_res * (yi + i)) + xi + (int) (x + 0.5);
 				*video_copy = color;
 			}
-			//set_pixel(xi + (int)(x_point + 0.5), yi + i, color, base);
 		}
 	}
 
@@ -601,42 +598,14 @@ int test_line(unsigned short xi, unsigned short yi, unsigned short xf,
 
 }
 
-int xpm_cre(int *altura, int *largura, unsigned short x, unsigned short y, char* xpm[]) {
-
-	int i = 0;
-	int j = 0;
-
-	char *video_copy = getVideoMem();
-	unsigned h_res = getHRes();
-
-	video_copy = video_copy + h_res * y + x;
-
-	char* pixel;
-	if (( pixel= read_xpm(xpm, largura, altura)) == NULL)
-	{
-		return 1;
-	}
-
-	else
-	{
-		for (i; i < *altura; i++)
-		{
-			for (j; j < *largura; j++)
-			{
-				*video_copy = *pixel;
-				video_copy++;
-				pixel++;
-			}
-			video_copy = video_copy + h_res - *largura;
-			j = 0;
-		}
-	}
-	return 0;
-}
-
 int test_xpm(unsigned short xi, unsigned short yi, char *xpm[]) {
 
-	vg_init(GRAPHIC_MODE);
+	if (vg_init(GRAPHIC_MODE) == NULL)
+	{
+		vg_exit();
+		printf("Graphic mode failed!\n");
+		return 1;
+	}
 
 	int r;
 	int ipc_status;
@@ -691,6 +660,103 @@ int test_move(unsigned short xi, unsigned short yi, char *xpm[],
 		unsigned short hor, short delta, unsigned short time) {
 
 	/* To be completed */
+
+	if (vg_init(GRAPHIC_MODE) == NULL)
+	{
+		vg_exit();
+		printf("Graphic mode failed!\n");
+		return 1;
+	}
+
+	int r;
+	int ipc_status;
+	message msg;
+	unsigned int i = 0;
+	int key = 0;
+	char irq_set = BIT(khook_id);
+	char irq_set_timer = BIT(hook_id);
+	int temp_counter = 0;
+	int counter = 0;
+	double delta_move = 0;
+	double delta_time = 0;
+	unsigned h_res = getHRes();
+	unsigned v_res = getVRes();
+
+	int width;
+	int height;
+
+	delta_time = (double) delta / (double) (time * 60);
+
+	xpm_cre(&height, &width, xi, yi, xpm);
+
+	if (-1 == kbd_subscribe_int()) //subscrição do keyboard
+	{
+		vg_exit();
+		printf("Keyboard not subscribed!\n");
+		return 0;
+	}
+
+	if (-1 == timer_subscribe_int())
+	{
+		vg_exit();
+		printf("Timer not subscribed!\n");
+		return 0;
+	}
+
+	while (counter < time) //condição de saída
+	{
+		if ((r = driver_receive(ANY, &msg, &ipc_status)) != 0) {
+			printf("driver_receive failed with: %d", r);
+			continue;
+		}
+		if (is_ipc_notify(ipc_status)) { /* received notification */
+			switch (_ENDPOINT_P(msg.m_source)) {
+			case HARDWARE: /* hardware interrupt notification */
+
+				if (msg.NOTIFY_ARG & irq_set) { /* subscribed interrupt */
+					kbd_scan_c(&key);
+					if (key == KBD_ESC_KEY)
+					{
+						kbd_unsubscribe_int();
+						timer_unsubscribe_int();
+						vg_exit();
+						return 0;
+					}
+				}
+				if (msg.NOTIFY_ARG & irq_set_timer)
+				{
+					temp_counter++; //tique segundos
+					if (temp_counter / 60 == 1) // se contar 60 tiques, significa que passou um segundo
+					{
+						temp_counter = 0;
+						counter++;
+					}
+					delta_move = delta_move + delta_time;
+					if (delta_move >= 1)
+					{
+						if (hor) //escrever na horizontal
+						{
+							xpm_del(&height, &width, xi, yi);
+							xi = xi + delta_move;
+							xpm_cre(&height, &width, xi, yi, xpm);
+						}
+						else //escrever na vertical
+						{
+							xpm_del(&height, &width, xi, yi);
+							yi = yi + delta_move;
+							xpm_cre(&height, &width, xi, yi, xpm);
+						}
+						delta_move = 0;
+					}
+
+				}
+			}
+		}
+	}
+
+	kbd_unsubscribe_int();
+	timer_unsubscribe_int();
+	vg_exit();
 
 }
 

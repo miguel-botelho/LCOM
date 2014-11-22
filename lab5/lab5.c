@@ -3,7 +3,7 @@
 #include"test5.h"
 #include"pixmap.h"
 
-#define PIC_MAX 4
+#define PIC_MAX 5
 
 static int proc_args(int argc, char *argv[]);
 static unsigned long parse_ulong(char *str, int base);
@@ -57,6 +57,7 @@ static int proc_args(int argc, char *argv[]) {
 	a[2] = cross;
 	a[3] = pic3;
 	a[4] = penguin;
+	a[5] = dedo;
 
 	/* check the function to test: if the first characters match, accept it */
 	if (strncmp(argv[1], "test_init", strlen("test_init")) == 0) {

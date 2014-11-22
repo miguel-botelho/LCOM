@@ -17,45 +17,97 @@ int khook_id = 0x01;
 
 int vbe_get_mode_info(unsigned short mode, vbe_mode_info_t *vmi_p) {
 
-	/* To be completed */
-	/* to store the VBE Mode Info desired */
 	struct reg86u r;
 
 	mmap_t map;
 
-	if (lm_alloc(sizeof(vbe_mode_info_t), &map) == NULL)
+	if (lm_alloc(sizeof(vbe_mode_info_t), &map) == NULL) //alloc memory needed
 	{
 		printf("Bad allocation of memory!\n");
 		return 1;
 	}
 	r.u.w.ax = VBE_GET_MODE; /* VBE get mode info */
-	/* translate the buffer linear address to a far pointer */
 	r.u.w.es = PB2BASE(map.phys); /* set a segment base */
 	r.u.w.di = PB2OFF(map.phys); /* set the offset accordingly */
-	r.u.w.cx = mode;
-	r.u.b.intno = INTERRUPT_VBE;
+	r.u.w.cx = mode; /* the mode required*/
+	r.u.b.intno = INTERRUPT_VBE; /* interrupt VBE */
 	if( sys_int86(&r) != OK ) { /* call BIOS */
 
 		printf("Error. Video Mode Wrong!\n");
-		lm_free(&map);
-		return -1;
+		lm_free(&map); //free memory
+		return 1;
 	}
 
 	if (r.u.b.ah == 0x01 )
 	{
 		printf("Function call mapping failed!\n");
+		lm_free(&map);
+		return 1;
 	}
 	else if (r.u.b.ah == 0x02)
 	{
 		printf("Function is not supported in current HW configuration!\n");
+		lm_free(&map);
+		return 1;
 	}
 	else if (r.u.b.ah == 0x03)
 	{
 		printf("Function is invalid in current video mode!\n");
+		lm_free(&map);
+		return 1;
 	}
 
-	*vmi_p = *(vbe_mode_info_t*) map.virtual;
-	lm_free(&map);
+	*vmi_p = *(vbe_mode_info_t*) map.virtual; //virtual memory
+	lm_free(&map); //free memory
+	return 0;
+}
+
+int get_vbe_info(vbe_info_block *vib_p){
+
+	struct reg86u r;
+
+	mmap_t map;
+
+	if (lm_alloc(sizeof(vbe_info_block), &map) == NULL) //alloc memory needed
+	{
+		printf("Bad allocation of memory!\n");
+		return 1;
+	}
+
+	r.u.w.ax = VBE_CONTROL_INFO; /* VBE control info */
+	r.u.w.di = PB2BASE(map.phys); /* set a segment base */
+	r.u.w.es = PB2OFF(map.phys); /* set the offset accordingly */
+	r.u.w.cx = GRAPHIC_MODE; /* the mode required*/
+	r.u.b.intno = INTERRUPT_VBE; /* interrupt VBE */
+
+	if( sys_int86(&r) != OK ) { /* call BIOS */
+
+		printf("Error. Video Mode Wrong!\n");
+		lm_free(&map); //free memory
+		return 1;
+	}
+
+	if (r.u.b.ah == 0x01 )
+	{
+		printf("Function call mapping failed!\n");
+		lm_free(&map);
+		return 1;
+	}
+	else if (r.u.b.ah == 0x02)
+	{
+		printf("Function is not supported in current HW configuration!\n");
+		lm_free(&map);
+		return 1;
+	}
+	else if (r.u.b.ah == 0x03)
+	{
+		printf("Function is invalid in current video mode!\n");
+		lm_free(&map);
+		return 1;
+	}
+
+	*vib_p = *(vbe_info_block*) map.virtual; //virtual memory
+	lm_free(&map); //free memory
 	return 0;
 }
 
@@ -68,7 +120,7 @@ int vbe_set_mode(unsigned short function, unsigned short mode) {
 
 	r.u.w.ax = function; // VBE call, function 02 -- set VBE mode
 	r.u.w.bx = LINEAR_MODEL_BIT | mode; // set bit 14: linear framebuffer
-	r.u.b.intno = INTERRUPT_VBE;
+	r.u.b.intno = INTERRUPT_VBE; // interrupt VBE (0x10)
 
 
 	if( sys_int86(&r) != OK ) {
@@ -190,6 +242,62 @@ int kbd_scan_c(int *apt){
 		//2 bytes
 		return 1;
 
+	}
+	return 0;
+}
+
+int xpm_cre(int *altura, int *largura, unsigned short x, unsigned short y, char* xpm[]) {
+
+	int i = 0;
+	int j = 0;
+
+	char *video_copy = getVideoMem();
+	unsigned h_res = getHRes();
+
+	video_copy = video_copy + h_res * y + x;
+
+	char* pixel;
+	if (( pixel= read_xpm(xpm, largura, altura)) == NULL)
+	{
+		return 1;
+	}
+
+	else
+	{
+		for (i; i < *altura; i++)
+		{
+			for (j; j < *largura; j++)
+			{
+				*video_copy = *pixel;
+				video_copy++;
+				pixel++;
+			}
+			video_copy = video_copy + h_res - *largura;
+			j = 0;
+		}
+	}
+	return 0;
+}
+
+int xpm_del(int *altura, int *largura, unsigned short x, unsigned short y) {
+
+	int i = 0;
+	int j = 0;
+
+	char *video_copy = getVideoMem();
+	unsigned h_res = getHRes();
+
+	video_copy = video_copy + h_res * y + x;
+
+	for (i; i < *altura; i++)
+	{
+		for (j; j < *largura; j++)
+		{
+			*video_copy = 0;
+			video_copy++;
+		}
+		video_copy = video_copy + h_res - *largura;
+		j = 0;
 	}
 	return 0;
 }

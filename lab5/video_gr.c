@@ -13,7 +13,7 @@
 #include <stdint.h>
 
 static char *video_mem;		/* Process address to which VRAM is mapped */
-static long vram_size;
+static long vram_size;		/* Size of VRAM */
 static unsigned h_res;		/* Horizontal screen resolution in pixels */
 static unsigned v_res;		/* Vertical screen resolution in pixels */
 static unsigned bits_per_pixel; /* Number of VRAM bits per pixel */
@@ -38,24 +38,18 @@ void *vg_init(unsigned short mode) {
 
 	vbe_mode_info_t config;
 
-	if ( vbe_set_mode(VBE_MODE, mode) == 1)
+	if ( vbe_set_mode(VBE_MODE, mode) == 1) //set graphic mode
 		return NULL;
 
-	if (vbe_get_mode_info(mode, &config) != 0)
+	if (vbe_get_mode_info(mode, &config) != 0) //get vbe info
 	{
 		return NULL;
 	}
 
-
-
-
-
-	printf("CONFIG: %x\n", config.XResolution);
-
-	h_res = config.XResolution;
-	v_res = config.YResolution;
-	bits_per_pixel = config.BitsPerPixel;
-	vram_size = (config.XResolution * config.YResolution * config.BitsPerPixel) / 8;
+	h_res = config.XResolution; //store X Resolution
+	v_res = config.YResolution; //store Y Resolution
+	bits_per_pixel = config.BitsPerPixel; //store Bits Per Pixel
+	vram_size = (config.XResolution * config.YResolution * config.BitsPerPixel) / 8; //store the size of the vram
 
 
 	int r;
