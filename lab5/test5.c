@@ -738,13 +738,13 @@ int test_move(unsigned short xi, unsigned short yi, char *xpm[],
 						if (hor) //escrever na horizontal
 						{
 							xpm_del(&height, &width, xi, yi);
-							xi = xi + delta_move;
+							xi = xi + (int)delta_move;
 							xpm_cre(&height, &width, xi, yi, xpm);
 						}
 						else //escrever na vertical
 						{
 							xpm_del(&height, &width, xi, yi);
-							yi = yi + delta_move;
+							yi = yi + (int)delta_move;
 							xpm_cre(&height, &width, xi, yi, xpm);
 						}
 						delta_move = delta_move - (int) delta_move;
@@ -804,7 +804,7 @@ int test_controller() {
 	printf("\n");
 	printf("Supported Modes:\n");
 
-	short * fisico = config.VideoModePtr;
+	short *fisico = config.VideoModePtr;
 	int x = fisico;
 	x = ((x >> 12) & 0xF0000) + (x & 0x0FFFF);
 	x = x + posicao;
