@@ -269,7 +269,7 @@ static char *dedo[] ={
 		"                                 oooooooo    oooooooo    oooooooo    oooooooo                     ",
 		"                                 oooooooo    oooooooo    oooooooo    oooooooo                     ",
 		"                                 oooooooo    oooooooo    oooooooo    oooooooo                     ",
-		"                                 oooooooo    oooooooo    oooooooo    oooooooo                         ",
+		"                                 oooooooo    oooooooo    oooooooo    oooooooo                     ",
 		"                                 oooooooo    oooooooo    oooooooo    oooooooo                     ",
 		"                 oooooooo        oooooooooooooooooooooooooooooooo    oooooooo                     ",
 		"                 oooooooo        oooooooooooooooooooooooooooooooo    oooooooo                     ",

@@ -75,9 +75,8 @@ int get_vbe_info(vbe_info_block *vib_p){
 	}
 
 	r.u.w.ax = VBE_CONTROL_INFO; /* VBE control info */
-	r.u.w.di = PB2BASE(map.phys); /* set a segment base */
-	r.u.w.es = PB2OFF(map.phys); /* set the offset accordingly */
-	r.u.w.cx = GRAPHIC_MODE; /* the mode required*/
+	r.u.w.es = PB2BASE(map.phys); /* set a segment base */
+	r.u.w.di = PB2OFF(map.phys); /* set the offset accordingly */
 	r.u.b.intno = INTERRUPT_VBE; /* interrupt VBE */
 
 	if( sys_int86(&r) != OK ) { /* call BIOS */
@@ -116,7 +115,6 @@ int vbe_set_mode(unsigned short function, unsigned short mode) {
 
 
 	struct reg86u r;
-
 
 	r.u.w.ax = function; // VBE call, function 02 -- set VBE mode
 	r.u.w.bx = LINEAR_MODEL_BIT | mode; // set bit 14: linear framebuffer
