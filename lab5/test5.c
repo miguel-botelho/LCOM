@@ -815,7 +815,7 @@ int test_controller() {
 		fisico++;
 	}
 
-	printf("Size of VRAM: %x\n", config.TotalMemory * 64);
+	printf("Size of VRAM: %d\n", config.TotalMemory * 64);
 
 	return 1;
 
