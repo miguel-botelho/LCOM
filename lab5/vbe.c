@@ -86,25 +86,6 @@ int get_vbe_info(vbe_info_block *vib_p){
 		return 1;
 	}
 
-	if (r.u.b.ah == 0x01 )
-	{
-		printf("Function call mapping failed!\n");
-		lm_free(&map);
-		return 1;
-	}
-	else if (r.u.b.ah == 0x02)
-	{
-		printf("Function is not supported in current HW configuration!\n");
-		lm_free(&map);
-		return 1;
-	}
-	else if (r.u.b.ah == 0x03)
-	{
-		printf("Function is invalid in current video mode!\n");
-		lm_free(&map);
-		return 1;
-	}
-
 	*vib_p = *(vbe_info_block*) map.virtual; //virtual memory
 	lm_free(&map); //free memory
 	return 0;
