@@ -9,12 +9,16 @@ static int proc_args(int argc, char *argv[]);
 static unsigned long parse_ulong(char *str, int base);
 static void print_usage(char *argv[]);
 
+
 int main(int argc, char **argv) {
 
 	/* Initialize service */
 
 	sef_startup();
 
+	posicao = lm_init();
+	if (posicao == NULL)
+		return 1;
 	if ( argc == 1 ) {
 		print_usage(argv);
 		return 0;
@@ -136,8 +140,9 @@ static int proc_args(int argc, char *argv[]) {
 							return 1;
 		if((hor = parse_ulong(argv[5], 10)) == ULONG_MAX)
 							return 1;
-		if((delta = parse_ulong(argv[6], 10)) == ULONG_MAX)
-							return 1;
+		delta = atoi(argv[6]);
+		/*if((delta = parse_ulong(argv[6], 10)) == ULONG_MAX)
+							return 1;*/
 		if((time = parse_ulong(argv[7], 10)) == ULONG_MAX)
 							return 1;
 

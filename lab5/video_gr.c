@@ -77,7 +77,7 @@ void *vg_init(unsigned short mode) {
 		vg_exit();
 		return NULL;
 	}
-	return video_mem;
+	return config.PhysBasePtr;
 }
 
 char* getVideoMem(){

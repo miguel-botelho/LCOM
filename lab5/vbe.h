@@ -106,15 +106,15 @@ typedef struct {
 typedef struct {
 	uint8_t VbeSignature[4];
 	uint16_t VbeVersion;
-	uint32_t OemStringPtr;
-	uint32_t Capabilities;
-	uint32_t VideoModePtr;
+	phys_bytes OemStringPtr;
+	uint8_t Capabilities[4];
+	phys_bytes VideoModePtr;
 	uint16_t TotalMemory;
 
 	uint16_t OemSoftwareRev;
-	uint32_t OemVendorNamePtr;
-	uint32_t OemProductNamePtr;
-	uint32_t OemProductRevPtr;
+	phys_bytes OemVendorNamePtr;
+	phys_bytes OemProductNamePtr;
+	phys_bytes OemProductRevPtr;
 	uint8_t Reserved[222];
 
 	uint8_t OemData[256];

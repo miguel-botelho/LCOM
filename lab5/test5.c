@@ -15,8 +15,8 @@
 
 void *test_init(unsigned short mode, unsigned short delay) {
 
-
-	if (vg_init(mode) == NULL)
+	char* physical = vg_init(mode);
+	if (physical == NULL)
 	{
 		vg_exit();
 		printf("erro\n");
@@ -66,6 +66,7 @@ void *test_init(unsigned short mode, unsigned short delay) {
 
 	timer_unsubscribe_int();
 
+	printf("Physical Memory: %x\n", physical);
 	return getVideoMem();
 }
 
@@ -732,7 +733,7 @@ int test_move(unsigned short xi, unsigned short yi, char *xpm[],
 						counter++;
 					}
 					delta_move = delta_move + delta_time;
-					if (delta_move >= 1)
+					if ((delta_move >= 1) || (delta_move <= -1))
 					{
 						if (hor) //escrever na horizontal
 						{
@@ -746,7 +747,7 @@ int test_move(unsigned short xi, unsigned short yi, char *xpm[],
 							yi = yi + delta_move;
 							xpm_cre(&height, &width, xi, yi, xpm);
 						}
-						delta_move = 0;
+						delta_move = delta_move - (int) delta_move;
 					}
 
 				}
@@ -757,10 +758,66 @@ int test_move(unsigned short xi, unsigned short yi, char *xpm[],
 	kbd_unsubscribe_int();
 	timer_unsubscribe_int();
 	vg_exit();
-
+	return 1;
 }
 
 int test_controller() {
+
+	vbe_info_block config;
+
+	if (get_vbe_info(&config) == 1)
+	{
+		return 0;
+	}
+
+	printf("Controller Capablities:\n");
+
+	if ((config.Capabilities[0] && BIT(0)) == 0)
+	{
+		printf("DAC is fixed width, with 6 bits per primary color\n");
+
+	}
+	else
+	{
+		printf("DAC width is switchable to 8 bits per primary color\n");
+	}
+
+	if ((config.Capabilities[0] && BIT(1)) == 0)
+	{
+		printf("Controller is VGA compatible\n");
+	}
+	else
+	{
+		printf("Controller is not VGA compatible\n");
+	}
+
+	if ((config.Capabilities[0] && BIT(2)) == 0)
+	{
+		printf("Normal RAMDAC operation\n");
+	}
+	else
+	{
+		printf("When programming large blocks of information to the RAMDAC, use the blank bit in Function 09h\n");
+	}
+
+
+	printf("\n");
+	printf("Supported Modes:\n");
+
+	short * fisico = config.VideoModePtr;
+	int x = fisico;
+	x = ((x >> 12) & 0xF0000) + (x & 0x0FFFF);
+	x = x + posicao;
+	fisico = x;
+	while (*fisico != -1)
+	{
+		printf("%x\t", *fisico);
+		fisico++;
+	}
+
+	printf("Size of VRAM: %x\n", config.TotalMemory * 64);
+
+	return 1;
 
 	/* To be completed */
 }

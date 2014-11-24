@@ -2,6 +2,8 @@
 #define __TEST5_H
 
 
+char * posicao;
+
 /** @defgroup video_gr video_gr
  * @{
  *
