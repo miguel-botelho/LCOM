@@ -1,0 +1,35 @@
+service proj
+{
+        system
+                 UMAP
+                 INT86
+                 PRIVCTL
+                 READBIOS
+                 DEVIO
+                 IRQCTL
+                ;
+        ipc
+                SYSTEM
+                rs
+                vm
+                pm
+                vfs
+                ;
+        io
+                40:4
+                60
+                64
+                70		  # RTC
+                71		  # RTC
+                ;               
+        irq
+                0         # TIMER 0 IRQ
+                1         # KBD IRQ
+                3		  # Serial Port COM2 (need to verify)
+                4		  # Serial Port COM1 (need to verify)
+                8		  # RTC
+                12        # AUX/MOUSE IRQ
+                ;       
+        uid     0               
+                ;
+};
