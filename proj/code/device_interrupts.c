@@ -1,5 +1,9 @@
 #include "device_interrupts.h"
 
+int hook_id_timer = macro_hook_id_timer;
+int hook_id_keyboard = macro_hook_id_keyboard;
+int hook_id_mouse = macro_hook_id_mouse;
+
 int subscribe_all()
 {
 	if (timer_subscribe_int() == -1)
@@ -44,6 +48,7 @@ int timer_unsubscribe_int()
 	if (OK == sys_irqdisable(&hook_id_timer))
 		if (OK == sys_irqrmpolicy(&hook_id_timer))
 			return 0;
+	printf("TIMER\n");
 	return -1;
 }
 
@@ -67,6 +72,7 @@ int kbd_unsubscribe_int()
 	if (OK == sys_irqdisable(&hook_id_keyboard))
 		if (OK == sys_irqrmpolicy(&hook_id_keyboard))
 			return 0;
+	printf("KEYBOARD\n");
 	return -1;
 }
 
@@ -89,5 +95,6 @@ int mouse_unsubscribe_int()
 	if (OK == sys_irqdisable(&hook_id_mouse))
 		if (OK == sys_irqrmpolicy(&hook_id_mouse))
 			return 0;
+	printf("MOUSE\n");
 	return -1;
 }

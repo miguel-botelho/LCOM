@@ -10,7 +10,7 @@ int test_packet(){
 	int i = 0;
 	char bool2 = 0; //0 = true, nao 0 = true
 	//char bool3 = 0;
-	char irq_set = BIT(hook_id_mouse);
+	char irq_set = BIT(macro_hook_id_mouse);
 
 	char a[3];
 
