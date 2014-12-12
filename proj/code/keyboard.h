@@ -1,9 +1,7 @@
 #ifndef __KEYBOARD_H
 #define __KEYBOARD_H
 
-extern int hook_id_timer;
-extern int hook_id_keyboard;
-extern int hook_id_mouse;
+#include "subscribe_macros.h"
 
 #include "lib.h"
 #include "keyboard_mouse_macros.h"

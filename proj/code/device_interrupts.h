@@ -1,13 +1,10 @@
 #ifndef __DEVICE_INTERRUPTS_H
 #define __DEVICE_INTERRUPTS_H
 
-extern int hook_id_timer;
-extern int hook_id_keyboard;
-extern int hook_id_mouse;
-
 #include "lib.h"
 #include "keyboard_mouse_macros.h"
 #include "timer_macros.h"
+#include "subscribe_macros.h"
 
 // This file only subscribes and unsubscribes
 
