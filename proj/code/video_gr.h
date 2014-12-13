@@ -56,5 +56,5 @@ char *read_xpm(char *map[], int *width, int *height);
 int xpm_cre(int *altura, int *largura, unsigned short x, unsigned short y, char *xpm[]);
 int xpm_del(int *altura, int *largura, unsigned short x, unsigned short y);
 
-
+int rgb(unsigned char r, unsigned char g, unsigned char b);
 #endif /* __VIDEO_GR_H */

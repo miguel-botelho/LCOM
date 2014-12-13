@@ -30,8 +30,8 @@ int main(int argc, char **argv) {
 		return -1;
 	}
 
-	vg_init(GRAPHIC_MODE);
-	test_square(10,10,500,2);
+	vg_init(GRAPHIC_MODE_16_BITS);
+	test_square(0,0,767,rgb(0,0,255));
 	vg_exit();
 
 	//code
