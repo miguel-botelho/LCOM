@@ -55,7 +55,13 @@ bitmap.o:	/usr/pkg/gcc44/lib/gcc/i686-pc-minix/4.4.3/include/stdarg.h
 bitmap.o:	bitmap.c
 bitmap.o:	bitmap.h
 bitmap.o:	bitmap_macros.h
+bitmap.o:	keyboard_mouse_macros.h
 bitmap.o:	lib.h
+bitmap.o:	lmlib.h
+bitmap.o:	subscribe_macros.h
+bitmap.o:	vbe_struct.h
+bitmap.o:	video_gr.h
+bitmap.o:	video_gr_macros.h
 
 device_interrupts.o:	/usr/include/errno.h
 device_interrupts.o:	/usr/include/limits.h

@@ -3,6 +3,7 @@
 
 #include "lib.h"
 #include "bitmap_macros.h"
+#include "video_gr.h"
 
 #pragma once
 
@@ -24,8 +25,8 @@ typedef struct {
 
 typedef struct {
     unsigned int size; // specifies the number of bytes required by the struct
-    int width; // specifies width in pixels
-    int height; // specifies height in pixels
+    int width; // specifies width in pixels largura
+    int height; // specifies height in pixels altura
     unsigned short planes; // specifies the number of color planes, must be 1
     unsigned short bits; // specifies the number of bit per pixel
     unsigned int compression; // specifies the type of compression
