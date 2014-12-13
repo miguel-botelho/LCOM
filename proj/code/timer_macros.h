@@ -1,8 +1,6 @@
 #ifndef __TIMER_MACROS_H
 #define __TIMER_MACROS_H
 
-#define TIMER0_IRQ	0
-
 #define TIMER_FREQ  1193182
 #define BIT(n) 			(0x01<<(n))
 

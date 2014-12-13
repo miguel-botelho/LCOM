@@ -16,19 +16,20 @@ service proj
                 vfs
                 ;
         io
-                40:4
-                60
-                64
-                70		  # RTC
-                71		  # RTC
+                40:4	# Timer
+				60		# KBC
+				64		# KBC
+				70:2	# RTC
+				2f8:8	# COM2
+				3f8:8	# COM1
                 ;               
         irq
-                0         # TIMER 0 IRQ
-                1         # KBD IRQ
-                3		  # Serial Port COM2 (need to verify)
-                4		  # Serial Port COM1 (need to verify)
-                8		  # RTC
-                12        # AUX/MOUSE IRQ
+              	0		# TIMER 0 IRQ
+				1		# KBD IRQ
+				3		# COM2 IRQ
+				4		# COM1 IRQ
+				8		# RTC
+				12		# AUX/MOUSE IRQ
                 ;       
         uid     0               
                 ;

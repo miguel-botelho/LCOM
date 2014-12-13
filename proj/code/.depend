@@ -112,10 +112,8 @@ device_interrupts.o:	/usr/pkg/gcc44/lib/gcc/i686-pc-minix/4.4.3/include-fixed/un
 device_interrupts.o:	/usr/pkg/gcc44/lib/gcc/i686-pc-minix/4.4.3/include/stdarg.h
 device_interrupts.o:	device_interrupts.c
 device_interrupts.o:	device_interrupts.h
-device_interrupts.o:	keyboard_mouse_macros.h
 device_interrupts.o:	lib.h
 device_interrupts.o:	subscribe_macros.h
-device_interrupts.o:	timer_macros.h
 
 keyboard.o:	/usr/include/errno.h
 keyboard.o:	/usr/include/limits.h
@@ -305,6 +303,10 @@ proj.o:	timer_macros.h
 proj.o:	vbe_struct.h
 proj.o:	video_gr.h
 proj.o:	video_gr_macros.h
+
+rtc.o:	rtc.c
+rtc.o:	rtc.h
+rtc.o:	rtc_macros.h
 
 timer.o:	/usr/include/errno.h
 timer.o:	/usr/include/limits.h

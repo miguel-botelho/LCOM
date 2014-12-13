@@ -3,6 +3,7 @@
 int hook_id_timer = macro_hook_id_timer;
 int hook_id_keyboard = macro_hook_id_keyboard;
 int hook_id_mouse = macro_hook_id_mouse;
+int hook_id_rtc = macro_hook_id_rtc;
 
 int subscribe_all()
 {
@@ -22,12 +23,20 @@ int subscribe_all()
 		return -1;
 	}
 
+	if (rtc_subscribe_int() == -1)
+	{
+		kbd_unsubscribe_int();
+		timer_unsubscribe_int();
+		rtc_subscribe_int();
+		return -1;
+	}
+
 	return 0;
 }
 
 int unsubscribe_all()
 {
-	if (timer_unsubscribe_int() != -1 && kbd_unsubscribe_int() != -1 && mouse_unsubscribe_int() != -1)
+	if (timer_unsubscribe_int() != -1 && kbd_unsubscribe_int() != -1 && mouse_unsubscribe_int() != -1 && rtc_subscribe_int() != -1)
 		return 0;
 	return -1;
 }
@@ -48,7 +57,6 @@ int timer_unsubscribe_int()
 	if (OK == sys_irqdisable(&hook_id_timer))
 		if (OK == sys_irqrmpolicy(&hook_id_timer))
 			return 0;
-	printf("TIMER\n");
 	return -1;
 }
 
@@ -72,7 +80,6 @@ int kbd_unsubscribe_int()
 	if (OK == sys_irqdisable(&hook_id_keyboard))
 		if (OK == sys_irqrmpolicy(&hook_id_keyboard))
 			return 0;
-	printf("KEYBOARD\n");
 	return -1;
 }
 
@@ -90,11 +97,30 @@ int mouse_subscribe_int()
 	}
 	return -1;
 }
+
 int mouse_unsubscribe_int()
 {
 	if (OK == sys_irqdisable(&hook_id_mouse))
 		if (OK == sys_irqrmpolicy(&hook_id_mouse))
 			return 0;
-	printf("MOUSE\n");
+	return -1;
+}
+
+int rtc_subscribe_int() {
+
+	int hook_temp = hook_id_rtc;
+
+	if (sys_irqsetpolicy(RTC_IRQ, IRQ_REENABLE, &hook_id_rtc) == OK)
+		if (sys_irqenable(&hook_id_rtc) == OK)
+			return BIT(hook_temp);
+	return -1;
+
+}
+
+int rtc_unsubscribe_int() {
+
+	if (sys_irqrmpolicy(&hook_id_rtc) != OK)
+		if (sys_irqdisable(&hook_id_rtc) != OK)
+			return 0;
 	return -1;
 }
