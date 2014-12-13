@@ -31,7 +31,24 @@ int main(int argc, char **argv) {
 	}
 
 	vg_init(GRAPHIC_MODE_16_BITS);
-	test_square(0,0,767,rgb(0,0,255));
+	Bitmap* bmp;
+	int contador = 0;
+	bmp = loadBitmap("home/lcom/proj/code/images/Penis.bmp");
+	int x = 0;
+	int y = 0;
+
+	while ((x + bmp->bitmapInfoHeader.width) < 1024)
+	{
+		drawBitmap(bmp,x,y, ALIGN_LEFT);
+		y = y + bmp->bitmapInfoHeader.height;
+		if ((y + bmp->bitmapInfoHeader.height) > 768)
+		{
+			x = x + bmp->bitmapInfoHeader.width;
+			y = 0;
+		}
+	}
+	sleep(5);
+	deleteBitmap(bmp);
 	vg_exit();
 
 	//code

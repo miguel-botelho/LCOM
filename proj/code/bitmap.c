@@ -110,7 +110,7 @@ void drawBitmap(Bitmap* bmp, int x, int y, Alignment alignment) {
         if (pos < 0 || pos >= V_RES)
             continue;
 
-        //bufferStartPos = getGraphicsBuffer();
+        bufferStartPos = getVideoMem();
         bufferStartPos += x * 2 + pos * H_RES * 2;
 
         imgStartPos = bmp->bitmapData + xCorrection * 2 + i * width * 2;
