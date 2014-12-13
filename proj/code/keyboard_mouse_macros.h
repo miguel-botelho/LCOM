@@ -3,9 +3,7 @@
 
 ////////////////////////////////////////// MACROS FOR MOUSE //////////////////////////////////////////
 
-#define MOUSE_IRQ		12
 #define DELAY_US 		20000
-#define KBC_IRQ			0x01
 #define BIT(n) 			(0x01<<(n))
 #define OUT_BUF			0x60
 #define ESDP			0xF4

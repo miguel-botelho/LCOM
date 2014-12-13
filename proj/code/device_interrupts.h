@@ -2,8 +2,6 @@
 #define __DEVICE_INTERRUPTS_H
 
 #include "lib.h"
-#include "keyboard_mouse_macros.h"
-#include "timer_macros.h"
 #include "subscribe_macros.h"
 
 // This file only subscribes and unsubscribes
@@ -79,5 +77,23 @@ int mouse_subscribe_int();
  * @return -1 upon failure or non -1 otherwise
  */
 int mouse_unsubscribe_int();
+
+/**
+ * @brief Subscribe rtc
+ *
+ * Subscribe rtc.
+ *
+ * @return -1 upon failure or non -1 otherwise
+ */
+int rtc_subscribe_int();
+
+/**
+ * @brief Unsubscribe rtc
+ *
+ * Unsubscribe rtc.
+ *
+ * @return -1 upon failure or non -1 otherwise
+ */
+int rtc_unsubscribe_int();
 
 #endif /* __DEVICE_INTERRUPTS_H */
