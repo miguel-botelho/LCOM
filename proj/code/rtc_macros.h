@@ -36,7 +36,7 @@
 
 #define PIE				BIT(6) // to enable periodic interrupts
 #define AIE				BIT(5) // to enable alarm interrupts
-#define UIE				BIT(4) // to enable update interrupts
+#define UIE				BIT(4) // to enable update interrupts (don't forget to read register C)
 
 #define DM				BIT(2) // registers in binary
 
