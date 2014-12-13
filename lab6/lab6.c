@@ -17,7 +17,8 @@ int main(int argc, char **argv) {
 
 	  sys_enable_iop(SELF);
 
-	  rtc_test_date();
+	  rtc_test_int();
+	  //rtc_test_date();
 	  return 0;
 
 	/* To be completed */

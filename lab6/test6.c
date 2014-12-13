@@ -12,7 +12,7 @@ unsigned long rtc_subscribe_int(void) {
 
 	int hook_temp = rtc_hook_id;
 
-	if (sys_irqsetpolicy(RTC_IRQ, IRQ_REENABLE | IRQ_EXCLUSIVE, &rtc_hook_id) != OK)
+	if (sys_irqsetpolicy(RTC_IRQ, IRQ_REENABLE, &rtc_hook_id) != OK)
 	{
 		printf("SET POlicy\n");
 		return -1;
@@ -48,6 +48,13 @@ short read_rtc(long array) {
 	return ret;
 }
 
+void write_rtc(long array, long temp) {
+
+	short ret;
+
+	sys_outb(RTC_ADDR_REG, array);
+	sys_outb(RTC_DATA_REG, temp);
+}
 
 
 int rtc_test_conf(void) {
@@ -177,31 +184,34 @@ int rtc_test_int(/* to be defined in class */) {
 	message msg;
 	char irq_set = BIT(rtc_hook_id);
 
-	unsigned long regA = 0;
+	/*unsigned long regA = 0;
 	do {
 		rtc_subscribe_int();
 		sys_outb(RTC_ADDR_REG, RTC_REG_A);
 		sys_inb(RTC_DATA_REG, &regA);
 		rtc_unsubscribe_int();
-	} while ((BIT(7) == (BIT(7) & regA)));
+	} while ((BIT(7) == (BIT(7) & regA)));*/
 
-	/*if (-1 == rtc_subscribe_int())
+	if (-1 == rtc_subscribe_int())
 	{
 		printf("Fail to subscribe RTC!\n");
 		return -1;
-	}*/
+	}
 
-	printf("1");
+	read_rtc(12);
+	write_rtc(11, 0x16);
 
-	while (1) // enquanto não passar o tempo que o utilizador quer
+	long i = 0;
+
+	while (i < 5) // enquanto não passar o tempo que o utilizador quer
 	{
-		printf("2");
 
+		printf("\n\n\t%d \n", i);
+		i = i + 1;
 		if ((r = driver_receive(ANY, &msg, &ipc_status)) != 0) {
 			printf("driver_receive failed with: %d", r);
 			continue;
 		}
-		printf("3");
 		if (is_ipc_notify(ipc_status)) { /* received notification */
 			switch (_ENDPOINT_P(msg.m_source)) {
 			case HARDWARE: /* hardware interrupt notification */
@@ -287,15 +297,15 @@ int rtc_test_int(/* to be defined in class */) {
 					default:
 						break;
 					}
-
-					rtc_unsubscribe_int();
-
-					return 0;
 				}
 			}
 
 			/* To be completed */
 		}
+		read_rtc(12);
 	}
+	rtc_unsubscribe_int();
+
+	return 0;
 }
 
