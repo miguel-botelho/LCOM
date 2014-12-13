@@ -36,4 +36,9 @@ void fill_struct(char *a);
  */
 char neg8bits(char neg);
 
+int mouse_int_handler(unsigned long cmd);
+int mouse_send_command(unsigned long cmd);
+int mouse_send_first_command();
+int mouse_cmd_receive();
+
 #endif /* __MOUSE_H */

@@ -1,6 +1,12 @@
 #ifndef __BITMAP_H
 #define __BITMAP_H
 
+
+/*
+ * Codigo de Henrique Ferrolho
+ * http://difusal.blogspot.pt/2014/09/minixtutorial-8-loading-bmp-images.html
+ */
+
 #include "lib.h"
 #include "bitmap_macros.h"
 #include "video_gr.h"
