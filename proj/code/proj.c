@@ -48,14 +48,16 @@ int main(int argc, char **argv) {
 	char irq_set_timer = BIT(macro_hook_id_timer);
 	char irq_set_mouse = BIT(macro_hook_id_mouse);
 
-	/*vg_init(GRAPHIC_MODE_16_BITS);
+	vg_init(GRAPHIC_MODE_16_BITS);
 	Bitmap* bmp;
 
-	bmp = loadBitmap("home/lcom/proj/code/images/A.bmp");
-	drawBitmap(bmp, 0, 0 , ALIGN_LEFT);*/
+	bmp = loadBitmap("home/lcom/proj/code/images/Fundo.bmp");
+	drawBitmap(bmp, 0, 0 , ALIGN_LEFT);
 
+	mouse_t.LB = 0;
 
-	while( (key != KBD_ESC_KEY) ) {
+	// enquanto nao passarem 10 segundos ou nao for premida a tecla ESC ou o clique esquerdo do rato
+	while( (contador < 10) && (key != KBD_ESC_KEY) && (mouse_t.LB != 1)) {
 		/* Get a request message. */
 		if ( (r = driver_receive(ANY, &msg, &ipc_status)) != 0 ) {
 			printf("driver_receive failed with: %d", r);
@@ -120,27 +122,27 @@ int main(int argc, char **argv) {
 						}
 					}
 				}
-			break;
+				break;
 			default:
 				break; /* no other notifications expected: do nothing */
+			}
+		} else { /* received a standard message, not a notification */
+			/* no standard messages expected: do nothing */
 		}
-	} else { /* received a standard message, not a notification */
-		/* no standard messages expected: do nothing */
 	}
-}
-/*deleteBitmap(bmp);
-	vg_exit();*/
+	deleteBitmap(bmp);
+	vg_exit();
 
-//estas duas opearacoes sao feitas para assegurar o normal funcionamento do rato quando acabar a funcao
-mouse_int_handler(DISABLE_STREAM); //desativa a stream
-mouse_int_handler(SET_STREAM); //volta a ativar a stream, isto foi feito para desativar o envio dos pacotes
+	//estas duas opearacoes sao feitas para assegurar o normal funcionamento do rato quando acabar a funcao
+	mouse_int_handler(DISABLE_STREAM); //desativa a stream
+	mouse_int_handler(SET_STREAM); //volta a ativar a stream, isto foi feito para desativar o envio dos pacotes
 
-if (unsubscribe_all() == -1)
-{
-	printf("Failure to unsubscribe!! \n\n");
-	return -1;
-}
+	if (unsubscribe_all() == -1)
+	{
+		printf("Failure to unsubscribe!! \n\n");
+		return -1;
+	}
 
-return 0;
+	return 0;
 }
 
