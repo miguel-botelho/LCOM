@@ -27,7 +27,7 @@ int subscribe_all()
 	{
 		kbd_unsubscribe_int();
 		timer_unsubscribe_int();
-		rtc_subscribe_int();
+		mouse_unsubscribe_int();
 		return -1;
 	}
 
@@ -36,7 +36,7 @@ int subscribe_all()
 
 int unsubscribe_all()
 {
-	if (timer_unsubscribe_int() != -1 && kbd_unsubscribe_int() != -1 && mouse_unsubscribe_int() != -1 && rtc_subscribe_int() != -1)
+	if (timer_unsubscribe_int() != -1 && kbd_unsubscribe_int() != -1 && mouse_unsubscribe_int() != -1 && rtc_unsubscribe_int() != -1)
 		return 0;
 	return -1;
 }
@@ -110,8 +110,8 @@ int rtc_subscribe_int() {
 
 	int hook_temp = hook_id_rtc;
 
-	if (sys_irqsetpolicy(RTC_IRQ, IRQ_REENABLE, &hook_id_rtc) == OK)
-		if (sys_irqenable(&hook_id_rtc) == OK)
+	if (OK == sys_irqsetpolicy(RTC_IRQ, IRQ_REENABLE, &hook_id_rtc))
+		if (OK == sys_irqenable(&hook_id_rtc))
 			return BIT(hook_temp);
 	return -1;
 
@@ -119,8 +119,8 @@ int rtc_subscribe_int() {
 
 int rtc_unsubscribe_int() {
 
-	if (sys_irqrmpolicy(&hook_id_rtc) != OK)
-		if (sys_irqdisable(&hook_id_rtc) != OK)
+	if (OK == sys_irqdisable(&hook_id_rtc))
+		if (OK == sys_irqrmpolicy(&hook_id_rtc))
 			return 0;
 	return -1;
 }
