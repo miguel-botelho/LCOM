@@ -5,7 +5,7 @@ COMPILER_TYPE= gnu
 CC=gcc
 
 PROG=	proj
-SRCS=	proj.c keyboard.c mouse.c timer.c video_gr.c device_interrupts.c bitmap.c
+SRCS=	proj.c keyboard.c mouse.c timer.c video_gr.c device_interrupts.c bitmap.c rtc.c
 
 CCFLAGS= -Wall
 
