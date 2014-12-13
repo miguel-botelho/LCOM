@@ -333,11 +333,12 @@ int test_square(unsigned short x, unsigned short y, unsigned short size,
 
 	// inicializa em modo gráfico e retorna video_mem
 
-	printf("irq_set: %x\n", irq_set);
 	unsigned h_res = getHRes();
 	unsigned v_res = getVRes();
 	unsigned char *video_copy;
 	video_copy = getVideoMem();
+	printf("%d\n", h_res);
+	printf("%d\n", v_res);
 
 	if ((x >= h_res) || (x < 0) || (y >= v_res) || (y < 0)
 			|| ((x + size) >= h_res) || ((y + size) >= v_res) || (size <= 0)) // o utilizador introduziu coordenadas erradas
@@ -360,24 +361,35 @@ int test_square(unsigned short x, unsigned short y, unsigned short size,
 
 	while (key != KBD_ESC_KEY) // condição de saída
 	{
-		printf("WHILE\n");
 		if ((r = driver_receive(ANY, &msg, &ipc_status)) != 0) {
 			printf("driver_receive failed with: %d", r);
 			continue;
 		}
-		printf("DEPOIS\n");
 		if (is_ipc_notify(ipc_status)) { /* received notification */
-			printf("DEPOIS DEPOIS DEPOIS\n");
 			switch (_ENDPOINT_P(msg.m_source)) {
 			case HARDWARE: /* hardware interrupt notification */
-				if (msg.NOTIFY_ARG & irq_set) {
-					printf("ANTES DA KEY\n");/* subscribed interrupt */
+				if (msg.NOTIFY_ARG & irq_set) { /* subscribed interrupt */
 					kbd_scan_c(&key);
-					printf("key: %x\n", key);
 				}
 			}
 		}
 	}
 
 	return 0;
+}
+ /*
+  * Codigo de Henrique Ferrolho
+  * Funcao RGB
+  *
+  */
+int rgb(unsigned char r, unsigned char g, unsigned char b) {
+
+	if (r < 0 || 255 < r || g < 0 || 255 < g || b < 0 || b > 255)
+		return -1;
+
+	int red = r * 31 / 255;
+	int green = g  * 63 / 255;
+	int blue = b * 31 / 255;
+
+	return (red << 11) | (green << 5) | blue;
 }
