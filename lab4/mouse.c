@@ -22,7 +22,7 @@ int timer_unsubscribe_int() {
 	if (OK == sys_irqdisable(&hook_id))
 		if (OK == sys_irqrmpolicy(&hook_id))
 			return 0;
-	return -1;
+	 return -1;
 }
 
 int mouse_subscribe_int(){

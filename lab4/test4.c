@@ -21,7 +21,7 @@ int test_packet(unsigned short cnt){
 
 	if (mouse_subscribe_int() == -1)
 	{
-		printf("Fail to subscribe Mouse!\n \n");
+		 printf("Fail to subscribe Mouse!\n \n");
 		return 1;
 	}
 

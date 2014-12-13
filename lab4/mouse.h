@@ -21,7 +21,7 @@ extern char global_bool2;
 #define OBF			0x01
 #define MC			0xD4
 #define COMMAND_PORT 0x60
-#define PAR_ERR		0x80
+ #define PAR_ERR		0x80
 #define TO_ERR		0x40
 #define MOUSE_DATA	0x20
 #define DISABLE_STREAM	0xF5
