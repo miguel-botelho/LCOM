@@ -2,25 +2,7 @@
 
 char neg8bits(char neg) //transforma um char de 8 bits em complemento para 2, para o seu equivalente positivo; i.e -24 transforma-se em 24
 {
-	int i = 0;
-	char ret = 0;
-	char negative = 0; //flag que verifica se foi encontrado o primeiro 1
-
-	for (i; i < 8; i++)
-	{
-		if (negative == 0) //se não foi encontrado o primeiro 1, então copia o bit
-		{
-			if (BIT(i) == (BIT(i) & neg))
-			{
-				negative = 1;
-				ret = ret + (BIT(i) & neg);
-			}
-			else ret = ret + (BIT(i) & neg);
-		}
-		else ret = ret + !(BIT(i) & neg); //troca o bit
-	}
-
-	return ret;
+	return -neg;
 }
 
 void fill_struct(char *a) // the size of this array is fixed, so does not need to have an argument to specify the size
@@ -33,24 +15,42 @@ void fill_struct(char *a) // the size of this array is fixed, so does not need t
 
 	if (BIT(4) == (BIT(4) & a[0])) // se for negativo
 	{
-		mouse_t.x = neg8bits(a[1]);
-		mouse_t.x_mouse = mouse_t.x_mouse - mouse_t.x;
+		printf("pos:%d\n", a[1]);
+		printf("neg:%d\n", neg8bits(a[1]));
+		mouse_t.x = 2 * neg8bits(a[1]);
+		if (mouse_t.x_mouse - mouse_t.x <= 0)
+		{
+			mouse_t.x_mouse = 0;
+		}
+		else mouse_t.x_mouse = mouse_t.x_mouse - mouse_t.x;
 	}
 	else //nr positivo
 	{
-		mouse_t.x = a[1];
-		mouse_t.x_mouse = mouse_t.x_mouse + mouse_t.x;
+		mouse_t.x = 2 * a[1];
+		if (mouse_t.x_mouse + mouse_t.x + 5 >= 1024)
+		{
+			mouse_t.x_mouse = 1024 - 5;
+		}
+		else mouse_t.x_mouse = mouse_t.x_mouse + mouse_t.x;
 	}
 
 	if (BIT(5) == (BIT(5) & a[0])) //negativo
 	{
-		mouse_t.y = neg8bits(a[2]);
-		mouse_t.y_mouse = mouse_t.y_mouse + mouse_t.y;
+		mouse_t.y = 2 * neg8bits(a[2]);
+		if (mouse_t.y_mouse + mouse_t.y + 20 >= 768)
+		{
+			mouse_t.y_mouse = 768 - 5;
+		}
+		else mouse_t.y_mouse = mouse_t.y_mouse + mouse_t.y;
 	}
 	else //positivo
 	{
-		mouse_t.y = a[2];
-		mouse_t.y_mouse = mouse_t.y_mouse - mouse_t.y;
+		mouse_t.y = 2 * a[2];
+		if (mouse_t.y_mouse - mouse_t.y <= 0)
+		{
+			mouse_t.y_mouse = 0;
+		}
+		else mouse_t.y_mouse = mouse_t.y_mouse - mouse_t.y;
 	}
 }
 
