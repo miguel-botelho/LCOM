@@ -71,7 +71,7 @@ Bitmap* loadBitmap(const char* filename) {
     return bmp;
 }
 
-void drawBitmap(Bitmap* bmp, int x, int y, Alignment alignment) {
+void drawBitmap(Bitmap* bmp, int x, int y, Alignment alignment, char * buffer) {
     if (bmp == NULL)
         return;
 
@@ -110,11 +110,10 @@ void drawBitmap(Bitmap* bmp, int x, int y, Alignment alignment) {
         if (pos < 0 || pos >= V_RES)
             continue;
 
-        bufferStartPos = getVideoMem();
+        bufferStartPos = buffer;
         bufferStartPos += x * 2 + pos * H_RES * 2;
 
         imgStartPos = bmp->bitmapData + xCorrection * 2 + i * width * 2;
-
         memcpy(bufferStartPos, imgStartPos, drawWidth * 2);
     }
 }

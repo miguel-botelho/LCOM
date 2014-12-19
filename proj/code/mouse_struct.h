@@ -10,6 +10,8 @@ typedef struct
 	int YOV;
 	int x;
 	int y;
+	int x_mouse;
+	int y_mouse;
 } mouse_st;
 
 mouse_st mouse_t;

@@ -47,6 +47,7 @@ int test_square(unsigned short x, unsigned short y, unsigned short size, unsigne
 char* getVideoMem();
 unsigned getHRes();
 unsigned getVRes();
+unsigned getBitsPerPixel();
 
 int vbe_get_mode_info(unsigned short mode, vbe_mode_info_t *vmi_p); //NOT COMPLETED
 int vbe_set_mode(unsigned short function, unsigned short mode); //sets the mode mode in the function that the user sets

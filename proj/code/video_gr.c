@@ -320,6 +320,10 @@ unsigned getVRes(){
 	return v_res;
 }
 
+unsigned getBitsPerPixel(){
+
+	return bits_per_pixel;
+}
 int test_square(unsigned short x, unsigned short y, unsigned short size,
 		unsigned long color) {
 
