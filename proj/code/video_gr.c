@@ -381,11 +381,11 @@ int test_square(unsigned short x, unsigned short y, unsigned short size,
 
 	return 0;
 }
- /*
-  * Codigo de Henrique Ferrolho
-  * Funcao RGB
-  *
-  */
+/*
+ * Codigo de Henrique Ferrolho
+ * Funcao RGB
+ *
+ */
 int rgb(unsigned char r, unsigned char g, unsigned char b) {
 
 	if (r < 0 || 255 < r || g < 0 || 255 < g || b < 0 || b > 255)
@@ -396,4 +396,15 @@ int rgb(unsigned char r, unsigned char g, unsigned char b) {
 	int blue = b * 31 / 255;
 
 	return (red << 11) | (green << 5) | blue;
+}
+
+int screen_to_mouse(char * screen_buffer, char * mouse_buffer) {
+
+	memcpy(mouse_buffer, screen_buffer, (h_res * v_res * bits_per_pixel / 8));
+
+}
+
+int mouse_to_video(char * mouse_buffer, char * video_memory) {
+
+	memcpy(video_memory, mouse_buffer, (h_res * v_res * bits_per_pixel / 8));
 }

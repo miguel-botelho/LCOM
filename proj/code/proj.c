@@ -54,6 +54,8 @@ int main(int argc, char **argv) {
 
 	vg_init(GRAPHIC_MODE_16_BITS);
 
+	mouse_t.x_mouse = getHRes() / 2;
+	mouse_t.y_mouse = getVRes() / 2;
 	char * mouse_buffer = malloc (getHRes() * getVRes() * getBitsPerPixel() / 8);
 	char * screen_buffer = malloc(getHRes() * getVRes() * getBitsPerPixel() / 8);
 	char * video_memory = getVideoMem();
@@ -61,18 +63,21 @@ int main(int argc, char **argv) {
 
 	Bitmap* fundo;
 	Bitmap * leonel;
+	Bitmap* rato;
 
 	fundo = loadBitmap("home/lcom/proj/code/images/Fundo.bmp");
 	leonel = loadBitmap("home/lcom/proj/code/images/leonel.bmp");
-	drawBitmap(fundo, 0, 0 , ALIGN_LEFT, screen_buffer);
-	drawBitmap(leonel, 50, 50, ALIGN_LEFT, screen_buffer);
-	//memcpy(screen_buffer, mouse_buffer, (getHRes() * getVRes() * getBitsPerPixel() / 8));
-	memcpy(video_memory, screen_buffer, (getHRes() * getVRes() * getBitsPerPixel() / 8));
+	rato = loadBitmap("home/lcom/proj/code/images/Mouse.bmp");
 
+	drawBitmap(fundo, 0, 0 , ALIGN_LEFT, screen_buffer);
+
+	screen_to_mouse(screen_buffer, mouse_buffer);
+	drawBitmap(rato, mouse_t.x_mouse, mouse_t.y_mouse, ALIGN_LEFT, mouse_buffer);
+	mouse_to_video(mouse_buffer, video_memory);
 	mouse_t.LB = 0;
 
 	// enquanto nao passarem 10 segundos ou nao for premida a tecla ESC ou o clique esquerdo do rato
-	while( (contador < 10) && (key != KBD_ESC_KEY) && (mouse_t.LB != 1)) {
+	while( (contador < 10) && (key != KBD_ESC_KEY)) {
 		/* Get a request message. */
 		if ( (r = driver_receive(ANY, &msg, &ipc_status)) != 0 ) {
 			printf("driver_receive failed with: %d", r);
@@ -104,7 +109,7 @@ int main(int argc, char **argv) {
 							{
 								*video_copy = rgb(0,255,0);
 							}
-								video_copy++;
+							video_copy++;
 						}
 					}
 
@@ -147,9 +152,35 @@ int main(int argc, char **argv) {
 							a[1] = byte2;
 							a[2] = byte3;
 							fill_struct(a);
-							printf("Mouse: %d\n", mouse_t.x);
-							printf("Mouse_x: %d\n", mouse_t.x_mouse);
-							printf("Mouse_y: %d\n", mouse_t.y_mouse);
+
+							if (mouse_t.LB == 1)
+							{
+								if ((mouse_t.x_mouse >= 438) && (mouse_t.x_mouse <= 591))
+								{
+									if ((mouse_t.y_mouse >= 650) && (mouse_t.y_mouse <= 716))
+									{
+										deleteBitmap(fundo);
+										deleteBitmap(leonel);
+										deleteBitmap(rato);
+										vg_exit();
+
+										//estas duas opearacoes sao feitas para assegurar o normal funcionamento do rato quando acabar a funcao
+										mouse_int_handler(DISABLE_STREAM); //desativa a stream
+										mouse_int_handler(SET_STREAM); //volta a ativar a stream, isto foi feito para desativar o envio dos pacotes
+
+										if (unsubscribe_all() == -1)
+										{
+											printf("Failure to unsubscribe!! \n\n");
+											return -1;
+										}
+										return 0;
+									}
+								}
+							}
+							screen_to_mouse(screen_buffer, mouse_buffer);
+							drawBitmap(rato, mouse_t.x_mouse, mouse_t.y_mouse, ALIGN_LEFT, mouse_buffer);
+							mouse_to_video(mouse_buffer, video_memory);
+
 						}
 					}
 				}
@@ -163,6 +194,7 @@ int main(int argc, char **argv) {
 	}
 	deleteBitmap(fundo);
 	deleteBitmap(leonel);
+	deleteBitmap(rato);
 	vg_exit();
 
 	//estas duas opearacoes sao feitas para assegurar o normal funcionamento do rato quando acabar a funcao
