@@ -157,6 +157,7 @@ int main(int argc, char **argv) {
 										deleteBitmap(fundo);
 										deleteBitmap(leonel);
 										deleteBitmap(rato);
+										deleteBitmap(frame);
 										vg_exit();
 
 										//estas duas opearacoes sao feitas para assegurar o normal funcionamento do rato quando acabar a funcao
@@ -172,7 +173,7 @@ int main(int argc, char **argv) {
 									}
 									else
 									{
-										//mudar cor para preto
+										//mudar cor para vermelho
 										for (i; i < (getHRes() * getVRes() * getBitsPerPixel() / 8); i++)
 										{
 											if (*video_copy == rgb(0,0,0))
@@ -204,6 +205,7 @@ int main(int argc, char **argv) {
 	deleteBitmap(fundo);
 	deleteBitmap(leonel);
 	deleteBitmap(rato);
+	deleteBitmap(frame);
 	vg_exit();
 
 	//estas duas opearacoes sao feitas para assegurar o normal funcionamento do rato quando acabar a funcao
