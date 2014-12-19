@@ -35,6 +35,8 @@ int main(int argc, char **argv) {
 	message msg;
 
 	// mouse
+	unsigned int i = 0;
+	unsigned int j = 0;
 	char bool1 = 0;
 	char bool2 = 0;
 	char a[3];
@@ -48,11 +50,24 @@ int main(int argc, char **argv) {
 	char irq_set_timer = BIT(macro_hook_id_timer);
 	char irq_set_mouse = BIT(macro_hook_id_mouse);
 
-	vg_init(GRAPHIC_MODE_16_BITS);
-	Bitmap* bmp;
 
-	bmp = loadBitmap("home/lcom/proj/code/images/Fundo.bmp");
-	drawBitmap(bmp, 0, 0 , ALIGN_LEFT);
+
+	vg_init(GRAPHIC_MODE_16_BITS);
+
+	char * mouse_buffer = malloc (getHRes() * getVRes() * getBitsPerPixel() / 8);
+	char * screen_buffer = malloc(getHRes() * getVRes() * getBitsPerPixel() / 8);
+	char * video_memory = getVideoMem();
+	char * video_copy = video_memory;
+
+	Bitmap* fundo;
+	Bitmap * leonel;
+
+	fundo = loadBitmap("home/lcom/proj/code/images/Fundo.bmp");
+	leonel = loadBitmap("home/lcom/proj/code/images/leonel.bmp");
+	drawBitmap(fundo, 0, 0 , ALIGN_LEFT, screen_buffer);
+	drawBitmap(leonel, 50, 50, ALIGN_LEFT, screen_buffer);
+	//memcpy(screen_buffer, mouse_buffer, (getHRes() * getVRes() * getBitsPerPixel() / 8));
+	memcpy(video_memory, screen_buffer, (getHRes() * getVRes() * getBitsPerPixel() / 8));
 
 	mouse_t.LB = 0;
 
@@ -78,13 +93,27 @@ int main(int argc, char **argv) {
 				if (msg.NOTIFY_ARG & irq_set_keyboard)
 				{
 					kbd_scan_c(&key);
+					if (key == KEY_SPACE)
+					{
+						memset(screen_buffer, 0xFF, (getHRes() * getVRes() * getBitsPerPixel() / 8));
+						drawBitmap(fundo, 0, 0, ALIGN_LEFT, screen_buffer);
+						memcpy(video_memory, screen_buffer, (getHRes() * getVRes() * getBitsPerPixel() / 8));
+						for (i; i < (getHRes() * getVRes() * getBitsPerPixel() / 8); i++)
+						{
+							if (*video_copy == rgb(0,0,0))
+							{
+								*video_copy = rgb(0,255,0);
+							}
+								video_copy++;
+						}
+					}
+
 				}
 
 				if (msg.NOTIFY_ARG & irq_set_mouse)
 				{
 					sys_inb(OUT_BUF, &key_register);
 					mouse = (unsigned int) key_register;
-
 					//le o packet
 					if (bool1 == 0)
 					{
@@ -119,6 +148,8 @@ int main(int argc, char **argv) {
 							a[2] = byte3;
 							fill_struct(a);
 							printf("Mouse: %d\n", mouse_t.x);
+							printf("Mouse_x: %d\n", mouse_t.x_mouse);
+							printf("Mouse_y: %d\n", mouse_t.y_mouse);
 						}
 					}
 				}
@@ -130,7 +161,8 @@ int main(int argc, char **argv) {
 			/* no standard messages expected: do nothing */
 		}
 	}
-	deleteBitmap(bmp);
+	deleteBitmap(fundo);
+	deleteBitmap(leonel);
 	vg_exit();
 
 	//estas duas opearacoes sao feitas para assegurar o normal funcionamento do rato quando acabar a funcao
