@@ -45,12 +45,12 @@ void fill_struct(char *a) // the size of this array is fixed, so does not need t
 	if (BIT(5) == (BIT(5) & a[0])) //negativo
 	{
 		mouse_t.y = neg8bits(a[2]);
-		mouse_t.y_mouse = mouse_t.y_mouse - mouse_t.y;
+		mouse_t.y_mouse = mouse_t.y_mouse + mouse_t.y;
 	}
 	else //positivo
 	{
 		mouse_t.y = a[2];
-		mouse_t.y_mouse = mouse_t.y_mouse + mouse_t.y;
+		mouse_t.y_mouse = mouse_t.y_mouse - mouse_t.y;
 	}
 }
 

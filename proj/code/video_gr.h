@@ -49,6 +49,9 @@ unsigned getHRes();
 unsigned getVRes();
 unsigned getBitsPerPixel();
 
+int screen_to_mouse(char * screen_buffer, char * mouse_buffer);
+int mouse_to_video(char * mouse_buffer, char * video_memory);
+
 int vbe_get_mode_info(unsigned short mode, vbe_mode_info_t *vmi_p); //NOT COMPLETED
 int vbe_set_mode(unsigned short function, unsigned short mode); //sets the mode mode in the function that the user sets
 int get_vbe_info(vbe_info_block *vib_p);
