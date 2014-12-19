@@ -64,10 +64,12 @@ int main(int argc, char **argv) {
 	Bitmap* fundo;
 	Bitmap* leonel;
 	Bitmap* rato;
+	Bitmap* frame;
 
 	fundo = loadBitmap("home/lcom/proj/code/images/Fundo.bmp");
 	leonel = loadBitmap("home/lcom/proj/code/images/leonel.bmp");
 	rato = loadBitmap("home/lcom/proj/code/images/Mouse.bmp");
+	frame = loadBitmap("home/lcom/proj/code/images/Frame.bmp");
 
 	drawBitmap(fundo, 0, 0 , ALIGN_LEFT, screen_buffer);
 
@@ -100,9 +102,9 @@ int main(int argc, char **argv) {
 					kbd_scan_c(&key);
 					if (key == KEY_SPACE)
 					{
-						drawBitmap(fundo, 0, 0, ALIGN_LEFT, screen_buffer);
+						memset(video_memory, 0xFF, (getHRes() * getVRes() * getBitsPerPixel() / 8));
+						drawBitmap(frame, 0, 0, ALIGN_LEFT, screen_buffer);
 						screen_to_mouse(screen_buffer, mouse_buffer);
-						drawBitmap(leonel, 100, 100, ALIGN_LEFT, mouse_buffer);
 						mouse_to_video(mouse_buffer, video_memory);
 					}
 
@@ -183,6 +185,7 @@ int main(int argc, char **argv) {
 									}
 								}
 							}
+							drawBitmap(fundo, 0, 0, ALIGN_LEFT, screen_buffer);
 							screen_to_mouse(screen_buffer, mouse_buffer);
 							drawBitmap(rato, mouse_t.x_mouse, mouse_t.y_mouse, ALIGN_LEFT, mouse_buffer);
 							mouse_to_video(mouse_buffer, video_memory);
