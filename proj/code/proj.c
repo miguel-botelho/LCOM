@@ -62,7 +62,7 @@ int main(int argc, char **argv) {
 	char * video_copy = video_memory;
 
 	Bitmap* fundo;
-	Bitmap * leonel;
+	Bitmap* leonel;
 	Bitmap* rato;
 
 	fundo = loadBitmap("home/lcom/proj/code/images/Fundo.bmp");
@@ -77,7 +77,7 @@ int main(int argc, char **argv) {
 	mouse_t.LB = 0;
 
 	// enquanto nao passarem 10 segundos ou nao for premida a tecla ESC ou o clique esquerdo do rato
-	while( (contador < 10) && (key != KBD_ESC_KEY)) {
+	while( (contador < 100) && (key != KBD_ESC_KEY)) {
 		/* Get a request message. */
 		if ( (r = driver_receive(ANY, &msg, &ipc_status)) != 0 ) {
 			printf("driver_receive failed with: %d", r);
@@ -100,17 +100,10 @@ int main(int argc, char **argv) {
 					kbd_scan_c(&key);
 					if (key == KEY_SPACE)
 					{
-						memset(screen_buffer, 0xFF, (getHRes() * getVRes() * getBitsPerPixel() / 8));
 						drawBitmap(fundo, 0, 0, ALIGN_LEFT, screen_buffer);
-						memcpy(video_memory, screen_buffer, (getHRes() * getVRes() * getBitsPerPixel() / 8));
-						for (i; i < (getHRes() * getVRes() * getBitsPerPixel() / 8); i++)
-						{
-							if (*video_copy == rgb(0,0,0))
-							{
-								*video_copy = rgb(0,255,0);
-							}
-							video_copy++;
-						}
+						screen_to_mouse(screen_buffer, mouse_buffer);
+						drawBitmap(leonel, 100, 100, ALIGN_LEFT, mouse_buffer);
+						mouse_to_video(mouse_buffer, video_memory);
 					}
 
 				}
@@ -152,12 +145,12 @@ int main(int argc, char **argv) {
 							a[1] = byte2;
 							a[2] = byte3;
 							fill_struct(a);
-
-							if (mouse_t.LB == 1)
+							//funcao exit
+							if ((mouse_t.x_mouse >= 438) && (mouse_t.x_mouse <= 591))
 							{
-								if ((mouse_t.x_mouse >= 438) && (mouse_t.x_mouse <= 591))
+								if ((mouse_t.y_mouse >= 650) && (mouse_t.y_mouse <= 716))
 								{
-									if ((mouse_t.y_mouse >= 650) && (mouse_t.y_mouse <= 716))
+									if (mouse_t.LB == 1)
 									{
 										deleteBitmap(fundo);
 										deleteBitmap(leonel);
@@ -174,6 +167,19 @@ int main(int argc, char **argv) {
 											return -1;
 										}
 										return 0;
+									}
+									else
+									{
+										//mudar cor para preto
+										for (i; i < (getHRes() * getVRes() * getBitsPerPixel() / 8); i++)
+										{
+											if (*video_copy == rgb(0,0,0))
+											{
+												printf("PRETO\n");
+												*video_copy = rgb(0,255,0);
+											}
+											video_copy++;
+										}
 									}
 								}
 							}
@@ -209,4 +215,3 @@ int main(int argc, char **argv) {
 
 	return 0;
 }
-
