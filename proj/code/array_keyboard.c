@@ -42,8 +42,8 @@ void fill_key_scancode(Bitmap ** scan_code)
 
 	unsigned int i = 51;
 	for (i; i < 86; i++)
-		{
+	{
 		scan_code[i] = NULL;
-		}
+	}
 }
 

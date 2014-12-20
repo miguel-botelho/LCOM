@@ -15,9 +15,7 @@ void fill_struct(char *a) // the size of this array is fixed, so does not need t
 
 	if (BIT(4) == (BIT(4) & a[0])) // se for negativo
 	{
-		printf("pos:%d\n", a[1]);
-		printf("neg:%d\n", neg8bits(a[1]));
-		mouse_t.x = 2 * neg8bits(a[1]);
+		mouse_t.x = neg8bits(a[1]);
 		if (mouse_t.x_mouse - mouse_t.x <= 0)
 		{
 			mouse_t.x_mouse = 0;
@@ -26,7 +24,7 @@ void fill_struct(char *a) // the size of this array is fixed, so does not need t
 	}
 	else //nr positivo
 	{
-		mouse_t.x = 2 * a[1];
+		mouse_t.x = a[1];
 		if (mouse_t.x_mouse + mouse_t.x + 5 >= 1024)
 		{
 			mouse_t.x_mouse = 1024 - 5;
@@ -36,8 +34,8 @@ void fill_struct(char *a) // the size of this array is fixed, so does not need t
 
 	if (BIT(5) == (BIT(5) & a[0])) //negativo
 	{
-		mouse_t.y = 2 * neg8bits(a[2]);
-		if (mouse_t.y_mouse + mouse_t.y + 20 >= 768)
+		mouse_t.y = neg8bits(a[2]);
+		if (mouse_t.y_mouse + mouse_t.y + 5 >= 768)
 		{
 			mouse_t.y_mouse = 768 - 5;
 		}
@@ -45,7 +43,7 @@ void fill_struct(char *a) // the size of this array is fixed, so does not need t
 	}
 	else //positivo
 	{
-		mouse_t.y = 2 * a[2];
+		mouse_t.y = a[2];
 		if (mouse_t.y_mouse - mouse_t.y <= 0)
 		{
 			mouse_t.y_mouse = 0;

@@ -10,6 +10,7 @@
 #include "vbe_struct.h"
 #include "keyboard_mouse_macros.h"
 
+
 /**
  * @brief Initializes the video module in graphics mode
  *
@@ -44,21 +45,89 @@ int vg_exit(void);
  */
 int test_square(unsigned short x, unsigned short y, unsigned short size, unsigned long color);
 
+/**
+ * @brief returns video memory
+ *
+ * @return video_memory
+ */
 char* getVideoMem();
+
+/**
+ * @brief returns horizontal resolution
+ *
+ * @return h_res
+ */
 unsigned getHRes();
+
+/**
+ * @brief returns vertical resolution
+ *
+ * @return v_res
+ */
 unsigned getVRes();
+
+/**
+ * @brief returns bits per pixel
+ *
+ * @return bits_per_pixel
+ */
 unsigned getBitsPerPixel();
 
-int screen_to_mouse(char * screen_buffer, char * mouse_buffer);
-int mouse_to_video(char * mouse_buffer, char * video_memory);
 
+/**
+ * @brief copies the screen buffer to the mouse buffer
+ *
+ * @param char screen buffer
+ * @param char mouse buffer
+ *
+ */
+void screen_to_mouse(char * screen_buffer, char * mouse_buffer);
+
+/**
+ * @brief copies the mouse buffer to video memory
+ *
+ * @param char mouse buffer
+ * @param char video memory
+ */
+void mouse_to_video(char * mouse_buffer, char * video_memory);
+
+/**
+ * @brief maps the virtual memory in the selected mode
+ *
+ * @param mode Graphic mode
+ * @param vmi_p struct for vbe
+ *
+ * @return 0 if mapping is successfull, 1 otherwise
+ */
 int vbe_get_mode_info(unsigned short mode, vbe_mode_info_t *vmi_p); //NOT COMPLETED
+
+/**
+ * @brief sets the mode (graphic mode) with the desired function
+ *
+ * @param function (the VBE)
+ * @param mode (graphic mode)
+ *
+ * @return 0 if mode is set correctly, 1 otherwise
+ */
 int vbe_set_mode(unsigned short function, unsigned short mode); //sets the mode mode in the function that the user sets
+
+/**
+ * @brief gets the vbe info(own function)
+ *
+ * @param vib_p struct for vbe
+ *
+ * @return 0 if mapping is successfull, 1 otherwise
+ */
 int get_vbe_info(vbe_info_block *vib_p);
 
-char *read_xpm(char *map[], int *width, int *height);
-int xpm_cre(int *altura, int *largura, unsigned short x, unsigned short y, char *xpm[]);
-int xpm_del(int *altura, int *largura, unsigned short x, unsigned short y);
-
+/**
+ * @brief changes an rgb color to an int only
+ *
+ * @param r red color
+ * @param g green color
+ * @param b blue color
+ *
+ * @return color
+ */
 int rgb(unsigned char r, unsigned char g, unsigned char b);
 #endif /* __VIDEO_GR_H */

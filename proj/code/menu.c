@@ -12,7 +12,7 @@ void bitmaps_load(bitmap_struct *t)
 	t->win = loadBitmap("home/lcom/proj/code/images/Win.bmp");
 }
 
-void exit_menu(bitmap_struct bitmaps)
+int exit_menu(bitmap_struct bitmaps)
 {
 	deleteBitmap(bitmaps.background);
 	deleteBitmap(bitmaps.mouse);
@@ -26,7 +26,9 @@ void exit_menu(bitmap_struct bitmaps)
 	if (unsubscribe_all() == -1)
 	{
 		printf("Failure to unsubscribe!! \n\n");
+		return -1;
 	}
+	return 0;
 }
 
 char position_menu(bitmap_struct bitmaps, char * video_copy)
@@ -37,8 +39,9 @@ char position_menu(bitmap_struct bitmaps, char * video_copy)
 		{
 			if (mouse_t.LB == 1)
 			{
-				exit_menu(bitmaps);
-				return 0;
+				if (0 == exit_menu(bitmaps))
+					return 0;
+				else return 1;
 			}
 			else
 			{
@@ -54,6 +57,8 @@ char position_menu(bitmap_struct bitmaps, char * video_copy)
 			if (mouse_t.LB == 1)
 			{
 				exit_menu(bitmaps);
+				HighScores_menu(); //not done
+				//funcao HighScores
 				return 0;
 			}
 			else
@@ -70,6 +75,8 @@ char position_menu(bitmap_struct bitmaps, char * video_copy)
 			if (mouse_t.LB == 1)
 			{
 				exit_menu(bitmaps);
+				online_menu();
+				//funcao online
 				return 0;
 			}
 			else
@@ -86,6 +93,8 @@ char position_menu(bitmap_struct bitmaps, char * video_copy)
 			if (mouse_t.LB == 1)
 			{
 				exit_menu(bitmaps);
+				Head_to_Head();
+				//funcao Head To Head
 				return 0;
 			}
 			else
@@ -102,6 +111,8 @@ char position_menu(bitmap_struct bitmaps, char * video_copy)
 			if (mouse_t.LB == 1)
 			{
 				exit_menu(bitmaps);
+				HumanMachine();
+				//funcao human vs machine
 				return 0;
 			}
 			else
@@ -110,25 +121,50 @@ char position_menu(bitmap_struct bitmaps, char * video_copy)
 			}
 		}
 	}
+	return 1;
 }
 
 int change_color(unsigned xi, unsigned xf, unsigned yi, unsigned yf, int color_init, int color_final, char * video_copy)
 {
-	video_copy = video_copy + (1024 * yi) + xi;
+	video_copy = video_copy + xi * 2 + (1024 * yi) * 2;
 	unsigned int i = xi;
 	unsigned int j = yi;
+	char bool = 1;
 	for (j; j < xf; j++)
 	{
 		for (i; i < yf; i++)
 		{
 			if (color_init == *video_copy)
+			{
+				bool = 0;
 				*video_copy = color_final;
-			video_copy++;
+				printf("entrei\n");
+			}
+			video_copy+=2;
 		}
 		i = 0;
 		video_copy = video_copy + 1024 - (xf - xi);
 	}
 	video_copy = getVideoMem();
+	return bool;
+}
+
+int HighScores_menu()
+{
 	return 0;
 }
 
+int online_menu()
+{
+	return 0;
+}
+
+int Head_to_Head()
+{
+	return 0;
+}
+
+int HumanMachine()
+{
+	return 0;
+}
