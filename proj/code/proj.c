@@ -1,6 +1,6 @@
 
 #include "lib.h"
-
+#include "array_keyboard.h"
 #include "struct_scores.h"
 #include "struct_bmp.h"
 #include "serial_port_macros.h"
@@ -32,7 +32,6 @@ int main(int argc, char **argv) {
 
 	mouse_int_handler(SET_STREAM); //define o rato como stream mode
 	mouse_int_handler(ESDP); //ativa o envio dos dados por parte do rato
-
 	int contador = 0;
 	int temp_counter = 0;
 	int key = 0;
@@ -55,6 +54,8 @@ int main(int argc, char **argv) {
 	// graphics mode
 	bitmap_struct bitmaps;
 	bitmaps_load(&bitmaps); // this operation may require a lot of time
+	Bitmap *key_scancode[86];
+	fill_key_scancode(key_scancode);
 
 	// scores
 	scores_t scores;
@@ -154,43 +155,11 @@ int main(int argc, char **argv) {
 							fill_struct(a);
 
 							//funcao exit
-							if ((mouse_t.x_mouse >= 438) && (mouse_t.x_mouse <= 591))
+							if (position_menu(bitmaps, video_memory) == 0)
 							{
-								if ((mouse_t.y_mouse >= 650) && (mouse_t.y_mouse <= 716))
-								{
-									if (mouse_t.LB == 1)
-									{
-										deleteBitmap(bitmaps.background);
-										deleteBitmap(bitmaps.mouse);
-										deleteBitmap(bitmaps.frame);
-										vg_exit();
-
-										//estas duas opearacoes sao feitas para assegurar o normal funcionamento do rato quando acabar a funcao
-										mouse_int_handler(DISABLE_STREAM); //desativa a stream
-										mouse_int_handler(SET_STREAM); //volta a ativar a stream, isto foi feito para desativar o envio dos pacotes
-
-										if (unsubscribe_all() == -1)
-										{
-											printf("Failure to unsubscribe!! \n\n");
-											return -1;
-										}
-										return 0;
-									}
-									else
-									{
-										//mudar cor para vermelho
-										for (i; i < (getHRes() * getVRes() * getBitsPerPixel() / 8); i++)
-										{
-											if (*video_copy == rgb(0,0,0))
-											{
-												printf("PRETO\n");
-												*video_copy = rgb(0,255,0);
-											}
-											video_copy++;
-										}
-									}
-								}
+								return 0;
 							}
+
 							drawBitmap(bitmaps.background, 0, 0, ALIGN_LEFT, screen_buffer);
 							screen_to_mouse(screen_buffer, mouse_buffer);
 							drawBitmap(bitmaps.mouse, mouse_t.x_mouse, mouse_t.y_mouse, ALIGN_LEFT, mouse_buffer);
