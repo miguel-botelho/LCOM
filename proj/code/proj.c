@@ -30,14 +30,6 @@ int main(int argc, char **argv) {
 		return -1;
 	}
 
-	mouse_int_handler(SET_STREAM); //define o rato como stream mode
-	mouse_int_handler(ESDP); //ativa o envio dos dados por parte do rato
-	int contador = 0;
-	int temp_counter = 0;
-	int key = 0;
-	int r;
-	int ipc_status;
-	message msg;
 
 	// mouse
 	unsigned int i = 0;
@@ -50,6 +42,22 @@ int main(int argc, char **argv) {
 	char byte3;
 	unsigned int mouse;
 	unsigned long key_register;
+	mouse_int_handler(SET_STREAM); //define o rato como stream mode
+	mouse_int_handler(ESDP); //ativa o envio dos dados por parte do rato
+
+	//timer
+	int contador = 0;
+	int temp_counter = 0;
+
+	//keyboard
+	int key = 0;
+
+	//hardware
+	int r;
+	int ipc_status;
+	message msg;
+
+
 
 	// graphics mode
 	bitmap_struct bitmaps;
@@ -60,6 +68,7 @@ int main(int argc, char **argv) {
 	// scores
 	scores_t scores;
 
+	//irq_sets
 	char irq_set_keyboard = BIT(macro_hook_id_keyboard);
 	char irq_set_timer = BIT(macro_hook_id_timer);
 	char irq_set_mouse = BIT(macro_hook_id_mouse);
@@ -78,6 +87,7 @@ int main(int argc, char **argv) {
 	// Mouse on the middle of the screen
 	mouse_t.x_mouse = getHRes() / 2;
 	mouse_t.y_mouse = getVRes() / 2;
+
 	char * mouse_buffer = malloc (getHRes() * getVRes() * getBitsPerPixel() / 8);
 	char * screen_buffer = malloc(getHRes() * getVRes() * getBitsPerPixel() / 8);
 	char * video_memory = getVideoMem();
@@ -87,7 +97,10 @@ int main(int argc, char **argv) {
 	drawBitmap(bitmaps.background, 0, 0 , ALIGN_LEFT, screen_buffer);
 
 	screen_to_mouse(screen_buffer, mouse_buffer);
-	drawBitmap(bitmaps.mouse, mouse_t.x_mouse, mouse_t.y_mouse, ALIGN_LEFT, mouse_buffer);
+
+	// Draw the mouse
+	drawMouse(bitmaps.mouse, mouse_t.x_mouse, mouse_t.y_mouse, ALIGN_LEFT, mouse_buffer);
+
 	mouse_to_video(mouse_buffer, video_memory);
 
 	// enquanto nao for premida a tecla ESC
@@ -100,24 +113,24 @@ int main(int argc, char **argv) {
 		if (is_ipc_notify(ipc_status)) { /* received notification */
 			switch (_ENDPOINT_P(msg.m_source)) {
 			case HARDWARE: /* hardware interrupt notification */
-				if (msg.NOTIFY_ARG & irq_set_timer) { /* subscribed interrupt */
+				if (msg.NOTIFY_ARG & irq_set_timer) /* subscribed interrupt for timer*/
+				{
 
 				}
 
-				if (msg.NOTIFY_ARG & irq_set_keyboard)
+				if (msg.NOTIFY_ARG & irq_set_keyboard) /* subscribed interrupt for keyboard*/
 				{
 					kbd_scan_c(&key);
 					if (key == KEY_SPACE)
 					{
-						memset(video_memory, 0xFF, (getHRes() * getVRes() * getBitsPerPixel() / 8));
+						memset(video_memory, BLACK, (getHRes() * getVRes() * getBitsPerPixel() / 8));
 						drawBitmap(bitmaps.frame, 0, 0, ALIGN_LEFT, screen_buffer);
 						screen_to_mouse(screen_buffer, mouse_buffer);
 						mouse_to_video(mouse_buffer, video_memory);
 					}
-
 				}
 
-				if (msg.NOTIFY_ARG & irq_set_mouse)
+				if (msg.NOTIFY_ARG & irq_set_mouse) /* subscribed interrupt for mouse*/
 				{
 					sys_inb(OUT_BUF, &key_register);
 					mouse = (unsigned int) key_register;
@@ -154,21 +167,21 @@ int main(int argc, char **argv) {
 							a[2] = byte3;
 							fill_struct(a);
 
-							//funcao exit
 							if (position_menu(bitmaps, video_memory) == 0)
 							{
 								return 0;
 							}
-
 							drawBitmap(bitmaps.background, 0, 0, ALIGN_LEFT, screen_buffer);
+
 							screen_to_mouse(screen_buffer, mouse_buffer);
-							drawBitmap(bitmaps.mouse, mouse_t.x_mouse, mouse_t.y_mouse, ALIGN_LEFT, mouse_buffer);
+							drawMouse(bitmaps.mouse, mouse_t.x_mouse, mouse_t.y_mouse, ALIGN_LEFT, mouse_buffer);
+
 							mouse_to_video(mouse_buffer, video_memory);
 						}
 					}
 				}
 
-				if (msg.NOTIFY_ARG & irq_set_sp1)
+				if (msg.NOTIFY_ARG & irq_set_sp1) /* subscribed interrupt for serial port 1*/
 				{
 					sys_inb(BASE_ADDRESS_COM1 + INTERRUPT_IDENTIFICATION, &line_status);
 					if (INTERRUPT_ORIGIN_RECEIVED_DATA & line_status)
@@ -194,7 +207,7 @@ int main(int argc, char **argv) {
 					}
 				}
 
-				if (msg.NOTIFY_ARG & irq_set_sp2)
+				if (msg.NOTIFY_ARG & irq_set_sp2) /* subscribed interrupt for serial port 2*/
 				{
 					sys_inb(BASE_ADDRESS_COM2 + INTERRUPT_IDENTIFICATION, &line_status);
 					if (INTERRUPT_ORIGIN_RECEIVED_DATA & line_status)
@@ -219,8 +232,6 @@ int main(int argc, char **argv) {
 						printf("Error on serial port 1!\n");
 					}
 				}
-
-
 				break;
 			default:
 				break; /* no other notifications expected: do nothing */
@@ -229,9 +240,13 @@ int main(int argc, char **argv) {
 			/* no standard messages expected: do nothing */
 		}
 	}
+
+	//Delete from memory
 	deleteBitmap(bitmaps.background);
 	deleteBitmap(bitmaps.mouse);
 	deleteBitmap(bitmaps.frame);
+
+	//Exit the graphic mode
 	vg_exit();
 
 	//estas duas opearacoes sao feitas para assegurar o normal funcionamento do rato quando acabar a funcao

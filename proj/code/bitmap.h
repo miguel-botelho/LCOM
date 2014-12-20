@@ -50,7 +50,7 @@ typedef struct {
 } Bitmap;
 
 /**
- * @brief Loads a bmp image
+ * @brief Loads a bmp image (made by Henrique Ferrolho)
  *
  * @param filename Path of the image to load
  * @return Non NULL pointer to the image buffer
@@ -58,17 +58,29 @@ typedef struct {
 Bitmap* loadBitmap(const char* filename);
 
 /**
- * @brief Draws an unscaled, unrotated bitmap at the given position
+ * @brief Draws an unscaled, unrotated bitmap at the given position (made by Henrique Ferrolho, slightly changed by us)
  *
- * @param bitmap bitmap to be drawn
+ * @param bmp bitmap to be drawn
  * @param x destiny x coord
  * @param y destiny y coord
  * @param alignment image alignment
+ * @param char buffer
  */
-void drawBitmap(Bitmap* bitmap, int x, int y, Alignment alignment, char * buffer);
+void drawBitmap(Bitmap* bmp, int x, int y, Alignment alignment, char * buffer);
 
 /**
- * @brief Destroys the given bitmap, freeing all resources used by it.
+ * @brief Loads an image with transparency (green). This one was made by us
+ *
+ * @param bmp bitmap to be drawn
+ * @param x x coord
+ * @param y y coord
+ * @param alignment image alignment
+ * @param char buffer
+ */
+void drawMouse(Bitmap* bmp, int x, int y, Alignment alignment, char * buffer);
+
+/**
+ * @brief Destroys the given bitmap, freeing all resources used by it. (made by Henrique Ferrolho)
  *
  * @param bitmap bitmap to be destroyed
  */
