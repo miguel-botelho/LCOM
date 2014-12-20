@@ -96,4 +96,40 @@ int rtc_subscribe_int();
  */
 int rtc_unsubscribe_int();
 
+/**
+ * @brief Subscribe COM1
+ *
+ * Subscribe COM1.
+ *
+ * @return -1 upon failure or non -1 otherwise
+ */
+int sp1_subscribe_int();
+
+/**
+ * @brief Unsubscribe COM1
+ *
+ * Unsubscribe COM1.
+ *
+ * @return -1 upon failure or non -1 otherwise
+ */
+int sp1_unsubscribe_int();
+
+/**
+ * @brief Subscribe COM2
+ *
+ * Subscribe COM2.
+ *
+ * @return -1 upon failure or non -1 otherwise
+ */
+int sp2_subscribe_int();
+
+/**
+ * @brief Unsubscribe COM2
+ *
+ * Unsubscribe COM2.
+ *
+ * @return -1 upon failure or non -1 otherwise
+ */
+int sp2_unsubscribe_int();
+
 #endif /* __DEVICE_INTERRUPTS_H */

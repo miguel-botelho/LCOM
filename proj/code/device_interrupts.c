@@ -4,6 +4,8 @@ int hook_id_timer = macro_hook_id_timer;
 int hook_id_keyboard = macro_hook_id_keyboard;
 int hook_id_mouse = macro_hook_id_mouse;
 int hook_id_rtc = macro_hook_id_rtc;
+int hook_id_sp1 = macro_hook_id_sp1;
+int hook_id_sp2 = macro_hook_id_sp2;
 
 int subscribe_all()
 {
@@ -28,6 +30,25 @@ int subscribe_all()
 		kbd_unsubscribe_int();
 		timer_unsubscribe_int();
 		mouse_unsubscribe_int();
+		return -1;
+	}
+
+	if (sp1_subscribe_int() == -1)
+	{
+		kbd_unsubscribe_int();
+		timer_unsubscribe_int();
+		mouse_unsubscribe_int();
+		rtc_unsubscribe_int();
+		return -1;
+	}
+
+	if (sp2_subscribe_int() == -1)
+	{
+		kbd_unsubscribe_int();
+		timer_unsubscribe_int();
+		mouse_unsubscribe_int();
+		rtc_unsubscribe_int();
+		sp1_unsubscribe_int();
 		return -1;
 	}
 
@@ -121,6 +142,60 @@ int rtc_unsubscribe_int() {
 
 	if (OK == sys_irqdisable(&hook_id_rtc))
 		if (OK == sys_irqrmpolicy(&hook_id_rtc))
+			return 0;
+	return -1;
+}
+
+int sp1_subscribe_int()
+{
+	int hook_temp = hook_id_sp1;
+
+	if (sys_irqsetpolicy(COM1_IRQ, IRQ_REENABLE | IRQ_EXCLUSIVE, &hook_id_sp1) != OK)
+	{
+		printf("SET POlicy\n");
+		return -1;
+	}
+
+	if (sys_irqenable(&hook_id_sp1) != OK)
+	{
+		printf("irq enable\n");
+		return -1;
+	}
+
+	return BIT(hook_temp);
+}
+
+int sp2_subscribe_int()
+{
+	int hook_temp = hook_id_sp2;
+
+	if (sys_irqsetpolicy(COM2_IRQ, IRQ_REENABLE | IRQ_EXCLUSIVE, &hook_id_sp2) != OK)
+	{
+		printf("SET POlicy\n");
+		return -1;
+	}
+
+	if (sys_irqenable(&hook_id_sp2) != OK)
+	{
+		printf("irq enable\n");
+		return -1;
+	}
+
+	return BIT(hook_temp);
+}
+
+int sp1_unsubscribe_int()
+{
+	if (sys_irqdisable(&hook_id_sp1) == OK)
+		if (sys_irqrmpolicy(&hook_id_sp1) == OK)
+			return 0;
+	return -1;
+}
+
+int sp2_unsubscribe_int()
+{
+	if (sys_irqdisable(&hook_id_sp2) == OK)
+		if (sys_irqrmpolicy(&hook_id_sp2) == OK)
 			return 0;
 	return -1;
 }
