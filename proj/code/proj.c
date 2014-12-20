@@ -1,6 +1,9 @@
 
 #include "lib.h"
 
+#include "struct_scores.h"
+#include "struct_bmp.h"
+#include "serial_port_macros.h"
 #include "subscribe_macros.h"
 #include "device_interrupts.h"
 #include "keyboard.h"
@@ -9,6 +12,9 @@
 #include "video_gr.h"
 #include "bitmap.h"
 #include "rtc.h"
+#include "menu.h"
+#include "struct_bmp.h"
+#include "read_write.h"
 
 int main(int argc, char **argv) {
 
@@ -46,14 +52,29 @@ int main(int argc, char **argv) {
 	unsigned int mouse;
 	unsigned long key_register;
 
+	// graphics mode
+	bitmap_struct bitmaps;
+	bitmaps_load(&bitmaps); // this operation may require a lot of time
+
+	// scores
+	scores_t scores;
+
 	char irq_set_keyboard = BIT(macro_hook_id_keyboard);
 	char irq_set_timer = BIT(macro_hook_id_timer);
 	char irq_set_mouse = BIT(macro_hook_id_mouse);
+	char irq_set_sp1 = BIT(macro_hook_id_sp1);
+	char irq_set_sp2 = BIT(macro_hook_id_sp2);
 
+	//atributes for the serial port
+	unsigned long line_status;
+	char send[1];
+	int size_send = 1;
+	char need_to_write = 0; // 0 = false
 
-
+	// Initialization of graphics mode
 	vg_init(GRAPHIC_MODE_16_BITS);
 
+	// Mouse on the middle of the screen
 	mouse_t.x_mouse = getHRes() / 2;
 	mouse_t.y_mouse = getVRes() / 2;
 	char * mouse_buffer = malloc (getHRes() * getVRes() * getBitsPerPixel() / 8);
@@ -61,25 +82,15 @@ int main(int argc, char **argv) {
 	char * video_memory = getVideoMem();
 	char * video_copy = video_memory;
 
-	Bitmap* fundo;
-	Bitmap* leonel;
-	Bitmap* rato;
-	Bitmap* frame;
-
-	fundo = loadBitmap("home/lcom/proj/code/images/Fundo.bmp");
-	leonel = loadBitmap("home/lcom/proj/code/images/leonel.bmp");
-	rato = loadBitmap("home/lcom/proj/code/images/Mouse.bmp");
-	frame = loadBitmap("home/lcom/proj/code/images/Frame.bmp");
-
-	drawBitmap(fundo, 0, 0 , ALIGN_LEFT, screen_buffer);
+	// Draw of the background
+	drawBitmap(bitmaps.background, 0, 0 , ALIGN_LEFT, screen_buffer);
 
 	screen_to_mouse(screen_buffer, mouse_buffer);
-	drawBitmap(rato, mouse_t.x_mouse, mouse_t.y_mouse, ALIGN_LEFT, mouse_buffer);
+	drawBitmap(bitmaps.mouse, mouse_t.x_mouse, mouse_t.y_mouse, ALIGN_LEFT, mouse_buffer);
 	mouse_to_video(mouse_buffer, video_memory);
-	mouse_t.LB = 0;
 
-	// enquanto nao passarem 10 segundos ou nao for premida a tecla ESC ou o clique esquerdo do rato
-	while( (contador < 100) && (key != KBD_ESC_KEY)) {
+	// enquanto nao for premida a tecla ESC
+	while( key != KBD_ESC_KEY) {
 		/* Get a request message. */
 		if ( (r = driver_receive(ANY, &msg, &ipc_status)) != 0 ) {
 			printf("driver_receive failed with: %d", r);
@@ -89,12 +100,7 @@ int main(int argc, char **argv) {
 			switch (_ENDPOINT_P(msg.m_source)) {
 			case HARDWARE: /* hardware interrupt notification */
 				if (msg.NOTIFY_ARG & irq_set_timer) { /* subscribed interrupt */
-					temp_counter++;
-					if ((temp_counter/60) == 1) //se for true quer dizer que passou um segundo
-					{
-						contador++;
-						temp_counter = 0; //reset do temp_counter para voltar a contar os primeiros freq tiques
-					}
+
 				}
 
 				if (msg.NOTIFY_ARG & irq_set_keyboard)
@@ -103,7 +109,7 @@ int main(int argc, char **argv) {
 					if (key == KEY_SPACE)
 					{
 						memset(video_memory, 0xFF, (getHRes() * getVRes() * getBitsPerPixel() / 8));
-						drawBitmap(frame, 0, 0, ALIGN_LEFT, screen_buffer);
+						drawBitmap(bitmaps.frame, 0, 0, ALIGN_LEFT, screen_buffer);
 						screen_to_mouse(screen_buffer, mouse_buffer);
 						mouse_to_video(mouse_buffer, video_memory);
 					}
@@ -134,7 +140,6 @@ int main(int argc, char **argv) {
 						}
 						else
 						{
-
 							//este e o 3 byte
 							//estao todos lidos
 							//bool3 = 1;
@@ -147,6 +152,7 @@ int main(int argc, char **argv) {
 							a[1] = byte2;
 							a[2] = byte3;
 							fill_struct(a);
+
 							//funcao exit
 							if ((mouse_t.x_mouse >= 438) && (mouse_t.x_mouse <= 591))
 							{
@@ -154,10 +160,9 @@ int main(int argc, char **argv) {
 								{
 									if (mouse_t.LB == 1)
 									{
-										deleteBitmap(fundo);
-										deleteBitmap(leonel);
-										deleteBitmap(rato);
-										deleteBitmap(frame);
+										deleteBitmap(bitmaps.background);
+										deleteBitmap(bitmaps.mouse);
+										deleteBitmap(bitmaps.frame);
 										vg_exit();
 
 										//estas duas opearacoes sao feitas para assegurar o normal funcionamento do rato quando acabar a funcao
@@ -186,14 +191,67 @@ int main(int argc, char **argv) {
 									}
 								}
 							}
-							drawBitmap(fundo, 0, 0, ALIGN_LEFT, screen_buffer);
+							drawBitmap(bitmaps.background, 0, 0, ALIGN_LEFT, screen_buffer);
 							screen_to_mouse(screen_buffer, mouse_buffer);
-							drawBitmap(rato, mouse_t.x_mouse, mouse_t.y_mouse, ALIGN_LEFT, mouse_buffer);
+							drawBitmap(bitmaps.mouse, mouse_t.x_mouse, mouse_t.y_mouse, ALIGN_LEFT, mouse_buffer);
 							mouse_to_video(mouse_buffer, video_memory);
-
 						}
 					}
 				}
+
+				if (msg.NOTIFY_ARG & irq_set_sp1)
+				{
+					sys_inb(BASE_ADDRESS_COM1 + INTERRUPT_IDENTIFICATION, &line_status);
+					if (INTERRUPT_ORIGIN_RECEIVED_DATA & line_status)
+					{
+						com1_receive_interrupt(size_send, send);
+						/////////////////////////////////////////////////////////
+						// need to call the handler (don exist, need to create)//
+						/////////////////////////////////////////////////////////
+					}
+					else if (INTERRUPT_ORIGIN_TRANSMITTER_EMPTY & line_status)
+					{
+						if (need_to_write) //need_to_write = 1 = true
+						{
+							/////////////////////////////////////////////////////////
+							// need to call the handler (don exist, need to create)//
+							/////////////////////////////////////////////////////////
+							need_to_write = 0;
+						}
+					}
+					else
+					{
+						printf("Error on serial port 1!\n");
+					}
+				}
+
+				if (msg.NOTIFY_ARG & irq_set_sp2)
+				{
+					sys_inb(BASE_ADDRESS_COM2 + INTERRUPT_IDENTIFICATION, &line_status);
+					if (INTERRUPT_ORIGIN_RECEIVED_DATA & line_status)
+					{
+						com2_receive_interrupt(size_send, send);
+						/////////////////////////////////////////////////////////
+						// need to call the handler (don exist, need to create)//
+						/////////////////////////////////////////////////////////
+					}
+					else if (INTERRUPT_ORIGIN_TRANSMITTER_EMPTY & line_status)
+					{
+						if (need_to_write) //need_to_write = 1 = true
+						{
+							/////////////////////////////////////////////////////////
+							// need to call the handler (don exist, need to create)//
+							/////////////////////////////////////////////////////////
+							need_to_write = 0;
+						}
+					}
+					else
+					{
+						printf("Error on serial port 1!\n");
+					}
+				}
+
+
 				break;
 			default:
 				break; /* no other notifications expected: do nothing */
@@ -202,10 +260,9 @@ int main(int argc, char **argv) {
 			/* no standard messages expected: do nothing */
 		}
 	}
-	deleteBitmap(fundo);
-	deleteBitmap(leonel);
-	deleteBitmap(rato);
-	deleteBitmap(frame);
+	deleteBitmap(bitmaps.background);
+	deleteBitmap(bitmaps.mouse);
+	deleteBitmap(bitmaps.frame);
 	vg_exit();
 
 	//estas duas opearacoes sao feitas para assegurar o normal funcionamento do rato quando acabar a funcao
