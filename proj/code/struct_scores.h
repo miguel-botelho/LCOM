@@ -3,7 +3,7 @@
 
 #include "struct_color.h"
 
-#define MAX_DRAW_SIZE			9999
+#define MAX_DRAW_SIZE			999999
 
 typedef struct
 {
