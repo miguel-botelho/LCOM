@@ -314,6 +314,7 @@ menu.o:	menu.h
 menu.o:	menu_macros.h
 menu.o:	mouse_struct.h
 menu.o:	struct_bmp.h
+menu.o:	struct_color.h
 menu.o:	struct_scores.h
 menu.o:	subscribe_macros.h
 menu.o:	vbe_struct.h
@@ -379,6 +380,10 @@ mouse.o:	mouse.c
 mouse.o:	mouse.h
 mouse.o:	mouse_struct.h
 mouse.o:	subscribe_macros.h
+
+option.o:	menu_macros.h
+option.o:	option.c
+option.o:	option.h
 
 proj.o:	/usr/include/errno.h
 proj.o:	/usr/include/limits.h
@@ -446,6 +451,7 @@ proj.o:	menu.h
 proj.o:	menu_macros.h
 proj.o:	mouse.h
 proj.o:	mouse_struct.h
+proj.o:	option.h
 proj.o:	proj.c
 proj.o:	read_write.h
 proj.o:	rtc.h
@@ -522,6 +528,7 @@ read_write.o:	lmlib.h
 read_write.o:	read_write.c
 read_write.o:	read_write.h
 read_write.o:	struct_bmp.h
+read_write.o:	struct_color.h
 read_write.o:	struct_scores.h
 read_write.o:	subscribe_macros.h
 read_write.o:	vbe_struct.h

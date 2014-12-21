@@ -6,6 +6,8 @@
 #include "lib.h"
 #include "keyboard_mouse_macros.h"
 
+char get_char(int key);
+
 /**
  * @brief Interpret the scancode
  *

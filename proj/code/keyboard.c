@@ -1,5 +1,43 @@
 #include "keyboard.h"
 
+
+char get_char(int key)
+{
+	switch (key)
+	{
+	case 0x0010: return 'Q';
+	case 0x0011: return 'W';
+	case 0x0012: return 'E';
+	case 0x0013: return 'R';
+	case 0x0014: return 'T';
+	case 0x0015: return 'Y';
+	case 0x0016: return 'U';
+	case 0x0017: return 'I';
+	case 0x0018: return 'O';
+	case 0x0019: return 'P';
+
+	case 0x001E: return 'A';
+	case 0x001F: return 'S';
+	case 0x0020: return 'D';
+	case 0x0021: return 'F';
+	case 0x0022: return 'G';
+	case 0x0023: return 'H';
+	case 0x0024: return 'J';
+	case 0x0025: return 'K';
+	case 0x0026: return 'L';
+
+	case 0x002C: return 'Z';
+	case 0x002D: return 'X';
+	case 0x002E: return 'C';
+	case 0x002F: return 'V';
+	case 0x0030: return 'B';
+	case 0x0031: return 'N';
+	case 0x0032: return 'M';
+
+	default: return '_';
+	}
+}
+
 int kbd_scan_c(int *apt)
 {
 

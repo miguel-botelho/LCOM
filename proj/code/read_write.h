@@ -14,7 +14,7 @@
  * @param *a array to be filled
  *
  */
-void read_array(FILE *fp, int size, char *a);
+void read_array(FILE *fp, int size, color_st *a);
 
 /**
  * @brief Fill a struct from a file
@@ -48,7 +48,7 @@ void read_all(scores_t *t);
  * @param *a array that has the information
  *
  */
-void write_array(FILE *fp, int size, char *a);
+void write_array(FILE *fp, int size, color_st *a);
 
 /**
  * @brief Write a struct to a file

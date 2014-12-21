@@ -1,5 +1,7 @@
 
+#include "option.h"
 #include "lib.h"
+
 #include "struct_color.h"
 #include "frame.h"
 #include "menu_macros.h"
@@ -60,9 +62,6 @@ int main(int argc, char **argv) {
 	int ipc_status;
 	message msg;
 
-	//Menu option
-	char menu_option = MAIN_MENU;
-
 	//Color array
 	color_st *color;
 
@@ -110,6 +109,16 @@ int main(int argc, char **argv) {
 
 	mouse_to_video(mouse_buffer, video_memory);
 
+	//atributes
+	mouse_t.LB = 0; //to prevent the selection of the first menu
+	position_t current_draw[MAX_DRAW_SIZE];
+	int current_draw_size = 0;
+	char name[11];
+
+	//highscore
+	scores_t highscore;
+	//read_all(&highscore);
+
 	// enquanto nao for premida a tecla ESC
 	while( /*key != KBD_ESC_KEY */ 1) {
 		/* Get a request message. */
@@ -128,8 +137,45 @@ int main(int argc, char **argv) {
 				if (msg.NOTIFY_ARG & irq_set_keyboard) /* subscribed interrupt for keyboard*/
 				{
 					kbd_scan_c(&key);
+
+					if (OPTION == GET_NAME)
+					{
+						int length = 0;
+						if (length == 10)
+						{
+							if (key == KEY_ENTER_M || key == KEY_NUM_ENTER_M)
+							{
+								length++;
+								name[length] = '\0';
+								OPTION = MAIN_MENU;
+							}
+						}
+						else if ((key == KEY_ENTER_M || key == KEY_NUM_ENTER_M) && (length > 0))
+						{
+							length++;
+							name[length] = '\0';
+							OPTION = MAIN_MENU;
+						}
+						else
+						{
+							name[length] = get_char(key);
+							if (name[length] >= 'A' && name[length] <= 'Z')
+							{
+								length++;
+							}
+						}
+					}
+
 					if (key == KEY_ESC)
 					{
+						if (OPTION == GET_NAME)
+						{
+							name[0] = 'U';
+							name[1] = 'P';
+							name[2] = 'S';
+							name[3] = '\0';
+						}
+						OPTION = MAIN_MENU;
 						drawBitmap(bitmaps.background, 0, 0, ALIGN_LEFT, screen_buffer);
 						screen_to_mouse(screen_buffer, mouse_buffer);
 						drawMouse(bitmaps.mouse, mouse_t.x_mouse, mouse_t.y_mouse, ALIGN_LEFT, mouse_buffer);
@@ -175,10 +221,9 @@ int main(int argc, char **argv) {
 							a[2] = byte3;
 							fill_struct(a);
 
-							if (position_menu(bitmaps) == 0)
-							{
-								return 0;
-							}
+							printf("rato\n");
+							menu_handler(bitmaps);
+							printf("menu\n");
 
 							screen_to_mouse(screen_buffer, mouse_buffer);
 							drawMouse(bitmaps.mouse, mouse_t.x_mouse, mouse_t.y_mouse, ALIGN_LEFT, mouse_buffer);
@@ -265,6 +310,8 @@ int main(int argc, char **argv) {
 		printf("Failure to unsubscribe!! \n\n");
 		return -1;
 	}
+
+	//write_all(&highscore);
 
 	return 0;
 }

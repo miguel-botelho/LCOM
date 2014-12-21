@@ -1,6 +1,6 @@
 #include "read_write.h"
 
-void read_array(FILE *fp, int size, char *a)
+void read_array(FILE *fp, int size, color_st *a)
 {
 	//needs to be made
 }
@@ -103,14 +103,14 @@ void read_all(scores_t *t)
 	read_position(fp, &(t->first));
 	read_position(fp, &(t->second));
 	read_position(fp, &(t->third));
-	read_position(fp, &(t->forth));
+	read_position(fp, &(t->fourth));
 	read_position(fp, &(t->fifth));
 
 	fclose(fp);
 }
 
 
-void write_array(FILE *fp, int size, char *a)
+void write_array(FILE *fp, int size, color_st *a)
 {
 	//needs to be made
 }
@@ -280,7 +280,7 @@ void write_all(scores_t *t)
 	write_position(fp, &(t->first));
 	write_position(fp, &(t->second));
 	write_position(fp, &(t->third));
-	write_position(fp, &(t->forth));
+	write_position(fp, &(t->fourth));
 	write_position(fp, &(t->fifth));
 
 	fclose(fp);
