@@ -2,7 +2,52 @@
 
 void read_array(FILE *fp, int size, color_st *a)
 {
-	//needs to be made
+	char x[1];
+	char ch1, ch2, ch3, ch4;
+
+	a = (color_st*) realloc (x, size * sizeof(color_st));
+
+	int i;
+
+	for (i = 0; i < size; i++)
+	{
+		//tick
+		ch1 = fgetc(fp);
+		ch2 = fgetc(fp);
+		ch3 = fgetc(fp);
+		ch4 = fgetc(fp);
+		a[i].tick = (ch1 - '0') * 1000 + (ch2 - '0') * 100 + (ch3 - '0') * 10 + (ch4 - '0');
+
+		// ignores the new line '\n'
+		ch1 = fgetc(fp);
+
+		//red
+		ch1 = fgetc(fp);
+		ch2 = fgetc(fp);
+		ch3 = fgetc(fp);
+		a[i].red = (ch1 - '0') * 100 + (ch2 - '0') * 10 + (ch3 - '0');
+
+		// ignores the space ' '
+		ch1 = fgetc(fp);
+
+		//green
+		ch1 = fgetc(fp);
+		ch2 = fgetc(fp);
+		ch3 = fgetc(fp);
+		a[i].green = (ch1 - '0') * 100 + (ch2 - '0') * 10 + (ch3 - '0');
+
+		// ignores the space ' '
+		ch1 = fgetc(fp);
+
+		//blue
+		ch1 = fgetc(fp);
+		ch2 = fgetc(fp);
+		ch3 = fgetc(fp);
+		a[i].blue = (ch1 - '0') * 100 + (ch2 - '0') * 10 + (ch3 - '0');
+
+		// ignores the new line '\n'
+		ch1 = fgetc(fp);
+	}
 }
 
 void read_position(FILE *fp, position_t *t)
@@ -61,10 +106,10 @@ void read_position(FILE *fp, position_t *t)
 	ch1 = fgetc(fp);
 
 	//name
-	char *a;
+	char a[11];
 	fgets(a, 11, fp);
 	int i = 0;
-	while (i < 10)
+	while (a[i] != '\0')
 	{
 		(t->name)[i] = a[i];
 	}
@@ -83,9 +128,6 @@ void read_position(FILE *fp, position_t *t)
 
 	//reads the array
 	read_array(fp, t->size_draw, t->draw);
-
-	// ignores the new line '\n'
-	ch1 = fgetc(fp);
 }
 
 void read_all(scores_t *t)
@@ -112,7 +154,105 @@ void read_all(scores_t *t)
 
 void write_array(FILE *fp, int size, color_st *a)
 {
-	//needs to be made
+	int i;
+
+	for (i = 0; i < size; i++)
+	{
+		//tick
+		if (a->tick >= 1000)
+		{
+			fputc((a->tick / 1000) + '0', fp);
+			fputc write_positi((a->tick / 100) % 10 + '0', fp);
+			fputc((a->tick / 10) % 10 + '0', fp);
+			fputc((a->tick) % 10 + '0', fp);
+		}
+		else if (a->tick >= 100)
+		{
+			fputc('0', fp);
+			fputc((a->tick / 100) % 10 + '0', fp);
+			fputc((a->tick / 10) % 10 + '0', fp);
+			fputc((a->tick) % 10 + '0', fp);
+		}
+		else if (a->tick >= 10)
+		{
+			fputc('0', fp);
+			fputc('0', fp);
+			fputc((a->tick / 10) % 10 + '0', fp);
+			fputc((a->tick) % 10 + '0', fp);
+		}
+		else
+		{
+			fputc('0', fp);
+			fputc('0', fp);
+			fputc('0', fp);
+			fputc((a->tick) % 10 + '0', fp);
+		}
+		fputc('\n', fp);
+
+		//red
+		if (a->red >= 100)
+		{
+			fputc((a->red / 100) % 10 + '0', fp);
+			fputc((a->red / 10) % 10 + '0', fp);
+			fputc((a->red) % 10 + '0', fp);
+		}
+		else if (a->red >= 10)
+		{
+			fputc('0', fp);
+			fputc((a->red / 10) % 10 + '0', fp);
+			fputc((a->red) % 10 + '0', fp);
+		}
+		else
+		{
+			fputc('0', fp);
+			fputc('0', fp);
+			fputc((a->red) % 10 + '0', fp);
+		}
+		fputc(' ', fp);
+
+		//green
+		if (a->green >= 100)
+		{
+			fputc((a->green / 100) % 10 + '0', fp);
+			fputc((a->green / 10) % 10 + '0', fp);
+			fputc((a->green) % 10 + '0', fp);
+		}
+		else if (a->green >= 10)
+		{
+			fputc('0', fp);
+			fputc((a->green / 10) % 10 + '0', fp);
+			fputc((a->green) % 10 + '0', fp);
+		}
+		else
+		{
+			fputc('0', fp);
+			fputc('0', fp);
+			fputc((a->green) % 10 + '0', fp);
+		}
+		fputc(' ', fp);
+
+		//blue
+		if (a->blue >= 100)
+		{
+			fputc((a->blue / 100) % 10 + '0', fp);
+			fputc((a->blue / 10) % 10 + '0', fp);
+			fputc((a->blue) % 10 + '0', fp);
+		}
+		else if (a->blue >= 10)
+		{
+			fputc('0', fp);
+			fputc((a->blue / 10) % 10 + '0', fp);
+			fputc((a->blue) % 10 + '0', fp);
+		}
+		else
+		{
+			fputc('0', fp);
+			fputc('0', fp);
+			fputc((a->blue) % 10 + '0', fp);
+		}
+		fputc('\n', fp);
+	}
+
 }
 
 void write_position(FILE *fp, position_t *t)
@@ -262,7 +402,6 @@ void write_position(FILE *fp, position_t *t)
 
 	write_array(fp, t->size_draw, t->draw);
 
-	fputc('\n', fp);
 }
 
 void write_all(scores_t *t)
