@@ -10,6 +10,12 @@
 #include "keyboard_mouse_macros.h"
 #include "device_interrupts.h"
 
+extern char OPTION;
+
+//in case of highscore it changes OPTION to GET_NAME
+//return -1 if not highscore or the position otherwise
+int is_highscore(scores_t *t, position_t *draw);
+
 ////////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////// NEEDS TO BE MADE ///////////////////////////////////////////////////////////////
@@ -20,7 +26,7 @@
 // number of letter * 150 | plus if right
 // max number = 11500
 // min number = 1900 - 4 * 100
-void score();
+int score(int tick);
 
 ////////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////
@@ -50,7 +56,7 @@ void erase_letter();
 //given the position (*m) and the screen (*option), this function calls the respective menu
 //this function has a switch statement and after finding the screen (meaning, the option)
 //it will see where is the mouse over and call the respective function
-void menu_handler (char *option, mouse_st *m);
+void menu_handler (bitmap_struct bitmaps);
 
 ////////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////
@@ -60,7 +66,7 @@ void menu_handler (char *option, mouse_st *m);
 //Human VS Machine option
 //if button pressed go to the screen and changes the option
 //otherwise just change the color of these option
-void menu_handle_h_vs_m(char *option, mouse_st *m);
+void menu_handle_h_vs_m(mouse_st *m);
 
 //....
 //need to create the rest of the functions

@@ -1,6 +1,5 @@
 #include "menu.h"
 
-
 void bitmaps_load(bitmap_struct *t)
 {
 	t->background = loadBitmap("home/lcom/proj/code/images/Fundo.bmp");
@@ -39,6 +38,7 @@ char position_menu(bitmap_struct bitmaps)
 		{
 			if (mouse_t.LB == 1)
 			{
+				OPTION = EXIT_OPT;
 				if (0 == exit_menu(bitmaps))
 					return 0;
 				else return 1;
@@ -56,6 +56,7 @@ char position_menu(bitmap_struct bitmaps)
 		{
 			if (mouse_t.LB == 1)
 			{
+				OPTION = HIGHSCORES;
 				//exit_menu(bitmaps);
 				HighScores_menu(bitmaps); //not done
 				//funcao HighScores
@@ -73,6 +74,7 @@ char position_menu(bitmap_struct bitmaps)
 		{
 			if (mouse_t.LB == 1)
 			{
+				OPTION = ONLINE;
 				//exit_menu(bitmaps);
 				online_menu(bitmaps);
 				//funcao online
@@ -90,6 +92,7 @@ char position_menu(bitmap_struct bitmaps)
 		{
 			if (mouse_t.LB == 1)
 			{
+				OPTION = HEAD_TO_HEAD;
 				//exit_menu(bitmaps);
 				Head_to_Head(bitmaps);
 				//funcao Head To Head
@@ -107,6 +110,7 @@ char position_menu(bitmap_struct bitmaps)
 		{
 			if (mouse_t.LB == 1)
 			{
+				OPTION = HUMAN_VS_MACHINE;
 				//exit_menu(bitmaps);
 				HumanMachine(bitmaps);
 				//funcao human vs machine
@@ -187,4 +191,114 @@ int HumanMachine(bitmap_struct bitmaps)
 
 	mouse_to_video(getMouseBuffer(), getVideoMem());
 	return 0;
+}
+
+void menu_handler (bitmap_struct bitmaps)
+{
+	switch (OPTION)
+	{
+	case MAIN_MENU:
+	{
+		position_menu(bitmaps);
+		break;
+	}
+	case HUMAN_VS_MACHINE:
+	{
+
+		break;
+	}
+	case HEAD_TO_HEAD:
+	{
+
+		break;
+	}
+	case ONLINE:
+	{
+
+		break;
+	}
+	case HIGHSCORES:
+	{
+
+		break;
+	}
+	case EXIT_OPT:
+	{
+
+		break;
+	}
+	default:
+	{
+		printf("Error in menu_handler() - no option available!\n");
+		return;
+	}
+	}
+}
+
+int is_highscore(scores_t *t, position_t *draw)
+{
+	int place = -1;
+	char discard1, discard2;
+
+	if (draw->score >= t->first.score)
+	{
+		read_time(&(draw->year), &(draw->month), &(draw->day), &discard1, &(draw->hour), &(draw->minutes), &discard2);
+		t->fifth = t->fourth;
+		t->fourth = t->third;
+		t->third = t-> second;
+		t->second = t->first;
+		t->first = (*draw);
+		place = 1;
+		OPTION = GET_NAME;
+		return place;
+	}
+	else if(draw->score >= t->second.score)
+	{
+		read_time(&(draw->year), &(draw->month), &(draw->day), &discard1, &(draw->hour), &(draw->minutes), &discard2);
+		t->fifth = t->fourth;
+		t->fourth = t->third;
+		t->third = t-> second;
+		t->second = (*draw);
+		place = 2;
+		OPTION = GET_NAME;
+		return place;
+	}
+	else if(draw->score >= t->third.score)
+	{
+		read_time(&(draw->year), &(draw->month), &(draw->day), &discard1, &(draw->hour), &(draw->minutes), &discard2);
+		t->fifth = t->fourth;
+		t->fourth = t->third;
+		t->third = (*draw);
+		place = 3;
+		OPTION = GET_NAME;
+		return place;
+	}
+	else if(draw->score >= t->fourth.score)
+	{
+		read_time(&(draw->year), &(draw->month), &(draw->day), &discard1, &(draw->hour), &(draw->minutes), &discard2);
+		t->fifth = t->fourth;
+		t->fourth = (*draw);
+		place = 4;
+		OPTION = GET_NAME;
+		return place;
+	}
+	else if(draw->score >= t->fifth.score)
+	{
+		read_time(&(draw->year), &(draw->month), &(draw->day), &discard1, &(draw->hour), &(draw->minutes), &discard2);
+		t->fifth = (*draw);
+		place = 5;
+		OPTION = GET_NAME;
+		return place;
+	}
+
+	return place;
+}
+
+int score(int tick)
+{
+	int ret;
+
+	ret = -135 * (tick / 60.0) + 10000;
+
+	return ret;
 }

@@ -1,6 +1,10 @@
 #ifndef __STRUCT_SCORES_H
 #define __STRUCT_SCORES_H
 
+#include "struct_color.h"
+
+#define MAX_DRAW_SIZE			9999
+
 typedef struct
 {
 	char day;
@@ -14,7 +18,7 @@ typedef struct
 	char name[11];
 
 	int size_draw;
-	char *draw;
+	color_st *draw;
 
 
 } position_t;
@@ -24,7 +28,7 @@ typedef struct
 	position_t first;
 	position_t second;
 	position_t third;
-	position_t forth;
+	position_t fourth;
 	position_t fifth;
 
 } scores_t;

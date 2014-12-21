@@ -22,6 +22,8 @@
 #define CBUFFER_EKBD	0xF4
 #define LEDS			0xED
 #define KBD_ESC_KEY 	0x81
+#define KEY_NUM_ENTER_M	0xE01C
+#define KEY_ENTER_M		0x001C
 
 #define RESEND			0xFE
 #define ACK				0xFA
