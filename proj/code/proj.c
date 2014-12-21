@@ -221,9 +221,7 @@ int main(int argc, char **argv) {
 							a[2] = byte3;
 							fill_struct(a);
 
-							printf("rato\n");
 							menu_handler(bitmaps);
-							printf("menu\n");
 
 							screen_to_mouse(screen_buffer, mouse_buffer);
 							drawMouse(bitmaps.mouse, mouse_t.x_mouse, mouse_t.y_mouse, ALIGN_LEFT, mouse_buffer);
