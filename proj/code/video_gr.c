@@ -2,6 +2,8 @@
 #include "keyboard.h"
 
 static char *video_mem;		/* Process address to which VRAM is mapped */
+static char *mouse_buffer;
+static char *screen_buffer;
 static long vram_size;		/* Size of VRAM */
 static unsigned h_res;		/* Horizontal screen resolution in pixels */
 static unsigned v_res;		/* Vertical screen resolution in pixels */
@@ -165,6 +167,9 @@ void *vg_init(unsigned short mode) {
 	/* Map memory */
 
 	video_mem = vm_map_phys(SELF, (void *)mr.mr_base, (config.XResolution * config.YResolution * config.BitsPerPixel) / 8);
+	screen_buffer = malloc(h_res * v_res * bits_per_pixel / 8);
+	mouse_buffer = malloc(h_res * v_res * bits_per_pixel / 8);
+
 
 	if(video_mem == MAP_FAILED)
 		panic("video_txt couldn't map video memory");
@@ -182,6 +187,12 @@ void *vg_init(unsigned short mode) {
 char* getVideoMem(){
 
 	return video_mem;
+}
+char * getMouseBuffer(){
+	return mouse_buffer;
+}
+char * getScreenBuffer(){
+	return screen_buffer;
 }
 
 unsigned getHRes(){
@@ -215,8 +226,6 @@ int test_square(unsigned short x, unsigned short y, unsigned short size,
 	unsigned v_res = getVRes();
 	unsigned char *video_copy;
 	video_copy = getVideoMem();
-	printf("%d\n", h_res);
-	printf("%d\n", v_res);
 
 	if ((x >= h_res) || (x < 0) || (y >= v_res) || (y < 0)
 			|| ((x + size) >= h_res) || ((y + size) >= v_res) || (size <= 0)) // o utilizador introduziu coordenadas erradas

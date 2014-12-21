@@ -1,51 +1,6 @@
 #include "menu.h"
 
 
-void score()
-{
-	////////////////////////////////////////////////////////////////////////////////////////////////
-	////////////////////////////////////////////////////////////////////////////////////////////////
-	/////////////// NEEDS TO BE MADE ///////////////////////////////////////////////////////////////
-	////////////////////////////////////////////////////////////////////////////////////////////////
-	////////////////////////////////////////////////////////////////////////////////////////////////
-}
-
-void print_letter()
-{
-	////////////////////////////////////////////////////////////////////////////////////////////////
-	////////////////////////////////////////////////////////////////////////////////////////////////
-	/////////////// NEEDS TO BE MADE ///////////////////////////////////////////////////////////////
-	////////////////////////////////////////////////////////////////////////////////////////////////
-	////////////////////////////////////////////////////////////////////////////////////////////////
-}
-
-void erase_letter()
-{
-	////////////////////////////////////////////////////////////////////////////////////////////////
-	////////////////////////////////////////////////////////////////////////////////////////////////
-	/////////////// NEEDS TO BE MADE ///////////////////////////////////////////////////////////////
-	////////////////////////////////////////////////////////////////////////////////////////////////
-	////////////////////////////////////////////////////////////////////////////////////////////////
-}
-
-void menu_handler (char *option, mouse_st *m)
-{
-	////////////////////////////////////////////////////////////////////////////////////////////////
-	////////////////////////////////////////////////////////////////////////////////////////////////
-	/////////////// NEEDS TO BE MADE ///////////////////////////////////////////////////////////////
-	////////////////////////////////////////////////////////////////////////////////////////////////
-	////////////////////////////////////////////////////////////////////////////////////////////////
-}
-
-void menu_handle_h_vs_m(char *option, mouse_st *m)
-{
-	////////////////////////////////////////////////////////////////////////////////////////////////
-	////////////////////////////////////////////////////////////////////////////////////////////////
-	/////////////// NEEDS TO BE MADE ///////////////////////////////////////////////////////////////
-	////////////////////////////////////////////////////////////////////////////////////////////////
-	////////////////////////////////////////////////////////////////////////////////////////////////
-}
-
 void bitmaps_load(bitmap_struct *t)
 {
 	t->background = loadBitmap("home/lcom/proj/code/images/Fundo.bmp");
@@ -76,7 +31,7 @@ int exit_menu(bitmap_struct bitmaps)
 	return 0;
 }
 
-char position_menu(bitmap_struct bitmaps, char * video_copy)
+char position_menu(bitmap_struct bitmaps)
 {
 	if ((mouse_t.x_mouse >= 438) && (mouse_t.x_mouse <= 591))
 	{
@@ -90,7 +45,7 @@ char position_menu(bitmap_struct bitmaps, char * video_copy)
 			}
 			else
 			{
-				change_color(438, 591, 650, 716, rgb(0,0,0), rgb(100, 200, 0), video_copy);
+				change_color(438, 591, 650, 716, rgb(0,0,0), rgb(100, 200, 0), getVideoMem());
 			}
 		}
 	}
@@ -101,10 +56,9 @@ char position_menu(bitmap_struct bitmaps, char * video_copy)
 		{
 			if (mouse_t.LB == 1)
 			{
-				exit_menu(bitmaps);
-				HighScores_menu(); //not done
+				//exit_menu(bitmaps);
+				HighScores_menu(bitmaps); //not done
 				//funcao HighScores
-				return 0;
 			}
 			else
 			{
@@ -119,10 +73,9 @@ char position_menu(bitmap_struct bitmaps, char * video_copy)
 		{
 			if (mouse_t.LB == 1)
 			{
-				exit_menu(bitmaps);
-				online_menu();
+				//exit_menu(bitmaps);
+				online_menu(bitmaps);
 				//funcao online
-				return 0;
 			}
 			else
 			{
@@ -137,10 +90,9 @@ char position_menu(bitmap_struct bitmaps, char * video_copy)
 		{
 			if (mouse_t.LB == 1)
 			{
-				exit_menu(bitmaps);
-				Head_to_Head();
+				//exit_menu(bitmaps);
+				Head_to_Head(bitmaps);
 				//funcao Head To Head
-				return 0;
 			}
 			else
 			{
@@ -155,10 +107,9 @@ char position_menu(bitmap_struct bitmaps, char * video_copy)
 		{
 			if (mouse_t.LB == 1)
 			{
-				exit_menu(bitmaps);
-				HumanMachine();
+				//exit_menu(bitmaps);
+				HumanMachine(bitmaps);
 				//funcao human vs machine
-				return 0;
 			}
 			else
 			{
@@ -194,22 +145,46 @@ int change_color(unsigned xi, unsigned xf, unsigned yi, unsigned yf, int color_i
 	return bool;
 }
 
-int HighScores_menu()
+int HighScores_menu(bitmap_struct bitmaps)
 {
+	drawBitmap(bitmaps.highscores, 0, 0, ALIGN_LEFT, getScreenBuffer());
+
+	screen_to_mouse(getScreenBuffer(), getMouseBuffer());
+	drawMouse(bitmaps.mouse, mouse_t.x_mouse, mouse_t.y_mouse, ALIGN_LEFT, getMouseBuffer());
+
+	mouse_to_video(getMouseBuffer(), getVideoMem());
 	return 0;
 }
 
-int online_menu()
+int online_menu(bitmap_struct bitmaps)
 {
+	drawBitmap(bitmaps.frame, 0, 0, ALIGN_LEFT, getScreenBuffer());
+
+	screen_to_mouse(getScreenBuffer(), getMouseBuffer());
+	drawMouse(bitmaps.mouse, mouse_t.x_mouse, mouse_t.y_mouse, ALIGN_LEFT, getMouseBuffer());
+
+	mouse_to_video(getMouseBuffer(), getVideoMem());
 	return 0;
 }
 
-int Head_to_Head()
+int Head_to_Head(bitmap_struct bitmaps)
 {
+	drawBitmap(bitmaps.pre_head_to_head, 0, 0, ALIGN_LEFT, getScreenBuffer());
+
+	screen_to_mouse(getScreenBuffer(), getMouseBuffer());
+	drawMouse(bitmaps.mouse, mouse_t.x_mouse, mouse_t.y_mouse, ALIGN_LEFT, getMouseBuffer());
+
+	mouse_to_video(getMouseBuffer(), getVideoMem());
 	return 0;
 }
 
-int HumanMachine()
+int HumanMachine(bitmap_struct bitmaps)
 {
+	drawBitmap(bitmaps.frame, 0, 0, ALIGN_LEFT, getScreenBuffer());
+
+	screen_to_mouse(getScreenBuffer(), getMouseBuffer());
+	drawMouse(bitmaps.mouse, mouse_t.x_mouse, mouse_t.y_mouse, ALIGN_LEFT, getMouseBuffer());
+
+	mouse_to_video(getMouseBuffer(), getVideoMem());
 	return 0;
 }

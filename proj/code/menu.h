@@ -88,7 +88,7 @@ void bitmaps_load(bitmap_struct *t);
  *
  * @return 0 if the user pressed any option in the menu, 1 otherwise
  */
-char position_menu(bitmap_struct bitmaps, char * video_copy);
+char position_menu(bitmap_struct bitmaps);
 
 /**
  * @brief exits the main menu
@@ -118,23 +118,23 @@ int change_color(unsigned xi, unsigned xf, unsigned yi, unsigned yf, int color_i
  * @brief displays the high scores
  *
  */
-int HighScores_menu();
+int HighScores_menu(bitmap_struct bitmaps);
 
 /**
  * @brief the online option (serial port)
  *
  */
-int Online_menu();
+int Online_menu(bitmap_struct bitmaps);
 
 /**
  * @brief Player vs Player option (on the same pc)
  *
  */
-int Head_to_Head();
+int Head_to_Head(bitmap_struct bitmaps);
 
 /**
  * @brief Player vs Computer
  *
  */
-int HumanMachine();
+int HumanMachine(bitmap_struct bitmaps);
 #endif

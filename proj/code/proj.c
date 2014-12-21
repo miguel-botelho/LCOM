@@ -95,8 +95,8 @@ int main(int argc, char **argv) {
 	mouse_t.x_mouse = getHRes() / 2;
 	mouse_t.y_mouse = getVRes() / 2;
 
-	char * mouse_buffer = malloc (getHRes() * getVRes() * getBitsPerPixel() / 8);
-	char * screen_buffer = malloc(getHRes() * getVRes() * getBitsPerPixel() / 8);
+	char * mouse_buffer = getMouseBuffer();
+	char * screen_buffer = getScreenBuffer();
 	char * video_memory = getVideoMem();
 	char * video_copy = video_memory;
 
@@ -111,7 +111,7 @@ int main(int argc, char **argv) {
 	mouse_to_video(mouse_buffer, video_memory);
 
 	// enquanto nao for premida a tecla ESC
-	while( key != KBD_ESC_KEY) {
+	while( /*key != KBD_ESC_KEY */ 1) {
 		/* Get a request message. */
 		if ( (r = driver_receive(ANY, &msg, &ipc_status)) != 0 ) {
 			printf("driver_receive failed with: %d", r);
@@ -128,11 +128,12 @@ int main(int argc, char **argv) {
 				if (msg.NOTIFY_ARG & irq_set_keyboard) /* subscribed interrupt for keyboard*/
 				{
 					kbd_scan_c(&key);
-					if (key == KEY_SPACE)
+					if (key == KEY_ESC)
 					{
-						memset(video_memory, BLACK, (getHRes() * getVRes() * getBitsPerPixel() / 8));
-						drawBitmap(bitmaps.frame, 0, 0, ALIGN_LEFT, screen_buffer);
+						drawBitmap(bitmaps.background, 0, 0, ALIGN_LEFT, screen_buffer);
 						screen_to_mouse(screen_buffer, mouse_buffer);
+						drawMouse(bitmaps.mouse, mouse_t.x_mouse, mouse_t.y_mouse, ALIGN_LEFT, mouse_buffer);
+
 						mouse_to_video(mouse_buffer, video_memory);
 					}
 				}
@@ -174,11 +175,10 @@ int main(int argc, char **argv) {
 							a[2] = byte3;
 							fill_struct(a);
 
-							if (position_menu(bitmaps, video_memory) == 0)
+							if (position_menu(bitmaps) == 0)
 							{
 								return 0;
 							}
-							drawBitmap(bitmaps.background, 0, 0, ALIGN_LEFT, screen_buffer);
 
 							screen_to_mouse(screen_buffer, mouse_buffer);
 							drawMouse(bitmaps.mouse, mouse_t.x_mouse, mouse_t.y_mouse, ALIGN_LEFT, mouse_buffer);
