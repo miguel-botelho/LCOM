@@ -45,6 +45,9 @@ int vg_exit(void);
  */
 int test_square(unsigned short x, unsigned short y, unsigned short size, unsigned long color);
 
+char * getMouseBuffer();
+char * getScreenBuffer();
+
 /**
  * @brief returns video memory
  *
