@@ -26,8 +26,49 @@ void draw_circle(int radius)
 /////////////// NEEDS TO BE MADE ///////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////
-void draw_square()
+void draw_square(int radius, int color)
 {
+	int x = mouse_t.x_mouse;
+	int xi;
+	int yi;
+	int y = mouse_t.y_mouse;
+/*
+	if (x - radius < 120)
+	{
+		xi = 120 - (x - radius);
+	}
+
+	if (x + radius > 1020)
+	{
+		xi = x + radius - 1020;
+	}
+
+	if (y - radius < 183)
+	{
+		yi = 183 - (y - radius);
+	}
+
+	if (y + radius > 717)
+	{
+		yi = y + radius - 717;
+	}
+	*/
+	char * screen_buffer = getScreenBuffer() + (x * 2) + (1024 * y) * 2;
+	screen_buffer = screen_buffer - (radius * 2) - (1024 * radius) * 2;
+	unsigned int i = 0;
+	unsigned int j = 0;
+	int size = radius * 2;
+
+	for (; i < size; i++)
+	{
+		for (; j < size; j++)
+		{
+			*(uint16_t *)screen_buffer = color;
+			screen_buffer+=2;
+		}
+		j = 0;
+		screen_buffer+= 1024 * 2 - size * 2;
+	}
 
 }
 

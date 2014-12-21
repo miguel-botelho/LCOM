@@ -1,6 +1,7 @@
 #ifndef __MENU_H
 #define __MENU_H
 
+#include "frame.h"
 #include "menu_macros.h"
 #include "struct_bmp.h"
 #include "struct_scores.h"

@@ -27,7 +27,7 @@ int exit_menu(bitmap_struct bitmaps)
 		printf("Failure to unsubscribe!! \n\n");
 		return -1;
 	}
-	return 0;
+	exit(0);
 }
 
 char position_menu(bitmap_struct bitmaps)
@@ -42,14 +42,14 @@ char position_menu(bitmap_struct bitmaps)
 			if (mouse_t.LB == 1)
 			{
 				OPTION = EXIT_OPT;
-				if (0 == exit_menu(bitmaps))
-					return 0;
-				else return 1;
+				menu_handler(bitmaps);
+				return 0;
 			}
 			else
 			{
 				change_color(438, 591, 650, 716, BLACK, RED, getScreenBuffer());
 			}
+
 		}
 	}
 
@@ -61,8 +61,8 @@ char position_menu(bitmap_struct bitmaps)
 			if (mouse_t.LB == 1)
 			{
 				OPTION = HIGHSCORES;
+				drawBitmap(bitmaps.highscores, 0, 0, ALIGN_LEFT, getScreenBuffer());
 				//exit_menu(bitmaps);
-				HighScores_menu(bitmaps); //not done
 				//funcao HighScores
 			}
 			else
@@ -80,8 +80,8 @@ char position_menu(bitmap_struct bitmaps)
 			if (mouse_t.LB == 1)
 			{
 				OPTION = ONLINE;
+				drawBitmap(bitmaps.frame, 0, 0, ALIGN_LEFT, getScreenBuffer());
 				//exit_menu(bitmaps);
-				online_menu(bitmaps);
 				//funcao online
 			}
 			else
@@ -99,9 +99,7 @@ char position_menu(bitmap_struct bitmaps)
 			if (mouse_t.LB == 1)
 			{
 				OPTION = HEAD_TO_HEAD;
-				//exit_menu(bitmaps);
-				Head_to_Head(bitmaps);
-				//funcao Head To Head
+				 drawBitmap(bitmaps.pre_head_to_head, 0, 0, ALIGN_LEFT, getScreenBuffer());
 			}
 			else
 			{
@@ -118,9 +116,7 @@ char position_menu(bitmap_struct bitmaps)
 			if (mouse_t.LB == 1)
 			{
 				OPTION = HUMAN_VS_MACHINE;
-				//exit_menu(bitmaps);
-				HumanMachine(bitmaps);
-				//funcao human vs machine
+				drawBitmap(bitmaps.frame, 0, 0, ALIGN_LEFT, getScreenBuffer());
 			}
 			else
 			{
@@ -165,7 +161,10 @@ int change_color(unsigned xi, unsigned xf, unsigned yi, unsigned yf, int color_i
 
 int HighScores_menu(bitmap_struct bitmaps)
 {
-	drawBitmap(bitmaps.highscores, 0, 0, ALIGN_LEFT, getScreenBuffer());
+	if (OPTION == HIGHSCORES)
+	{
+
+	}
 
 	screen_to_mouse(getScreenBuffer(), getMouseBuffer());
 	drawMouse(bitmaps.mouse, mouse_t.x_mouse, mouse_t.y_mouse, ALIGN_LEFT, getMouseBuffer());
@@ -176,7 +175,10 @@ int HighScores_menu(bitmap_struct bitmaps)
 
 int online_menu(bitmap_struct bitmaps)
 {
-	drawBitmap(bitmaps.frame, 0, 0, ALIGN_LEFT, getScreenBuffer());
+	if (OPTION == ONLINE)
+	{
+
+	}
 
 	screen_to_mouse(getScreenBuffer(), getMouseBuffer());
 	drawMouse(bitmaps.mouse, mouse_t.x_mouse, mouse_t.y_mouse, ALIGN_LEFT, getMouseBuffer());
@@ -187,7 +189,10 @@ int online_menu(bitmap_struct bitmaps)
 
 int Head_to_Head(bitmap_struct bitmaps)
 {
-	drawBitmap(bitmaps.pre_head_to_head, 0, 0, ALIGN_LEFT, getScreenBuffer());
+	if (OPTION == HEAD_TO_HEAD)
+	{
+
+	}
 
 	screen_to_mouse(getScreenBuffer(), getMouseBuffer());
 	drawMouse(bitmaps.mouse, mouse_t.x_mouse, mouse_t.y_mouse, ALIGN_LEFT, getMouseBuffer());
@@ -198,12 +203,19 @@ int Head_to_Head(bitmap_struct bitmaps)
 
 int HumanMachine(bitmap_struct bitmaps)
 {
-	drawBitmap(bitmaps.frame, 0, 0, ALIGN_LEFT, getScreenBuffer());
+	if (OPTION == HUMAN_VS_MACHINE)
+	{
+
+	}
 
 	screen_to_mouse(getScreenBuffer(), getMouseBuffer());
 	drawMouse(bitmaps.mouse, mouse_t.x_mouse, mouse_t.y_mouse, ALIGN_LEFT, getMouseBuffer());
 
 	mouse_to_video(getMouseBuffer(), getVideoMem());
+
+	if (mouse_t.LB == 1)
+		draw_square(10, YELLOW);
+
 	return 0;
 }
 
@@ -213,31 +225,33 @@ int menu_handler (bitmap_struct bitmaps)
 	{
 	case MAIN_MENU:
 	{
-		return position_menu(bitmaps);
+		position_menu(bitmaps);
 		break;
 	}
 	case HUMAN_VS_MACHINE:
 	{
-
+		HumanMachine(bitmaps);
 		break;
 	}
 	case HEAD_TO_HEAD:
 	{
-
+		Head_to_Head(bitmaps);
 		break;
 	}
 	case ONLINE:
 	{
-
+		online_menu(bitmaps);
 		break;
 	}
 	case HIGHSCORES:
 	{
-
+		HighScores_menu(bitmaps);
 		break;
 	}
 	case EXIT_OPT:
 	{
+		exit_menu(bitmaps);
+		return 0;
 		break;
 	}
 	default:
