@@ -7,7 +7,7 @@ void read_array(FILE *fp, int size, char *a)
 
 void read_position(FILE *fp, position_t *t)
 {
-	char ch1, ch2, ch3, ch4;
+	char ch1, ch2, ch3, ch4, ch5;
 
 	//day
 	ch1 = fgetc(fp);
@@ -49,6 +49,17 @@ void read_position(FILE *fp, position_t *t)
 	// ignores the new line '\n'
 	ch1 = fgetc(fp);
 
+	//reads the score (max value = 11500)
+	ch1 = fgetc(fp);
+	ch2 = fgetc(fp);
+	ch3 = fgetc(fp);
+	ch4 = fgetc(fp);
+	ch5 = fgetc(fp);
+	t->score = (ch1 - '0') * 10000 + (ch2 - '0') * 1000 + (ch3 - '0') * 100 + (ch4 - '0') * 10 + (ch5 - '0');
+
+	// ignores the new line '\n'
+	ch1 = fgetc(fp);
+
 	//name
 	char *a;
 	fgets(a, 11, fp);
@@ -65,13 +76,16 @@ void read_position(FILE *fp, position_t *t)
 	ch2 = fgetc(fp);
 	ch3 = fgetc(fp);
 	ch4 = fgetc(fp);
-	t->size_draw = (ch1 - '0') * 1000 + (ch1 - '0') * 100 + (ch1 - '0') * 10 + (ch2 - '0');
+	t->size_draw = (ch1 - '0') * 1000 + (ch2 - '0') * 100 + (ch3 - '0') * 10 + (ch4 - '0');
 
 	// ignores the new line '\n'
 	ch1 = fgetc(fp);
 
 	//reads the array
 	read_array(fp, t->size_draw, t->draw);
+
+	// ignores the new line '\n'
+	ch1 = fgetc(fp);
 }
 
 void read_all(scores_t *t)
@@ -168,6 +182,49 @@ void write_position(FILE *fp, position_t *t)
 	}
 	fputc('\n', fp);
 
+	//score
+	if (t->score >= 10000)
+	{
+		fputc((t->score / 10000) + '0', fp);
+		fputc((t->score / 1000) % 10 + '0', fp);
+		fputc((t->score / 100) % 10 + '0', fp);
+		fputc((t->score / 10) % 10 + '0', fp);
+		fputc((t->score) % 10 + '0', fp);
+	}
+	else if (t->score >= 1000)
+	{
+		fputc('0', fp);
+		fputc((t->score / 1000) + '0', fp);
+		fputc((t->score / 100) % 10 + '0', fp);
+		fputc((t->score / 10) % 10 + '0', fp);
+		fputc((t->score) % 10 + '0', fp);
+	}
+	else if (t->score >= 100)
+	{
+		fputc('0', fp);
+		fputc('0', fp);
+		fputc((t->score / 100) + '0', fp);
+		fputc((t->score / 10) % 10 + '0', fp);
+		fputc((t->score) % 10 + '0', fp);
+	}
+	else if (t->size_draw >= 10)
+	{
+		fputc('0', fp);
+		fputc('0', fp);
+		fputc('0', fp);
+		fputc((t->score / 10) + '0', fp);
+		fputc((t->score) % 10 + '0', fp);
+	}
+	else
+	{
+		fputc('0', fp);
+		fputc('0', fp);
+		fputc('0', fp);
+		fputc('0', fp);
+		fputc((t->score) % 10 + '0', fp);
+	}
+	fputc('\n', fp);
+
 	//name
 	fputs(t->name, fp);
 	fputc('\n', fp);
@@ -204,6 +261,8 @@ void write_position(FILE *fp, position_t *t)
 	fputc('\n', fp);
 
 	write_array(fp, t->size_draw, t->draw);
+
+	fputc('\n', fp);
 }
 
 void write_all(scores_t *t)

@@ -1,5 +1,8 @@
 
 #include "lib.h"
+#include "struct_color.h"
+#include "frame.h"
+#include "menu_macros.h"
 #include "array_keyboard.h"
 #include "struct_scores.h"
 #include "struct_bmp.h"
@@ -57,7 +60,11 @@ int main(int argc, char **argv) {
 	int ipc_status;
 	message msg;
 
+	//Menu option
+	char menu_option = MAIN_MENU;
 
+	//Color array
+	color_st *color;
 
 	// graphics mode
 	bitmap_struct bitmaps;
