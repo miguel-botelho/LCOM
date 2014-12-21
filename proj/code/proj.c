@@ -221,7 +221,10 @@ int main(int argc, char **argv) {
 							a[2] = byte3;
 							fill_struct(a);
 
-							menu_handler(bitmaps);
+							if ( 0 == menu_handler(bitmaps))
+							{
+								return 0;
+							}
 
 							screen_to_mouse(screen_buffer, mouse_buffer);
 							drawMouse(bitmaps.mouse, mouse_t.x_mouse, mouse_t.y_mouse, ALIGN_LEFT, mouse_buffer);

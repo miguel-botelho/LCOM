@@ -32,10 +32,13 @@ int exit_menu(bitmap_struct bitmaps)
 
 char position_menu(bitmap_struct bitmaps)
 {
+	char bool = 1;
+
 	if ((mouse_t.x_mouse >= 438) && (mouse_t.x_mouse <= 591))
 	{
 		if ((mouse_t.y_mouse >= 650) && (mouse_t.y_mouse <= 716))
 		{
+			bool = 0;
 			if (mouse_t.LB == 1)
 			{
 				OPTION = EXIT_OPT;
@@ -45,7 +48,7 @@ char position_menu(bitmap_struct bitmaps)
 			}
 			else
 			{
-				change_color(438, 591, 650, 716, rgb(0,0,0), rgb(100, 200, 0), getVideoMem());
+				change_color(438, 591, 650, 716, BLACK, RED, getScreenBuffer());
 			}
 		}
 	}
@@ -54,6 +57,7 @@ char position_menu(bitmap_struct bitmaps)
 	{
 		if ((mouse_t.y_mouse >= 555) && (mouse_t.y_mouse <= 644))
 		{
+			bool = 0;
 			if (mouse_t.LB == 1)
 			{
 				OPTION = HIGHSCORES;
@@ -63,7 +67,7 @@ char position_menu(bitmap_struct bitmaps)
 			}
 			else
 			{
-
+				change_color(305, 718, 555, 644, rgb(99,93,8), RED, getScreenBuffer());
 			}
 		}
 	}
@@ -72,6 +76,7 @@ char position_menu(bitmap_struct bitmaps)
 	{
 		if ((mouse_t.y_mouse >= 484) && (mouse_t.y_mouse <= 550))
 		{
+			bool = 0;
 			if (mouse_t.LB == 1)
 			{
 				OPTION = ONLINE;
@@ -81,7 +86,7 @@ char position_menu(bitmap_struct bitmaps)
 			}
 			else
 			{
-
+				change_color(341, 633, 484, 550, rgb(33,109,16), RED, getScreenBuffer());
 			}
 		}
 	}
@@ -90,6 +95,7 @@ char position_menu(bitmap_struct bitmaps)
 	{
 		if ((mouse_t.y_mouse >= 412) && (mouse_t.y_mouse <= 466))
 		{
+			bool = 0;
 			if (mouse_t.LB == 1)
 			{
 				OPTION = HEAD_TO_HEAD;
@@ -99,7 +105,7 @@ char position_menu(bitmap_struct bitmaps)
 			}
 			else
 			{
-
+				change_color(248, 787, 412, 466, rgb(16,69,58), RED, getScreenBuffer());
 			}
 		}
 	}
@@ -108,6 +114,7 @@ char position_menu(bitmap_struct bitmaps)
 	{
 		if ((mouse_t.y_mouse >= 328) && (mouse_t.y_mouse <= 396))
 		{
+			bool = 0;
 			if (mouse_t.LB == 1)
 			{
 				OPTION = HUMAN_VS_MACHINE;
@@ -117,9 +124,18 @@ char position_menu(bitmap_struct bitmaps)
 			}
 			else
 			{
-
+				change_color(129, 871, 328, 396, rgb(99,16,148), RED, getScreenBuffer());
 			}
 		}
+	}
+
+	if (bool == 0)
+	{
+
+	}
+	else
+	{
+		drawBitmap(bitmaps.background, 0,0, ALIGN_LEFT, getScreenBuffer());
 	}
 	return 1;
 }
@@ -127,25 +143,23 @@ char position_menu(bitmap_struct bitmaps)
 int change_color(unsigned xi, unsigned xf, unsigned yi, unsigned yf, int color_init, int color_final, char * video_copy)
 {
 	video_copy = video_copy + xi * 2 + (1024 * yi) * 2;
-	unsigned int i = xi;
-	unsigned int j = yi;
+	unsigned int i;
+	unsigned int j;
 	char bool = 1;
-	for (j; j < xf; j++)
+	for (j = yi; j < yf; j++)
 	{
-		for (i; i < yf; i++)
+		for (i = xi; i < xf; i++)
 		{
-			if (color_init == *video_copy)
+			if (color_init == *(uint16_t *)video_copy)
 			{
 				bool = 0;
-				*video_copy = color_final;
-				printf("entrei\n");
+				*(uint16_t *)video_copy = color_final;
 			}
 			video_copy+=2;
 		}
 		i = 0;
-		video_copy = video_copy + 1024 - (xf - xi);
+		video_copy = video_copy + 1024 * 2 - (xf - xi) * 2;
 	}
-	video_copy = getVideoMem();
 	return bool;
 }
 
@@ -193,13 +207,13 @@ int HumanMachine(bitmap_struct bitmaps)
 	return 0;
 }
 
-void menu_handler (bitmap_struct bitmaps)
+int menu_handler (bitmap_struct bitmaps)
 {
 	switch (OPTION)
 	{
 	case MAIN_MENU:
 	{
-		position_menu(bitmaps);
+		return position_menu(bitmaps);
 		break;
 	}
 	case HUMAN_VS_MACHINE:
@@ -224,15 +238,15 @@ void menu_handler (bitmap_struct bitmaps)
 	}
 	case EXIT_OPT:
 	{
-
 		break;
 	}
 	default:
 	{
 		printf("Error in menu_handler() - no option available!\n");
-		return;
+		return -1;
 	}
 	}
+	return 1;
 }
 
 int is_highscore(scores_t *t, position_t *draw)
