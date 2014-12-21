@@ -2,6 +2,7 @@
 #define __MENU_H
 
 #include "frame.h"
+#include "global_variables.h"
 #include "menu_macros.h"
 #include "struct_bmp.h"
 #include "struct_scores.h"
@@ -12,6 +13,9 @@
 #include "device_interrupts.h"
 
 extern char OPTION;
+extern int radius;
+extern char tool;
+extern int colour;
 
 //in case of highscore it changes OPTION to GET_NAME
 //return -1 if not highscore or the position otherwise
@@ -144,4 +148,10 @@ int Head_to_Head(bitmap_struct bitmaps);
  *
  */
 int HumanMachine(bitmap_struct bitmaps);
+
+void selectDraw();
+
+void selectColour();
+
+int toolHandler();
 #endif
