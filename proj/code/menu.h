@@ -56,7 +56,7 @@ void erase_letter();
 //given the position (*m) and the screen (*option), this function calls the respective menu
 //this function has a switch statement and after finding the screen (meaning, the option)
 //it will see where is the mouse over and call the respective function
-void menu_handler (bitmap_struct bitmaps);
+int menu_handler (bitmap_struct bitmaps);
 
 ////////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////
