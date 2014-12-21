@@ -1,5 +1,5 @@
 
-#include "option.h"
+#include "global_variables.h"
 #include "lib.h"
 
 #include "struct_color.h"

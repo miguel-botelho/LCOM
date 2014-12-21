@@ -241,15 +241,22 @@ frame.o:	/usr/pkg/gcc44/lib/gcc/i686-pc-minix/4.4.3/include-fixed/unistd.h
 frame.o:	/usr/pkg/gcc44/lib/gcc/i686-pc-minix/4.4.3/include/stdarg.h
 frame.o:	frame.c
 frame.o:	frame.h
+frame.o:	global_variables.h
 frame.o:	keyboard_mouse_macros.h
 frame.o:	lib.h
 frame.o:	lmlib.h
+frame.o:	menu_macros.h
 frame.o:	mouse_struct.h
 frame.o:	struct_color.h
 frame.o:	subscribe_macros.h
 frame.o:	vbe_struct.h
 frame.o:	video_gr.h
 frame.o:	video_gr_macros.h
+
+global_variables.o:	global_variables.c
+global_variables.o:	global_variables.h
+global_variables.o:	menu_macros.h
+global_variables.o:	video_gr_macros.h
 
 keyboard.o:	/usr/include/errno.h
 keyboard.o:	/usr/include/limits.h
@@ -368,6 +375,7 @@ menu.o:	bitmap.h
 menu.o:	bitmap_macros.h
 menu.o:	device_interrupts.h
 menu.o:	frame.h
+menu.o:	global_variables.h
 menu.o:	keyboard_mouse_macros.h
 menu.o:	lib.h
 menu.o:	lmlib.h
@@ -443,10 +451,6 @@ mouse.o:	mouse.h
 mouse.o:	mouse_struct.h
 mouse.o:	subscribe_macros.h
 
-option.o:	menu_macros.h
-option.o:	option.c
-option.o:	option.h
-
 proj.o:	/usr/include/errno.h
 proj.o:	/usr/include/limits.h
 proj.o:	/usr/include/machine/bios.h
@@ -505,6 +509,7 @@ proj.o:	bitmap.h
 proj.o:	bitmap_macros.h
 proj.o:	device_interrupts.h
 proj.o:	frame.h
+proj.o:	global_variables.h
 proj.o:	keyboard.h
 proj.o:	keyboard_mouse_macros.h
 proj.o:	lib.h
@@ -513,7 +518,6 @@ proj.o:	menu.h
 proj.o:	menu_macros.h
 proj.o:	mouse.h
 proj.o:	mouse_struct.h
-proj.o:	option.h
 proj.o:	proj.c
 proj.o:	read_write.h
 proj.o:	rtc.h

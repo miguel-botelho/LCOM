@@ -99,7 +99,7 @@ char position_menu(bitmap_struct bitmaps)
 			if (mouse_t.LB == 1)
 			{
 				OPTION = HEAD_TO_HEAD;
-				 drawBitmap(bitmaps.pre_head_to_head, 0, 0, ALIGN_LEFT, getScreenBuffer());
+				drawBitmap(bitmaps.pre_head_to_head, 0, 0, ALIGN_LEFT, getScreenBuffer());
 			}
 			else
 			{
@@ -170,6 +170,7 @@ int HighScores_menu(bitmap_struct bitmaps)
 	drawMouse(bitmaps.mouse, mouse_t.x_mouse, mouse_t.y_mouse, ALIGN_LEFT, getMouseBuffer());
 
 	mouse_to_video(getMouseBuffer(), getVideoMem());
+
 	return 0;
 }
 
@@ -184,6 +185,7 @@ int online_menu(bitmap_struct bitmaps)
 	drawMouse(bitmaps.mouse, mouse_t.x_mouse, mouse_t.y_mouse, ALIGN_LEFT, getMouseBuffer());
 
 	mouse_to_video(getMouseBuffer(), getVideoMem());
+
 	return 0;
 }
 
@@ -198,6 +200,7 @@ int Head_to_Head(bitmap_struct bitmaps)
 	drawMouse(bitmaps.mouse, mouse_t.x_mouse, mouse_t.y_mouse, ALIGN_LEFT, getMouseBuffer());
 
 	mouse_to_video(getMouseBuffer(), getVideoMem());
+
 	return 0;
 }
 
@@ -213,8 +216,24 @@ int HumanMachine(bitmap_struct bitmaps)
 
 	mouse_to_video(getMouseBuffer(), getVideoMem());
 
-	if (mouse_t.LB == 1)
-		draw_square(10, YELLOW);
+	selectDraw();
+
+	selectColour();
+
+	if ((mouse_t.x_mouse >= 120) && (mouse_t.x_mouse <= 1020))
+	{
+		if ((mouse_t.y_mouse >= 183) && (mouse_t.y_mouse <= 717))
+		{
+			if (mouse_t.LB == 1)
+			{
+				//PINTAR NA TELA
+				if (-1 == toolHandler())
+				{
+					return -1;
+				}
+			}
+		}
+	}
 
 	return 0;
 }
@@ -261,6 +280,50 @@ int menu_handler (bitmap_struct bitmaps)
 	}
 	}
 	return 1;
+}
+
+int toolHandler()
+{
+	switch (tool)
+		{
+		case BUCKET:
+		{
+			draw_bucket();
+			break;
+		}
+		case PENCIL:
+		{
+			draw_pencil();
+			break;
+		}
+		case BRUSH:
+		{
+			draw_brush();
+			break;
+		}
+		case LINE:
+		{
+			draw_line();
+			break;
+		}
+		case CIRCLE:
+		{
+			draw_circle();
+			break;
+		}
+		case SQUARE:
+		{
+			draw_square();
+			return 0;
+			break;
+		}
+		default:
+		{
+			printf("Error in tool handler() - no option available!\n");
+			return -1;
+		}
+		}
+		return 1;
 }
 
 int is_highscore(scores_t *t, position_t *draw)
@@ -329,4 +392,251 @@ int score(int tick)
 	ret = -135 * (tick / 60.0) + 10000;
 
 	return ret;
+}
+
+void selectDraw()
+{
+	if ( (mouse_t.x_mouse >= 25) && (mouse_t.x_mouse <= 84) )
+	{
+		if ( (mouse_t.y_mouse >= 241) && (mouse_t.y_mouse <= 289))
+		{
+			if (mouse_t.LB == 1)
+			{
+				minus();
+			}
+		}
+	}
+
+	if ( (mouse_t.x_mouse >= 25) && (mouse_t.x_mouse <= 84) )
+	{
+		if ( (mouse_t.y_mouse >= 289) && (mouse_t.y_mouse <= 337))
+		{
+			if (mouse_t.LB == 1)
+			{
+				plus();
+			}
+		}
+	}
+
+	if ( (mouse_t.x_mouse >= 25) && (mouse_t.x_mouse <= 84) )
+	{
+		if ( (mouse_t.y_mouse >= 337) && (mouse_t.y_mouse <= 385))
+		{
+			if (mouse_t.LB == 1)
+			{
+				tool = BUCKET;
+			}
+		}
+	}
+
+	if ( (mouse_t.x_mouse >= 25) && (mouse_t.x_mouse <= 84) )
+	{
+		if ( (mouse_t.y_mouse >= 385) && (mouse_t.y_mouse <= 433))
+		{
+			if (mouse_t.LB == 1)
+			{
+				tool = BRUSH;
+			}
+		}
+	}
+
+	if ( (mouse_t.x_mouse >= 25) && (mouse_t.x_mouse <= 84) )
+	{
+		if ( (mouse_t.y_mouse >= 433) && (mouse_t.y_mouse <= 481))
+		{
+			if (mouse_t.LB == 1)
+			{
+				tool = PENCIL;
+			}
+		}
+	}
+
+	if ( (mouse_t.x_mouse >= 25) && (mouse_t.x_mouse <= 84) )
+	{
+		if ( (mouse_t.y_mouse >= 481) && (mouse_t.y_mouse <= 529))
+		{
+			if (mouse_t.LB == 1)
+			{
+				tool = LINE;
+			}
+		}
+	}
+
+	if ( (mouse_t.x_mouse >= 25) && (mouse_t.x_mouse <= 84) )
+	{
+		if ( (mouse_t.y_mouse >= 529) && (mouse_t.y_mouse <= 577))
+		{
+			if (mouse_t.LB == 1)
+			{
+				tool = CIRCLE;
+			}
+		}
+	}
+
+	if ( (mouse_t.x_mouse >= 25) && (mouse_t.x_mouse <= 84) )
+	{
+		if ( (mouse_t.y_mouse >= 577) && (mouse_t.y_mouse <= 625))
+		{
+			if (mouse_t.LB == 1)
+			{
+				tool = SQUARE;
+			}
+		}
+	}
+
+	if ( (mouse_t.x_mouse >= 25) && (mouse_t.x_mouse <= 84) )
+	{
+		if ( (mouse_t.y_mouse >= 625) && (mouse_t.y_mouse <= 673))
+		{
+			if (mouse_t.LB == 1)
+			{
+				//undo
+			}
+		}
+	}
+
+	if ( (mouse_t.x_mouse >= 25) && (mouse_t.x_mouse <= 84) )
+	{
+		if ( (mouse_t.y_mouse >= 673) && (mouse_t.y_mouse <= 721))
+		{
+			if (mouse_t.LB == 1)
+			{
+				//redo
+			}
+		}
+	}
+}
+
+void selectColour()
+{
+	if ( (mouse_t.x_mouse >= 489) && (mouse_t.x_mouse <= 534) )
+	{
+		if ( (mouse_t.y_mouse >= 720) && (mouse_t.y_mouse <= 768))
+		{
+			if (mouse_t.LB == 1)
+			{
+				colour = BLACK;
+			}
+		}
+	}
+
+	if ( (mouse_t.x_mouse >= 534) && (mouse_t.x_mouse <= 582) )
+	{
+		if ( (mouse_t.y_mouse >= 720) && (mouse_t.y_mouse <= 768))
+		{
+			if (mouse_t.LB == 1)
+			{
+				//GRAY
+				colour = GRAY;
+			}
+		}
+	}
+
+	if ( (mouse_t.x_mouse >= 582) && (mouse_t.x_mouse <= 631) )
+	{
+		if ( (mouse_t.y_mouse >= 720) && (mouse_t.y_mouse <= 768))
+		{
+			if (mouse_t.LB == 1)
+			{
+				//RED
+				colour = RED;
+			}
+		}
+	}
+
+	if ( (mouse_t.x_mouse >= 631) && (mouse_t.x_mouse <= 681) )
+	{
+		if ( (mouse_t.y_mouse >= 720) && (mouse_t.y_mouse <= 768))
+		{
+			if (mouse_t.LB == 1)
+			{
+				//ORANGE
+				colour = ORANGE;
+			}
+		}
+	}
+
+	if ( (mouse_t.x_mouse >= 681) && (mouse_t.x_mouse <= 730) )
+	{
+		if ( (mouse_t.y_mouse >= 720) && (mouse_t.y_mouse <= 768))
+		{
+			if (mouse_t.LB == 1)
+			{
+				//BLUE
+				colour = BLUE;
+			}
+		}
+	}
+	if ( (mouse_t.x_mouse >= 730) && (mouse_t.x_mouse <= 778) )
+	{
+		if ( (mouse_t.y_mouse >= 720) && (mouse_t.y_mouse <= 768))
+		{
+			if (mouse_t.LB == 1)
+			{
+				//GREEN
+				colour = GREEN;
+			}
+		}
+	}
+
+	if ( (mouse_t.x_mouse >= 778) && (mouse_t.x_mouse <= 826) )
+	{
+		if ( (mouse_t.y_mouse >= 720) && (mouse_t.y_mouse <= 768))
+		{
+			if (mouse_t.LB == 1)
+			{
+				//YELLOW
+				colour = YELLOW;
+			}
+		}
+	}
+
+	if ( (mouse_t.x_mouse >= 826) && (mouse_t.x_mouse <= 876) )
+	{
+		if ( (mouse_t.y_mouse >= 720) && (mouse_t.y_mouse <= 768))
+		{
+			if (mouse_t.LB == 1)
+			{
+				//PURPLE
+				colour = PURPLE;
+			}
+		}
+	}
+
+	if ( (mouse_t.x_mouse >= 876) && (mouse_t.x_mouse <= 925) )
+	{
+		if ( (mouse_t.y_mouse >= 720) && (mouse_t.y_mouse <= 768))
+		{
+			if (mouse_t.LB == 1)
+			{
+				//PINK
+				colour = PINK;
+			}
+		}
+	}
+
+	if ( (mouse_t.x_mouse >= 925) && (mouse_t.x_mouse <= 973) )
+	{
+		if ( (mouse_t.y_mouse >= 720) && (mouse_t.y_mouse <= 768))
+		{
+			if (mouse_t.LB == 1)
+			{
+				//BROWN
+				colour = BROWN;
+			}
+		}
+	}
+
+	if ( (mouse_t.x_mouse >= 973) && (mouse_t.x_mouse <= 1024) )
+	{
+		if ( (mouse_t.y_mouse >= 720) && (mouse_t.y_mouse <= 768))
+		{
+			if (mouse_t.LB == 1)
+			{
+				//WHITE
+				colour = WHITE;
+			}
+		}
+	}
+
 }

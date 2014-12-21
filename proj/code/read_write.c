@@ -162,7 +162,7 @@ void write_array(FILE *fp, int size, color_st *a)
 		if (a->tick >= 1000)
 		{
 			fputc((a->tick / 1000) + '0', fp);
-			fputc write_positi((a->tick / 100) % 10 + '0', fp);
+			fputc((a->tick / 100) % 10 + '0', fp);
 			fputc((a->tick / 10) % 10 + '0', fp);
 			fputc((a->tick) % 10 + '0', fp);
 		}
