@@ -9,7 +9,9 @@ typedef struct
 	char hour;
 	char minutes;
 
-	char name[10];
+	int score;
+
+	char name[11];
 
 	int size_draw;
 	char *draw;

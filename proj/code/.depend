@@ -186,6 +186,10 @@ device_interrupts.o:	device_interrupts.h
 device_interrupts.o:	lib.h
 device_interrupts.o:	subscribe_macros.h
 
+frame.o:	frame.c
+frame.o:	frame.h
+frame.o:	struct_color.h
+
 keyboard.o:	/usr/include/errno.h
 keyboard.o:	/usr/include/limits.h
 keyboard.o:	/usr/include/machine/bios.h
@@ -307,6 +311,7 @@ menu.o:	lib.h
 menu.o:	lmlib.h
 menu.o:	menu.c
 menu.o:	menu.h
+menu.o:	menu_macros.h
 menu.o:	mouse_struct.h
 menu.o:	struct_bmp.h
 menu.o:	struct_scores.h
@@ -432,11 +437,13 @@ proj.o:	array_keyboard.h
 proj.o:	bitmap.h
 proj.o:	bitmap_macros.h
 proj.o:	device_interrupts.h
+proj.o:	frame.h
 proj.o:	keyboard.h
 proj.o:	keyboard_mouse_macros.h
 proj.o:	lib.h
 proj.o:	lmlib.h
 proj.o:	menu.h
+proj.o:	menu_macros.h
 proj.o:	mouse.h
 proj.o:	mouse_struct.h
 proj.o:	proj.c
@@ -445,6 +452,7 @@ proj.o:	rtc.h
 proj.o:	rtc_macros.h
 proj.o:	serial_port_macros.h
 proj.o:	struct_bmp.h
+proj.o:	struct_color.h
 proj.o:	struct_scores.h
 proj.o:	subscribe_macros.h
 proj.o:	timer.h
