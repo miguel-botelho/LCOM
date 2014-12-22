@@ -158,7 +158,7 @@ int main(int argc, char **argv) {
 							}
 							else
 							{
-								displayTimer(contador, numbers);
+								//displayTimer(contador, numbers);
 							}
 
 						}

@@ -369,18 +369,52 @@ void draw_bucket()
 
 void drawLINE()
 {
-
 	static mouse_st previous_before;
+	static mouse_st previous_after;
 	static int flag;
 	if (flag == 0)
 	{
 		flag = 1;
-		previous_before = mouse_t;
+		previous_before.LB = 0;
+		previous_after.LB = 0;
 	}
-	else
+
+	if ((previous_before.LB == 0) && (previous_after.LB == 0))
 	{
-		draw_line(previous_before);
-		previous_before = mouse_t;
+		if (mouse_t.LB == 1)
+		{
+			previous_after = mouse_t;
+		}
+	}
+	else if ((previous_before.LB == 0) && (previous_after.LB == 1))
+	{
+		if (mouse_t.LB == 1)
+		{
+			previous_before = previous_after;
+			previous_after = mouse_t;
+		}
+		else
+		{
+			previous_before = previous_after;
+			previous_after = mouse_t;
+		}
+	}
+	else if ((previous_before.LB == 1) && (previous_after.LB == 1))
+	{
+		if (mouse_t.LB == 0)
+		{
+			previous_before.LB = 0;
+			previous_after.LB = 0;
+		}
+	}
+	else if ((previous_before.LB == 1) && (previous_after.LB == 0))
+	{
+		if (mouse_t.LB == 1)
+		{
+			draw_line(previous_before);
+			previous_before.LB = 0;
+			previous_after.LB = 0;
+		}
 	}
 
 }
