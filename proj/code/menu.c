@@ -232,6 +232,17 @@ int HumanMachine(bitmap_struct bitmaps)
 					return -1;
 				}
 			}
+			else
+			{
+				if (tool = LINE)
+				{
+					drawLINE();
+				}
+				else if (tool == PENCIL)
+				{
+					draw_pencil();
+				}
+			}
 		}
 	}
 
