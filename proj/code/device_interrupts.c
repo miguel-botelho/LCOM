@@ -133,13 +133,17 @@ int rtc_subscribe_int() {
 
 	if (OK == sys_irqsetpolicy(RTC_IRQ, IRQ_REENABLE, &hook_id_rtc))
 		if (OK == sys_irqenable(&hook_id_rtc))
+		{
+			rtc_enable_interrupts();
 			return BIT(hook_temp);
+		}
 	return -1;
 
 }
 
 int rtc_unsubscribe_int() {
 
+	rtc_disable_interrupts();
 	if (OK == sys_irqdisable(&hook_id_rtc))
 		if (OK == sys_irqrmpolicy(&hook_id_rtc))
 			return 0;

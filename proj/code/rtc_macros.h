@@ -40,6 +40,8 @@
 
 #define DM				BIT(2) // registers in binary
 
+#define TFH				BIT(1) // hours range from 0 to 23
+
 
 // Register C
 
