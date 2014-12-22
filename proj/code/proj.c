@@ -2,6 +2,7 @@
 #include "global_variables.h"
 #include "lib.h"
 
+#include "rtc_macros.h"
 #include "struct_color.h"
 #include "frame.h"
 #include "menu_macros.h"
@@ -23,7 +24,7 @@
 
 extern int RTC_COUNTER;
 extern long int TIMER_TICKS;
-extern position_t current_draw;
+extern position_t current_draw[MAX_DRAW_SIZE];
 extern int current_draw_size;
 extern char name[11];
 extern scores_t scores;
@@ -61,9 +62,6 @@ int main(int argc, char **argv) {
 	//timer
 	int contador = 0;
 	int temp_counter = 0;
-
-	//rtc
-	int counter_rtc = 60;
 
 	//keyboard
 	int key = 0;
@@ -144,7 +142,7 @@ int main(int argc, char **argv) {
 				if (msg.NOTIFY_ARG & irq_set_timer) /* subscribed interrupt for timer*/
 				{
 					TIMER_TICKS++;
-					if (OPTION == HUMAN_VS_MACHINE)
+					/*if (OPTION == HUMAN_VS_MACHINE)
 					{
 						temp_counter++;
 						if (temp_counter == 60)
@@ -162,7 +160,7 @@ int main(int argc, char **argv) {
 							}
 
 						}
-					}
+					}*/
 				}
 
 				if (msg.NOTIFY_ARG & irq_set_keyboard) /* subscribed interrupt for keyboard*/
@@ -321,20 +319,17 @@ int main(int argc, char **argv) {
 
 				if (msg.NOTIFY_ARG & irq_set_rtc) /* subscribed interrupt for rtc */
 				{
-					long tempppp;
-					sys_outb(0x70, 12);
-					sys_inb(0x71, &tempppp);
-					printf("SUB\n");
 					if ((OPTION == HUMAN_VS_MACHINE) || (OPTION == HEAD_TO_HEAD) || (OPTION == ONLINE))
 					{
+						printf("GAME: %d\n", RTC_COUNTER);
 						RTC_COUNTER--;
 						if (RTC_COUNTER < 10)
 						{
-							displayTimer(contador, numbers, bitmaps);
+							displayTimer(RTC_COUNTER, numbers, bitmaps);
 						}
 						else
 						{
-							displayTimer10(contador, numbers, bitmaps);
+							displayTimer10(RTC_COUNTER, numbers, bitmaps);
 						}
 					}
 					else
@@ -350,6 +345,7 @@ int main(int argc, char **argv) {
 		} else { /* received a standard message, not a notification */
 			/* no standard messages expected: do nothing */
 		}
+		read_rtc(REGISTER_C);
 	}
 
 	//Delete from memory
