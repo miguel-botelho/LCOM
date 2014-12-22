@@ -444,7 +444,6 @@ void draw_bucket()
 void drawLINE()
 {
 
-
 }
 
 void draw_pencil()
