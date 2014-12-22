@@ -309,79 +309,31 @@ int toolHandler()
 	case BUCKET:
 	{
 		draw_bucket();
-
-		current_draw.size_draw = current_draw.size_draw + 1;
-		abs_current_draw = current_draw.size_draw;
-		current_draw.draw[current_draw.size_draw].tick = TIMER_TICKS;
-		current_draw.draw[current_draw.size_draw].function = BUCKET;
-		getrgb(&(current_draw.draw[current_draw.size_draw].red), &(current_draw.draw[current_draw.size_draw].green), &(current_draw.draw[current_draw.size_draw].blue));
-		current_draw.draw[current_draw.size_draw].x = mouse_t.x_mouse;
-		current_draw.draw[current_draw.size_draw].y = mouse_t.x_mouse;
 		break;
 	}
 	case PENCIL:
 	{
 		draw_pencil();
-
-		current_draw.size_draw = current_draw.size_draw + 1;
-		abs_current_draw = current_draw.size_draw;
-		current_draw.draw[current_draw.size_draw].tick = TIMER_TICKS;
-		current_draw.draw[current_draw.size_draw].function = BUCKET;
-		getrgb(&(current_draw.draw[current_draw.size_draw].red), &(current_draw.draw[current_draw.size_draw].green), &(current_draw.draw[current_draw.size_draw].blue));
-		current_draw.draw[current_draw.size_draw].x = mouse_t.x_mouse;
-		current_draw.draw[current_draw.size_draw].y = mouse_t.x_mouse;
 		break;
 	}
 	case BRUSH:
 	{
 		draw_brush();
-
-		current_draw.size_draw = current_draw.size_draw + 1;
-		abs_current_draw = current_draw.size_draw;
-		current_draw.draw[current_draw.size_draw].tick = TIMER_TICKS;
-		current_draw.draw[current_draw.size_draw].function = BUCKET;
-		getrgb(&(current_draw.draw[current_draw.size_draw].red), &(current_draw.draw[current_draw.size_draw].green), &(current_draw.draw[current_draw.size_draw].blue));
-		current_draw.draw[current_draw.size_draw].x = mouse_t.x_mouse;
-		current_draw.draw[current_draw.size_draw].y = mouse_t.x_mouse;
 		break;
 	}
 	case LINE:
 	{
 		drawLINE();
-
-		current_draw.size_draw = current_draw.size_draw + 1;
-		abs_current_draw = current_draw.size_draw;
-		current_draw.draw[current_draw.size_draw].tick = TIMER_TICKS;
-		current_draw.draw[current_draw.size_draw].function = BUCKET;
-		getrgb(&(current_draw.draw[current_draw.size_draw].red), &(current_draw.draw[current_draw.size_draw].green), &(current_draw.draw[current_draw.size_draw].blue));
-		current_draw.draw[current_draw.size_draw].x = mouse_t.x_mouse;
-		current_draw.draw[current_draw.size_draw].y = mouse_t.x_mouse;
 		break;
 	}
 	case CIRCLE:
 	{
 		draw_circle();
-
-		current_draw.size_draw = current_draw.size_draw + 1;
-		abs_current_draw = current_draw.size_draw;
-		current_draw.draw[current_draw.size_draw].tick = TIMER_TICKS;
-		current_draw.draw[current_draw.size_draw].function = BUCKET;
-		getrgb(&(current_draw.draw[current_draw.size_draw].red), &(current_draw.draw[current_draw.size_draw].green), &(current_draw.draw[current_draw.size_draw].blue));
-		current_draw.draw[current_draw.size_draw].x = mouse_t.x_mouse;
-		current_draw.draw[current_draw.size_draw].y = mouse_t.x_mouse;
 		break;
 	}
 	case SQUARE:
 	{
 		draw_square();
-
-		current_draw.size_draw = current_draw.size_draw + 1;
-		abs_current_draw = current_draw.size_draw;
-		current_draw.draw[current_draw.size_draw].tick = TIMER_TICKS;
-		current_draw.draw[current_draw.size_draw].function = BUCKET;
-		getrgb(&(current_draw.draw[current_draw.size_draw].red), &(current_draw.draw[current_draw.size_draw].green), &(current_draw.draw[current_draw.size_draw].blue));
-		current_draw.draw[current_draw.size_draw].x = mouse_t.x_mouse;
-		current_draw.draw[current_draw.size_draw].y = mouse_t.x_mouse;
 		return 0;
 		break;
 	}
@@ -558,7 +510,7 @@ void selectDraw()
 		{
 			if (mouse_t.LB == 1)
 			{
-				undo();
+				//undo();
 			}
 		}
 	}
@@ -569,7 +521,7 @@ void selectDraw()
 		{
 			if (mouse_t.LB == 1)
 			{
-				redo();
+				//redo();
 			}
 		}
 	}

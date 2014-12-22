@@ -297,148 +297,12 @@ void draw_square()
 
 void undo()
 {
-	if (current_draw.size_draw >= 1)
-	{
-		current_draw.size_draw--;
-	}
-	else
-	{
-		current_draw.size_draw = 0;
-		return;
-	}
 
-	white_screen();
-	int temp_colour = colour;
-
-	int i = 0;
-
-	for (i; i < current_draw.size_draw; i++)
-	{
-		switch (current_draw.draw->function)
-		{
-		case BUCKET:
-		{
-			mouse_t.x_mouse = current_draw.draw->x;
-			mouse_t.y_mouse = current_draw.draw->y;
-			colour = rgb(current_draw.draw->red, current_draw.draw->green, current_draw.draw->blue);
-			draw_bucket();
-			break;
-		}
-		case BRUSH:
-		{
-			mouse_t.x_mouse = current_draw.draw->x;
-			mouse_t.y_mouse = current_draw.draw->y;
-			colour = rgb(current_draw.draw->red, current_draw.draw->green, current_draw.draw->blue);
-			draw_brush();
-			break;
-		}
-		case PENCIL:
-		{
-			mouse_t.x_mouse = current_draw.draw->x;
-			mouse_t.y_mouse = current_draw.draw->y;
-			colour = rgb(current_draw.draw->red, current_draw.draw->green, current_draw.draw->blue);
-			draw_pencil();
-			break;
-		}
-		case LINE:
-		{
-			mouse_t.x_mouse = current_draw.draw->x;
-			mouse_t.y_mouse = current_draw.draw->y;
-			colour = rgb(current_draw.draw->red, current_draw.draw->green, current_draw.draw->blue);
-			drawLINE();
-			break;
-		}
-		case CIRCLE:
-		{
-			mouse_t.x_mouse = current_draw.draw->x;
-			mouse_t.y_mouse = current_draw.draw->y;
-			colour = rgb(current_draw.draw->red, current_draw.draw->green, current_draw.draw->blue);
-			draw_circle();
-			break;
-		}
-		case SQUARE:
-		{
-			mouse_t.x_mouse = current_draw.draw->x;
-			mouse_t.y_mouse = current_draw.draw->y;
-			colour = rgb(current_draw.draw->red, current_draw.draw->green, current_draw.draw->blue);
-			draw_square();
-			break;
-		}
-		}
-	}
-
-	colour = temp_colour;
 }
 
 void redo()
 {
-	if (current_draw.size_draw >= abs_current_draw)
-	{
-		return;
-	}
 
-	current_draw.size_draw = current_draw.size_draw + 1;
-	white_screen();
-	int temp_colour = colour;
-
-	int i = 0;
-
-	for (i; i < current_draw.size_draw; i++)
-	{
-		switch (current_draw.draw->function)
-		{
-		case BUCKET:
-		{
-			mouse_t.x_mouse = current_draw.draw->x;
-			mouse_t.y_mouse = current_draw.draw->y;
-			colour = rgb(current_draw.draw->red, current_draw.draw->green, current_draw.draw->blue);
-			draw_bucket();
-			break;
-		}
-		case BRUSH:
-		{
-			mouse_t.x_mouse = current_draw.draw->x;
-			mouse_t.y_mouse = current_draw.draw->y;
-			colour = rgb(current_draw.draw->red, current_draw.draw->green, current_draw.draw->blue);
-			draw_brush();
-			break;
-		}
-		case PENCIL:
-		{
-			mouse_t.x_mouse = current_draw.draw->x;
-			mouse_t.y_mouse = current_draw.draw->y;
-			colour = rgb(current_draw.draw->red, current_draw.draw->green, current_draw.draw->blue);
-			draw_pencil();
-			break;
-		}
-		case LINE:
-		{
-			mouse_t.x_mouse = current_draw.draw->x;
-			mouse_t.y_mouse = current_draw.draw->y;
-			colour = rgb(current_draw.draw->red, current_draw.draw->green, current_draw.draw->blue);
-			drawLINE();
-			break;
-		}
-		case CIRCLE:
-		{
-			mouse_t.x_mouse = current_draw.draw->x;
-			mouse_t.y_mouse = current_draw.draw->y;
-			colour = rgb(current_draw.draw->red, current_draw.draw->green, current_draw.draw->blue);
-			draw_circle();
-			break;
-		}
-		case SQUARE:
-		{
-			mouse_t.x_mouse = current_draw.draw->x;
-			mouse_t.y_mouse = current_draw.draw->y;
-			colour = rgb(current_draw.draw->red, current_draw.draw->green, current_draw.draw->blue);
-			draw_square();
-			break;
-		}
-		}
-	}
-
-	colour = temp_colour;
 }
 
 void plus()
@@ -455,7 +319,7 @@ void plus()
 
 void minus()
 {
-	if ((radius - 5) < 3)
+	if ((radius - 3) <= 3)
 	{
 		radius = 3;
 	}
