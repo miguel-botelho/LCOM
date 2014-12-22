@@ -54,6 +54,9 @@ int main(int argc, char **argv) {
 	int contador = 0;
 	int temp_counter = 0;
 
+	//rtc
+	int counter_rtc = 60;
+
 	//keyboard
 	int key = 0;
 
@@ -70,6 +73,8 @@ int main(int argc, char **argv) {
 	bitmaps_load(&bitmaps); // this operation may require a lot of time
 	Bitmap *key_scancode[86];
 	fill_key_scancode(key_scancode);
+	Bitmap *numbers[10];
+	fill_number(numbers);
 
 	// scores
 	scores_t scores;
@@ -80,6 +85,7 @@ int main(int argc, char **argv) {
 	char irq_set_mouse = BIT(macro_hook_id_mouse);
 	char irq_set_sp1 = BIT(macro_hook_id_sp1);
 	char irq_set_sp2 = BIT(macro_hook_id_sp2);
+	char irq_set_rtc = BIT(macro_hook_id_rtc);
 
 	//atributes for the serial port
 	unsigned long line_status;
@@ -97,6 +103,7 @@ int main(int argc, char **argv) {
 	char * mouse_buffer = getMouseBuffer();
 	char * screen_buffer = getScreenBuffer();
 	char * video_memory = getVideoMem();
+	char * human_machine = getHumanMachine();
 	char * video_copy = video_memory;
 
 	// Draw of the background
@@ -108,6 +115,9 @@ int main(int argc, char **argv) {
 	drawMouse(bitmaps.mouse, mouse_t.x_mouse, mouse_t.y_mouse, ALIGN_LEFT, mouse_buffer);
 
 	mouse_to_video(mouse_buffer, video_memory);
+
+	// Draw Human Machine
+	drawBitmap(bitmaps.frame,0,0,ALIGN_LEFT,human_machine);
 
 	//atributes
 	mouse_t.LB = 0; //to prevent the selection of the first menu
@@ -131,7 +141,24 @@ int main(int argc, char **argv) {
 			case HARDWARE: /* hardware interrupt notification */
 				if (msg.NOTIFY_ARG & irq_set_timer) /* subscribed interrupt for timer*/
 				{
+					if (OPTION == HUMAN_VS_MACHINE)
+					{
+						temp_counter++;
+						if (temp_counter == 60)
+						{
+							contador++;
+							temp_counter = 0;
+							if (contador > 10)
+							{
 
+							}
+							else
+							{
+								displayTimer(contador, numbers);
+							}
+
+						}
+					}
 				}
 
 				if (msg.NOTIFY_ARG & irq_set_keyboard) /* subscribed interrupt for keyboard*/
@@ -284,6 +311,11 @@ int main(int argc, char **argv) {
 					{
 						printf("Error on serial port 1!\n");
 					}
+				}
+
+				if (msg.NOTIFY_ARG & irq_set_rtc)
+				{
+
 				}
 				break;
 			default:

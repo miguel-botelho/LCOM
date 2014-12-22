@@ -285,45 +285,45 @@ int menu_handler (bitmap_struct bitmaps)
 int toolHandler()
 {
 	switch (tool)
-		{
-		case BUCKET:
-		{
-			draw_bucket();
-			break;
-		}
-		case PENCIL:
-		{
-			draw_pencil();
-			break;
-		}
-		case BRUSH:
-		{
-			draw_brush();
-			break;
-		}
-		case LINE:
-		{
-			draw_line();
-			break;
-		}
-		case CIRCLE:
-		{
-			draw_circle();
-			break;
-		}
-		case SQUARE:
-		{
-			draw_square();
-			return 0;
-			break;
-		}
-		default:
-		{
-			printf("Error in tool handler() - no option available!\n");
-			return -1;
-		}
-		}
-		return 1;
+	{
+	case BUCKET:
+	{
+		draw_bucket();
+		break;
+	}
+	case PENCIL:
+	{
+		draw_pencil();
+		break;
+	}
+	case BRUSH:
+	{
+		draw_brush();
+		break;
+	}
+	case LINE:
+	{
+		draw_line();
+		break;
+	}
+	case CIRCLE:
+	{
+		draw_circle();
+		break;
+	}
+	case SQUARE:
+	{
+		draw_square();
+		return 0;
+		break;
+	}
+	default:
+	{
+		printf("Error in tool handler() - no option available!\n");
+		return -1;
+	}
+	}
+	return 1;
 }
 
 int is_highscore(scores_t *t, position_t *draw)
@@ -639,4 +639,30 @@ void selectColour()
 		}
 	}
 
+}
+
+int displayTimer(int contador, Bitmap ** numbers)
+{
+	unsigned int l = 0;
+	unsigned int a = 0;
+	char * human_machine = getHumanMachine();
+	char * screen_buffer = getScreenBuffer();
+	human_machine = human_machine + (1024 - 100) * 2 + 100 * 1024 * 2;
+	screen_buffer = screen_buffer + (1024 - 100) * 2 + 100 * 1024 * 2;
+	for(; a < 100; a++)
+	{
+		for (; l < 100;l++)
+		{
+			*(uint16_t *)screen_buffer = *(uint16_t *)human_machine;
+			screen_buffer+=2;
+			human_machine+=2;
+		}
+		l = 0;
+		screen_buffer += 1024 * 2 - 100 * 2;
+		human_machine += 1024 * 2 - 100 * 2;
+	}
+	screen_buffer = getScreenBuffer();
+	drawBitmap(numbers[contador], 1024 - 60, 30, ALIGN_LEFT, screen_buffer);
+
+	human_machine = getHumanMachine();
 }

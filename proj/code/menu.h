@@ -154,4 +154,6 @@ void selectDraw();
 void selectColour();
 
 int toolHandler();
+
+int displayTimer(int contador, Bitmap ** numbers);
 #endif
