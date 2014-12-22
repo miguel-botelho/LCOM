@@ -21,6 +21,8 @@
 #include "struct_bmp.h"
 #include "read_write.h"
 
+extern int RTC_COUNTER;
+
 int main(int argc, char **argv) {
 
 	// Initialize service
@@ -129,9 +131,8 @@ int main(int argc, char **argv) {
 	scores_t highscore;
 	//read_all(&highscore);
 
-	// enquanto nao for premida a tecla ESC
-	while( /*key != KBD_ESC_KEY */ 1) {
-		/* Get a request message. */
+	while(1) {
+
 		if ( (r = driver_receive(ANY, &msg, &ipc_status)) != 0 ) {
 			printf("driver_receive failed with: %d", r);
 			continue;
@@ -313,9 +314,16 @@ int main(int argc, char **argv) {
 					}
 				}
 
-				if (msg.NOTIFY_ARG & irq_set_rtc)
+				if (msg.NOTIFY_ARG & irq_set_rtc) /* subscribed interrupt for rtc */
 				{
-
+					if ((OPTION == HUMAN_VS_MACHINE) || (OPTION == HEAD_TO_HEAD) || (OPTION == ONLINE))
+					{
+						RTC_COUNTER--;
+					}
+					else
+					{
+						RTC_COUNTER = 60;
+					}
 				}
 				break;
 			default:

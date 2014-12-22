@@ -1,5 +1,19 @@
 #include "rtc.h"
 
+void rtc_enable_interrupts()
+{
+	char register_b_config = read_rtc(REGISTER_B);
+	register_b_config = register_b_config | SET | UIE;
+	write_rtc(REGISTER_B, register_b_config);
+}
+
+void rtc_disable_interrupts()
+{
+	char register_b_config = read_rtc(REGISTER_B);
+	register_b_config = register_b_config & (~SET) & (~UIE);
+	write_rtc(REGISTER_B, register_b_config);
+}
+
 char read_rtc(int address)
 {
 	long temp;

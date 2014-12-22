@@ -3,6 +3,8 @@
 
 #include "lib.h"
 #include "subscribe_macros.h"
+#include "rtc_macros.h"
+#include "rtc.h"
 
 // This file only subscribes and unsubscribes
 
