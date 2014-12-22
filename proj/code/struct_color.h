@@ -7,6 +7,8 @@ typedef struct
 {
 	int tick;
 
+	int function;
+
 	//color
 	int red, green, blue;
 

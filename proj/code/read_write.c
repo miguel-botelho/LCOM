@@ -21,6 +21,33 @@ void read_array(FILE *fp, int size, color_st *a)
 		// ignores the new line '\n'
 		ch1 = fgetc(fp);
 
+		//x
+		ch1 = fgetc(fp);
+		ch2 = fgetc(fp);
+		ch3 = fgetc(fp);
+		ch4 = fgetc(fp);
+		a[i].x = (ch1 - '0') * 1000 + (ch2 - '0') * 100 + (ch3 - '0') * 10 + (ch4 - '0');
+
+		// ignores the new line '\n'
+		ch1 = fgetc(fp);
+
+		//y
+		ch1 = fgetc(fp);
+		ch2 = fgetc(fp);
+		ch3 = fgetc(fp);
+		a[i].y = (ch1 - '0') * 100 + (ch2 - '0') * 10 + (ch3 - '0');
+
+		// ignores the new line '\n'
+		ch1 = fgetc(fp);
+
+		//function
+		ch1 = fgetc(fp);
+		ch2 = fgetc(fp);
+		a[i].function = (ch1 - '0') * 10 + (ch2 - '0');
+
+		// ignores the new line '\n'
+		ch1 = fgetc(fp);
+
 		//red
 		ch1 = fgetc(fp);
 		ch2 = fgetc(fp);
@@ -159,96 +186,153 @@ void write_array(FILE *fp, int size, color_st *a)
 	for (i = 0; i < size; i++)
 	{
 		//tick
-		if (a->tick >= 1000)
+		if (a[i].tick >= 1000)
 		{
-			fputc((a->tick / 1000) + '0', fp);
-			fputc((a->tick / 100) % 10 + '0', fp);
-			fputc((a->tick / 10) % 10 + '0', fp);
-			fputc((a->tick) % 10 + '0', fp);
+			fputc((a[i].tick / 1000) + '0', fp);
+			fputc((a[i].tick / 100) % 10 + '0', fp);
+			fputc((a[i].tick / 10) % 10 + '0', fp);
+			fputc((a[i].tick) % 10 + '0', fp);
 		}
-		else if (a->tick >= 100)
+		else if (a[i].tick >= 100)
 		{
 			fputc('0', fp);
-			fputc((a->tick / 100) % 10 + '0', fp);
-			fputc((a->tick / 10) % 10 + '0', fp);
-			fputc((a->tick) % 10 + '0', fp);
+			fputc((a[i].tick / 100) % 10 + '0', fp);
+			fputc((a[i].tick / 10) % 10 + '0', fp);
+			fputc((a[i].tick) % 10 + '0', fp);
 		}
-		else if (a->tick >= 10)
+		else if (a[i].tick >= 10)
 		{
 			fputc('0', fp);
 			fputc('0', fp);
-			fputc((a->tick / 10) % 10 + '0', fp);
-			fputc((a->tick) % 10 + '0', fp);
+			fputc((a[i].tick / 10) % 10 + '0', fp);
+			fputc((a[i].tick) % 10 + '0', fp);
 		}
 		else
 		{
 			fputc('0', fp);
 			fputc('0', fp);
 			fputc('0', fp);
-			fputc((a->tick) % 10 + '0', fp);
+			fputc((a[i].tick) % 10 + '0', fp);
 		}
 		fputc('\n', fp);
 
-		//red
-		if (a->red >= 100)
+		//x (0->1024)
+		if (a[i].x >= 1000)
 		{
-			fputc((a->red / 100) % 10 + '0', fp);
-			fputc((a->red / 10) % 10 + '0', fp);
-			fputc((a->red) % 10 + '0', fp);
+			fputc((a[i].x / 1000) + '0', fp);
+			fputc((a[i].x / 100) % 10 + '0', fp);
+			fputc((a[i].x / 10) % 10 + '0', fp);
+			fputc((a[i].x) % 10 + '0', fp);
 		}
-		else if (a->red >= 10)
+		else if (a[i].x >= 100)
 		{
 			fputc('0', fp);
-			fputc((a->red / 10) % 10 + '0', fp);
-			fputc((a->red) % 10 + '0', fp);
+			fputc((a[i].x / 100) % 10 + '0', fp);
+			fputc((a[i].x / 10) % 10 + '0', fp);
+			fputc((a[i].x) % 10 + '0', fp);
+		}
+		else if (a[i].x >= 10)
+		{
+			fputc('0', fp);
+			fputc('0', fp);
+			fputc((a[i].x / 10) % 10 + '0', fp);
+			fputc((a[i].x) % 10 + '0', fp);
 		}
 		else
 		{
 			fputc('0', fp);
 			fputc('0', fp);
-			fputc((a->red) % 10 + '0', fp);
+			fputc('0', fp);
+			fputc((a[i].x) % 10 + '0', fp);
+		}
+		fputc('\n', fp);
+
+		//y (0->768)
+		if (a[i].x >= 100)
+		{
+			fputc((a[i].y / 100) + '0', fp);
+			fputc((a[i].y / 10) % 10 + '0', fp);
+			fputc((a[i].y) % 10 + '0', fp);
+		}
+		else if (a[i].y >= 10)
+		{
+			fputc('0', fp);
+			fputc((a[i].y / 10) % 10 + '0', fp);
+			fputc((a[i].y) % 10 + '0', fp);
+		}
+		else
+		{
+			fputc('0', fp);
+			fputc('0', fp);
+			fputc((a[i].y) % 10 + '0', fp);
+		}
+		fputc('\n', fp);
+
+		//function (50->xx)
+		fputc((a[i].function / 10) + '0', fp);
+		fputc((a[i].function) % 10 + '0', fp);
+		fputc('\n', fp);
+
+		//red
+		if (a[i].red >= 100)
+		{
+			fputc((a[i].red / 100) % 10 + '0', fp);
+			fputc((a[i].red / 10) % 10 + '0', fp);
+			fputc((a[i].red) % 10 + '0', fp);
+		}
+		else if (a[i].red >= 10)
+		{
+			fputc('0', fp);
+			fputc((a[i].red / 10) % 10 + '0', fp);
+			fputc((a[i].red) % 10 + '0', fp);
+		}
+		else
+		{
+			fputc('0', fp);
+			fputc('0', fp);
+			fputc((a[i].red) % 10 + '0', fp);
 		}
 		fputc(' ', fp);
 
 		//green
-		if (a->green >= 100)
+		if (a[i].green >= 100)
 		{
-			fputc((a->green / 100) % 10 + '0', fp);
-			fputc((a->green / 10) % 10 + '0', fp);
-			fputc((a->green) % 10 + '0', fp);
+			fputc((a[i].green / 100) % 10 + '0', fp);
+			fputc((a[i].green / 10) % 10 + '0', fp);
+			fputc((a[i].green) % 10 + '0', fp);
 		}
-		else if (a->green >= 10)
+		else if (a[i].green >= 10)
 		{
 			fputc('0', fp);
-			fputc((a->green / 10) % 10 + '0', fp);
-			fputc((a->green) % 10 + '0', fp);
+			fputc((a[i].green / 10) % 10 + '0', fp);
+			fputc((a[i].green) % 10 + '0', fp);
 		}
 		else
 		{
 			fputc('0', fp);
 			fputc('0', fp);
-			fputc((a->green) % 10 + '0', fp);
+			fputc((a[i].green) % 10 + '0', fp);
 		}
 		fputc(' ', fp);
 
 		//blue
-		if (a->blue >= 100)
+		if (a[i].blue >= 100)
 		{
-			fputc((a->blue / 100) % 10 + '0', fp);
-			fputc((a->blue / 10) % 10 + '0', fp);
-			fputc((a->blue) % 10 + '0', fp);
+			fputc((a[i].blue / 100) % 10 + '0', fp);
+			fputc((a[i].blue / 10) % 10 + '0', fp);
+			fputc((a[i].blue) % 10 + '0', fp);
 		}
-		else if (a->blue >= 10)
+		else if (a[i].blue >= 10)
 		{
 			fputc('0', fp);
-			fputc((a->blue / 10) % 10 + '0', fp);
-			fputc((a->blue) % 10 + '0', fp);
+			fputc((a[i].blue / 10) % 10 + '0', fp);
+			fputc((a[i].blue) % 10 + '0', fp);
 		}
 		else
 		{
 			fputc('0', fp);
 			fputc('0', fp);
-			fputc((a->blue) % 10 + '0', fp);
+			fputc((a[i].blue) % 10 + '0', fp);
 		}
 		fputc('\n', fp);
 	}

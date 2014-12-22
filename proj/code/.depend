@@ -184,6 +184,8 @@ device_interrupts.o:	/usr/pkg/gcc44/lib/gcc/i686-pc-minix/4.4.3/include/stdarg.h
 device_interrupts.o:	device_interrupts.c
 device_interrupts.o:	device_interrupts.h
 device_interrupts.o:	lib.h
+device_interrupts.o:	rtc.h
+device_interrupts.o:	rtc_macros.h
 device_interrupts.o:	subscribe_macros.h
 
 frame.o:	/usr/include/errno.h
@@ -248,6 +250,7 @@ frame.o:	lmlib.h
 frame.o:	menu_macros.h
 frame.o:	mouse_struct.h
 frame.o:	struct_color.h
+frame.o:	struct_scores.h
 frame.o:	subscribe_macros.h
 frame.o:	vbe_struct.h
 frame.o:	video_gr.h
@@ -256,6 +259,8 @@ frame.o:	video_gr_macros.h
 global_variables.o:	global_variables.c
 global_variables.o:	global_variables.h
 global_variables.o:	menu_macros.h
+global_variables.o:	struct_color.h
+global_variables.o:	struct_scores.h
 global_variables.o:	video_gr_macros.h
 
 keyboard.o:	/usr/include/errno.h
@@ -383,6 +388,8 @@ menu.o:	menu.c
 menu.o:	menu.h
 menu.o:	menu_macros.h
 menu.o:	mouse_struct.h
+menu.o:	rtc.h
+menu.o:	rtc_macros.h
 menu.o:	struct_bmp.h
 menu.o:	struct_color.h
 menu.o:	struct_scores.h

@@ -3,6 +3,7 @@
 
 #include "struct_bmp.h"
 #include "struct_scores.h"
+#include "struct_color.h"
 
 /**
  * @brief Read an array from a file
