@@ -23,7 +23,7 @@
 
 extern int RTC_COUNTER;
 extern long int TIMER_TICKS;
-extern position_t current_draw[MAX_DRAW_SIZE];
+extern position_t current_draw;
 extern int current_draw_size;
 extern char name[11];
 extern scores_t scores;
