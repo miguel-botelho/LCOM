@@ -303,7 +303,7 @@ int toolHandler()
 	}
 	case LINE:
 	{
-		drawLINE();
+		draw_pencil();
 		break;
 	}
 	case CIRCLE:
