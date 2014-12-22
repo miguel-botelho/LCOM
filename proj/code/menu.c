@@ -234,7 +234,7 @@ int HumanMachine(bitmap_struct bitmaps)
 			}
 			else
 			{
-				if (tool = LINE)
+				if (tool == LINE)
 				{
 					drawLINE();
 				}

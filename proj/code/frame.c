@@ -421,7 +421,36 @@ void drawLINE()
 
 void draw_pencil()
 {
-	static mouse_st previous_before;
+	static mouse_st previous;
+	static int flag;
+
+	if (flag == 0)
+	{
+		flag = 1;
+		previous.LB = 0;
+	}
+
+	if (previous.LB == 0)
+	{
+		if (mouse_t.LB == 1)
+		{
+			previous = mouse_t;
+			draw_line(previous);
+		}
+	}
+	else
+	{
+		if (mouse_t.LB == 1)
+		{
+			draw_line(previous);
+			previous = mouse_t;
+		}
+		else
+		{
+			previous = mouse_t;
+		}
+	}
+
 	/*
 static mouse_st previous_after;
 	static int flag;
@@ -449,7 +478,7 @@ static mouse_st previous_after;
 		previous_after = mouse_t;
 	}
 	 */
-	static int flag;
+	/*static int flag;
 	if (flag == 0)
 	{
 		flag = 1;
@@ -459,6 +488,6 @@ static mouse_st previous_after;
 	{
 		draw_line(previous_before);
 		previous_before = mouse_t;
-	}
+	}*/
 
 }
