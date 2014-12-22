@@ -26,6 +26,8 @@ extern long int TIMER_TICKS;
 extern position_t current_draw[MAX_DRAW_SIZE];
 extern int current_draw_size;
 extern char name[11];
+extern scores_t scores;
+extern scores_t highscore;
 
 int main(int argc, char **argv) {
 
@@ -82,8 +84,7 @@ int main(int argc, char **argv) {
 	Bitmap *numbers[10];
 	fill_number(numbers);
 
-	// scores
-	scores_t scores;
+	// scores E GLOBAL
 
 	//irq_sets
 	char irq_set_keyboard = BIT(macro_hook_id_keyboard);
@@ -104,13 +105,12 @@ int main(int argc, char **argv) {
 
 	// Mouse on the middle of the screen
 	mouse_t.x_mouse = getHRes() / 2;
-	mouse_t.y_mouse = getVRes() / 2;
+	mouse_t.y_mouse = getVRes() / 4;
 
 	char * mouse_buffer = getMouseBuffer();
 	char * screen_buffer = getScreenBuffer();
 	char * video_memory = getVideoMem();
 	char * human_machine = getHumanMachine();
-	char * video_copy = video_memory;
 
 	// Draw of the background
 	drawBitmap(bitmaps.background, 0, 0 , ALIGN_LEFT, screen_buffer);
@@ -128,8 +128,8 @@ int main(int argc, char **argv) {
 	//atributes
 	mouse_t.LB = 0; //to prevent the selection of the first menu
 
-	//highscore
-	scores_t highscore;
+	//highscore E GLOBAL
+
 	//read_all(&highscore);
 
 	while(1) {
@@ -158,7 +158,7 @@ int main(int argc, char **argv) {
 							}
 							else
 							{
-								//displayTimer(contador, numbers);
+								displayTimer(contador, numbers, bitmaps);
 							}
 
 						}
@@ -190,8 +190,10 @@ int main(int argc, char **argv) {
 						else
 						{
 							name[length] = get_char(key);
+
 							if (name[length] >= 'A' && name[length] <= 'Z')
 							{
+								WriteArray(name, length, key_scancode);
 								length++;
 							}
 						}
@@ -319,9 +321,21 @@ int main(int argc, char **argv) {
 
 				if (msg.NOTIFY_ARG & irq_set_rtc) /* subscribed interrupt for rtc */
 				{
+					long tempppp;
+					sys_outb(0x70, 12);
+					sys_inb(0x71, &tempppp);
+					printf("SUB\n");
 					if ((OPTION == HUMAN_VS_MACHINE) || (OPTION == HEAD_TO_HEAD) || (OPTION == ONLINE))
 					{
 						RTC_COUNTER--;
+						if (RTC_COUNTER < 10)
+						{
+							displayTimer(contador, numbers, bitmaps);
+						}
+						else
+						{
+							displayTimer10(contador, numbers, bitmaps);
+						}
 					}
 					else
 					{

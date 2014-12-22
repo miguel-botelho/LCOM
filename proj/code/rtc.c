@@ -3,14 +3,14 @@
 void rtc_enable_interrupts()
 {
 	char register_b_config = read_rtc(REGISTER_B);
-	register_b_config = register_b_config | SET | UIE;
+	register_b_config = register_b_config | UIE | 0x06;
 	write_rtc(REGISTER_B, register_b_config);
 }
 
 void rtc_disable_interrupts()
 {
 	char register_b_config = read_rtc(REGISTER_B);
-	register_b_config = register_b_config & (~SET) & (~UIE);
+	register_b_config = register_b_config | (~UIE);
 	write_rtc(REGISTER_B, register_b_config);
 }
 
