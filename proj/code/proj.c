@@ -21,6 +21,12 @@
 #include "struct_bmp.h"
 #include "read_write.h"
 
+extern int RTC_COUNTER;
+extern long int TIMER_TICKS;
+extern position_t current_draw[MAX_DRAW_SIZE];
+extern int current_draw_size;
+extern char name[11];
+
 int main(int argc, char **argv) {
 
 	// Initialize service
@@ -98,7 +104,7 @@ int main(int argc, char **argv) {
 
 	// Mouse on the middle of the screen
 	mouse_t.x_mouse = getHRes() / 2;
-	mouse_t.y_mouse = getVRes() / 4;
+	mouse_t.y_mouse = getVRes() / 2;
 
 	char * mouse_buffer = getMouseBuffer();
 	char * screen_buffer = getScreenBuffer();
@@ -121,17 +127,13 @@ int main(int argc, char **argv) {
 
 	//atributes
 	mouse_t.LB = 0; //to prevent the selection of the first menu
-	position_t current_draw[MAX_DRAW_SIZE];
-	int current_draw_size = 0;
-	char name[11];
 
 	//highscore
 	scores_t highscore;
 	//read_all(&highscore);
 
-	// enquanto nao for premida a tecla ESC
-	while( /*key != KBD_ESC_KEY */ 1) {
-		/* Get a request message. */
+	while(1) {
+
 		if ( (r = driver_receive(ANY, &msg, &ipc_status)) != 0 ) {
 			printf("driver_receive failed with: %d", r);
 			continue;
@@ -141,20 +143,22 @@ int main(int argc, char **argv) {
 			case HARDWARE: /* hardware interrupt notification */
 				if (msg.NOTIFY_ARG & irq_set_timer) /* subscribed interrupt for timer*/
 				{
+					TIMER_TICKS++;
 					if (OPTION == HUMAN_VS_MACHINE)
 					{
 						temp_counter++;
 						if (temp_counter == 60)
 						{
+
 							contador++;
 							temp_counter = 0;
-							if (contador >= 10)
+							if (contador > 10)
 							{
-								displayTimer10(contador, numbers, bitmaps);
+
 							}
 							else
 							{
-								displayTimer(contador, numbers, bitmaps);
+								displayTimer(contador, numbers);
 							}
 
 						}
@@ -313,9 +317,17 @@ int main(int argc, char **argv) {
 					}
 				}
 
-				if (msg.NOTIFY_ARG & irq_set_rtc)
+				if (msg.NOTIFY_ARG & irq_set_rtc) /* subscribed interrupt for rtc */
 				{
-
+					if ((OPTION == HUMAN_VS_MACHINE) || (OPTION == HEAD_TO_HEAD) || (OPTION == ONLINE))
+					{
+						RTC_COUNTER--;
+					}
+					else
+					{
+						RTC_COUNTER = 60;
+						TIMER_TICKS = 0;
+					}
 				}
 				break;
 			default:
