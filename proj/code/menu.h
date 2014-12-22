@@ -19,9 +19,6 @@ extern int radius;
 extern char tool;
 extern int colour;
 extern scores_t highscore;
-extern position_t current_draw;
-extern int abs_current_draw;
-extern long int TIMER_TICKS;
 
 void getrgb(int *red, int *green, int *blue);
 

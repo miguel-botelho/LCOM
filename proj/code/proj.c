@@ -23,9 +23,6 @@
 #include "read_write.h"
 
 extern int RTC_COUNTER;
-extern long int TIMER_TICKS;
-extern position_t current_draw[MAX_DRAW_SIZE];
-extern int current_draw_size;
 extern char name[11];
 extern scores_t scores;
 extern scores_t highscore;
@@ -141,7 +138,6 @@ int main(int argc, char **argv) {
 			case HARDWARE: /* hardware interrupt notification */
 				if (msg.NOTIFY_ARG & irq_set_timer) /* subscribed interrupt for timer*/
 				{
-					TIMER_TICKS++;
 					/*if (OPTION == HUMAN_VS_MACHINE)
 					{
 						temp_counter++;
@@ -335,7 +331,6 @@ int main(int argc, char **argv) {
 					else
 					{
 						RTC_COUNTER = 60;
-						TIMER_TICKS = 0;
 					}
 				}
 				break;

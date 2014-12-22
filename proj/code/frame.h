@@ -8,8 +8,6 @@
 
 extern int radius;
 extern int colour;
-extern position_t current_draw;
-extern int abs_current_draw;
 
 //remember to draw only inside the board!!!
 //collisions?
