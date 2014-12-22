@@ -49,6 +49,16 @@ void fill_key_scancode(Bitmap ** scan_code)
 
 void fill_number(Bitmap ** numbers)
 {
+	numbers[0] = loadBitmap("home/lcom/proj/code/images/numbers/0.bmp");
+	numbers[1] = loadBitmap("home/lcom/proj/code/images/numbers/1.bmp");
+	numbers[2] = loadBitmap("home/lcom/proj/code/images/numbers/2.bmp");
+	numbers[3] = loadBitmap("home/lcom/proj/code/images/numbers/3.bmp");
+	numbers[4] = loadBitmap("home/lcom/proj/code/images/numbers/4.bmp");
+	numbers[5] = loadBitmap("home/lcom/proj/code/images/numbers/5.bmp");
+	numbers[6] = loadBitmap("home/lcom/proj/code/images/numbers/6.bmp");
+	numbers[7] = loadBitmap("home/lcom/proj/code/images/numbers/7.bmp");
+	numbers[8] = loadBitmap("home/lcom/proj/code/images/numbers/8.bmp");
+	numbers[9] = loadBitmap("home/lcom/proj/code/images/numbers/9.bmp");
 	////////////////////////////////////////////////////////////////////////////////////////////////
 	////////////////////////////////////////////////////////////////////////////////////////////////
 	/////////////// NEEDS TO BE MADE ///////////////////////////////////////////////////////////////

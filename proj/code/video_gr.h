@@ -47,6 +47,7 @@ int test_square(unsigned short x, unsigned short y, unsigned short size, unsigne
 
 char * getMouseBuffer();
 char * getScreenBuffer();
+char * getHumanMachine();
 
 /**
  * @brief returns video memory
