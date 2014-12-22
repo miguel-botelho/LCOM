@@ -22,6 +22,10 @@
 #include "read_write.h"
 
 extern int RTC_COUNTER;
+extern long int TIMER_TICKS;
+extern position_t current_draw[MAX_DRAW_SIZE];
+extern int current_draw_size;
+extern char name[11];
 
 int main(int argc, char **argv) {
 
@@ -123,9 +127,6 @@ int main(int argc, char **argv) {
 
 	//atributes
 	mouse_t.LB = 0; //to prevent the selection of the first menu
-	position_t current_draw[MAX_DRAW_SIZE];
-	int current_draw_size = 0;
-	char name[11];
 
 	//highscore
 	scores_t highscore;
@@ -142,11 +143,13 @@ int main(int argc, char **argv) {
 			case HARDWARE: /* hardware interrupt notification */
 				if (msg.NOTIFY_ARG & irq_set_timer) /* subscribed interrupt for timer*/
 				{
+					TIMER_TICKS++;
 					if (OPTION == HUMAN_VS_MACHINE)
 					{
 						temp_counter++;
 						if (temp_counter == 60)
 						{
+
 							contador++;
 							temp_counter = 0;
 							if (contador > 10)
@@ -323,6 +326,7 @@ int main(int argc, char **argv) {
 					else
 					{
 						RTC_COUNTER = 60;
+						TIMER_TICKS = 0;
 					}
 				}
 				break;

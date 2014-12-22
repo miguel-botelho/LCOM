@@ -3,5 +3,7 @@
 
 #include "menu_macros.h"
 #include "video_gr_macros.h"
+#include "struct_scores.h"
+#include "struct_color.h"
 
 #endif
