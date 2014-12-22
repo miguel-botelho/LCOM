@@ -293,44 +293,166 @@ void draw_square()
 		j = 0;
 		screen_buffer+= 1024 * 2 - size * 2;
 	}
-
 }
 
-////////////////////////////////////////////////////////////////////////////////////////////////
-////////////////////////////////////////////////////////////////////////////////////////////////
-/////////////// NEEDS TO BE MADE ///////////////////////////////////////////////////////////////
-////////////////////////////////////////////////////////////////////////////////////////////////
-////////////////////////////////////////////////////////////////////////////////////////////////
 void undo()
 {
+	if (current_draw.size_draw >= 1)
+	{
+		current_draw.size_draw--;
+	}
+	else
+	{
+		current_draw.size_draw = 0;
+		return;
+	}
 
+	white_screen();
+	int temp_colour = colour;
+
+	int i = 0;
+
+	for (i; i < current_draw.size_draw; i++)
+	{
+		switch (current_draw.draw->function)
+		{
+		case BUCKET:
+		{
+			mouse_t.x_mouse = current_draw.draw->x;
+			mouse_t.y_mouse = current_draw.draw->y;
+			colour = rgb(current_draw.draw->red, current_draw.draw->green, current_draw.draw->blue);
+			draw_bucket();
+			break;
+		}
+		case BRUSH:
+		{
+			mouse_t.x_mouse = current_draw.draw->x;
+			mouse_t.y_mouse = current_draw.draw->y;
+			colour = rgb(current_draw.draw->red, current_draw.draw->green, current_draw.draw->blue);
+			draw_brush();
+			break;
+		}
+		case PENCIL:
+		{
+			mouse_t.x_mouse = current_draw.draw->x;
+			mouse_t.y_mouse = current_draw.draw->y;
+			colour = rgb(current_draw.draw->red, current_draw.draw->green, current_draw.draw->blue);
+			draw_pencil();
+			break;
+		}
+		case LINE:
+		{
+			mouse_t.x_mouse = current_draw.draw->x;
+			mouse_t.y_mouse = current_draw.draw->y;
+			colour = rgb(current_draw.draw->red, current_draw.draw->green, current_draw.draw->blue);
+			drawLINE();
+			break;
+		}
+		case CIRCLE:
+		{
+			mouse_t.x_mouse = current_draw.draw->x;
+			mouse_t.y_mouse = current_draw.draw->y;
+			colour = rgb(current_draw.draw->red, current_draw.draw->green, current_draw.draw->blue);
+			draw_circle();
+			break;
+		}
+		case SQUARE:
+		{
+			mouse_t.x_mouse = current_draw.draw->x;
+			mouse_t.y_mouse = current_draw.draw->y;
+			colour = rgb(current_draw.draw->red, current_draw.draw->green, current_draw.draw->blue);
+			draw_square();
+			break;
+		}
+		}
+	}
+
+	colour = temp_colour;
 }
 
-////////////////////////////////////////////////////////////////////////////////////////////////
-////////////////////////////////////////////////////////////////////////////////////////////////
-/////////////// NEEDS TO BE MADE ///////////////////////////////////////////////////////////////
-////////////////////////////////////////////////////////////////////////////////////////////////
-////////////////////////////////////////////////////////////////////////////////////////////////
 void redo()
 {
+	if (current_draw.size_draw >= abs_current_draw)
+	{
+		return;
+	}
 
+	current_draw.size_draw = current_draw.size_draw + 1;
+	white_screen();
+	int temp_colour = colour;
+
+	int i = 0;
+
+	for (i; i < current_draw.size_draw; i++)
+	{
+		switch (current_draw.draw->function)
+		{
+		case BUCKET:
+		{
+			mouse_t.x_mouse = current_draw.draw->x;
+			mouse_t.y_mouse = current_draw.draw->y;
+			colour = rgb(current_draw.draw->red, current_draw.draw->green, current_draw.draw->blue);
+			draw_bucket();
+			break;
+		}
+		case BRUSH:
+		{
+			mouse_t.x_mouse = current_draw.draw->x;
+			mouse_t.y_mouse = current_draw.draw->y;
+			colour = rgb(current_draw.draw->red, current_draw.draw->green, current_draw.draw->blue);
+			draw_brush();
+			break;
+		}
+		case PENCIL:
+		{
+			mouse_t.x_mouse = current_draw.draw->x;
+			mouse_t.y_mouse = current_draw.draw->y;
+			colour = rgb(current_draw.draw->red, current_draw.draw->green, current_draw.draw->blue);
+			draw_pencil();
+			break;
+		}
+		case LINE:
+		{
+			mouse_t.x_mouse = current_draw.draw->x;
+			mouse_t.y_mouse = current_draw.draw->y;
+			colour = rgb(current_draw.draw->red, current_draw.draw->green, current_draw.draw->blue);
+			drawLINE();
+			break;
+		}
+		case CIRCLE:
+		{
+			mouse_t.x_mouse = current_draw.draw->x;
+			mouse_t.y_mouse = current_draw.draw->y;
+			colour = rgb(current_draw.draw->red, current_draw.draw->green, current_draw.draw->blue);
+			draw_circle();
+			break;
+		}
+		case SQUARE:
+		{
+			mouse_t.x_mouse = current_draw.draw->x;
+			mouse_t.y_mouse = current_draw.draw->y;
+			colour = rgb(current_draw.draw->red, current_draw.draw->green, current_draw.draw->blue);
+			draw_square();
+			break;
+		}
+		}
+	}
+
+	colour = temp_colour;
 }
 
-////////////////////////////////////////////////////////////////////////////////////////////////
-////////////////////////////////////////////////////////////////////////////////////////////////
-/////////////// NEEDS TO BE MADE ///////////////////////////////////////////////////////////////
-////////////////////////////////////////////////////////////////////////////////////////////////
-////////////////////////////////////////////////////////////////////////////////////////////////
 void plus()
 {
-	radius = radius + 5;
+	if (radius > 100)
+	{
+		radius = 100;
+	}
+	else
+	{
+		radius = radius + 5;
+	}
 }
 
-////////////////////////////////////////////////////////////////////////////////////////////////
-////////////////////////////////////////////////////////////////////////////////////////////////
-/////////////// NEEDS TO BE MADE ///////////////////////////////////////////////////////////////
-////////////////////////////////////////////////////////////////////////////////////////////////
-////////////////////////////////////////////////////////////////////////////////////////////////
 void minus()
 {
 	if ((radius - 5) < 3)
@@ -450,44 +572,26 @@ void draw_pencil()
 			previous = mouse_t;
 		}
 	}
+}
 
-	/*
-static mouse_st previous_after;
-	static int flag;
+void white_screen()
+{
+	char * screen_buffer = getScreenBuffer();
 
-	if (flag == 0)
-	{
-		flag = 1;
-		previous_before.LB = 0;
-		previous_after = mouse_t;
-	}
+	screen_buffer = screen_buffer + 120 * 2 + 187 * 2 * 1024;
 
-	if ((previous_before.LB == 1) && (previous_after.LB == 0) && (mouse_t.LB == 1))
-	{
-		draw_line(previous_before);
-		previous_before = previous_after;
-		previous_after = mouse_t;
-	}
-	else if ( (previous_before.LB == 0) && (previous_after.LB == 1) && (mouse_t.LB == 1) )
-	{
-		previous_after = mouse_t;
-	}
-	else if ( (previous_before.LB == 1) && (previous_after.LB == 1) && (mouse_t.LB == 0) )
-	{
-		previous_before = previous_after;
-		previous_after = mouse_t;
-	}
-	 */
-	/*static int flag;
-	if (flag == 0)
-	{
-		flag = 1;
-		previous_before = mouse_t;
-	}
-	else
-	{
-		draw_line(previous_before);
-		previous_before = mouse_t;
-	}*/
+	unsigned int i = 0;
+	unsigned int j = 0;
 
+
+	for(; i < 717 - 187; i++)
+	{
+		for (; j < 1020 - 120; j++)
+		{
+			*(uint16_t *) screen_buffer = WHITE;
+			screen_buffer+=2;
+		}
+		j = 0;
+		screen_buffer = screen_buffer - (1020 - 120) * 2 + 1024 * 2;
+	}
 }

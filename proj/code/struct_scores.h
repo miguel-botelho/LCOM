@@ -3,7 +3,7 @@
 
 #include "struct_color.h"
 
-#define MAX_DRAW_SIZE			999999
+#define MAX_DRAW_SIZE			999
 
 typedef struct
 {
@@ -18,7 +18,7 @@ typedef struct
 	char name[11];
 
 	int size_draw;
-	color_st *draw;
+	color_st draw[MAX_DRAW_SIZE];
 
 
 } position_t;

@@ -6,17 +6,24 @@
 #include "menu_macros.h"
 #include "struct_bmp.h"
 #include "struct_scores.h"
+#include "struct_color.h"
 #include "array_keyboard.h"
 #include "mouse_struct.h"
 #include "video_gr.h"
 #include "keyboard_mouse_macros.h"
 #include "device_interrupts.h"
+#include "video_gr_macros.h"
 
 extern char OPTION;
 extern int radius;
 extern char tool;
 extern int colour;
 extern scores_t highscore;
+extern position_t current_draw;
+extern int abs_current_draw;
+extern long int TIMER_TICKS;
+
+void getrgb(int *red, int *green, int *blue);
 
 //in case of highscore it changes OPTION to GET_NAME
 //return -1 if not highscore or the position otherwise

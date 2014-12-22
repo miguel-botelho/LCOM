@@ -309,31 +309,79 @@ int toolHandler()
 	case BUCKET:
 	{
 		draw_bucket();
+
+		current_draw.size_draw = current_draw.size_draw + 1;
+		abs_current_draw = current_draw.size_draw;
+		current_draw.draw[current_draw.size_draw].tick = TIMER_TICKS;
+		current_draw.draw[current_draw.size_draw].function = BUCKET;
+		getrgb(&(current_draw.draw[current_draw.size_draw].red), &(current_draw.draw[current_draw.size_draw].green), &(current_draw.draw[current_draw.size_draw].blue));
+		current_draw.draw[current_draw.size_draw].x = mouse_t.x_mouse;
+		current_draw.draw[current_draw.size_draw].y = mouse_t.x_mouse;
 		break;
 	}
 	case PENCIL:
 	{
 		draw_pencil();
+
+		current_draw.size_draw = current_draw.size_draw + 1;
+		abs_current_draw = current_draw.size_draw;
+		current_draw.draw[current_draw.size_draw].tick = TIMER_TICKS;
+		current_draw.draw[current_draw.size_draw].function = BUCKET;
+		getrgb(&(current_draw.draw[current_draw.size_draw].red), &(current_draw.draw[current_draw.size_draw].green), &(current_draw.draw[current_draw.size_draw].blue));
+		current_draw.draw[current_draw.size_draw].x = mouse_t.x_mouse;
+		current_draw.draw[current_draw.size_draw].y = mouse_t.x_mouse;
 		break;
 	}
 	case BRUSH:
 	{
 		draw_brush();
+
+		current_draw.size_draw = current_draw.size_draw + 1;
+		abs_current_draw = current_draw.size_draw;
+		current_draw.draw[current_draw.size_draw].tick = TIMER_TICKS;
+		current_draw.draw[current_draw.size_draw].function = BUCKET;
+		getrgb(&(current_draw.draw[current_draw.size_draw].red), &(current_draw.draw[current_draw.size_draw].green), &(current_draw.draw[current_draw.size_draw].blue));
+		current_draw.draw[current_draw.size_draw].x = mouse_t.x_mouse;
+		current_draw.draw[current_draw.size_draw].y = mouse_t.x_mouse;
 		break;
 	}
 	case LINE:
 	{
 		drawLINE();
+
+		current_draw.size_draw = current_draw.size_draw + 1;
+		abs_current_draw = current_draw.size_draw;
+		current_draw.draw[current_draw.size_draw].tick = TIMER_TICKS;
+		current_draw.draw[current_draw.size_draw].function = BUCKET;
+		getrgb(&(current_draw.draw[current_draw.size_draw].red), &(current_draw.draw[current_draw.size_draw].green), &(current_draw.draw[current_draw.size_draw].blue));
+		current_draw.draw[current_draw.size_draw].x = mouse_t.x_mouse;
+		current_draw.draw[current_draw.size_draw].y = mouse_t.x_mouse;
 		break;
 	}
 	case CIRCLE:
 	{
 		draw_circle();
+
+		current_draw.size_draw = current_draw.size_draw + 1;
+		abs_current_draw = current_draw.size_draw;
+		current_draw.draw[current_draw.size_draw].tick = TIMER_TICKS;
+		current_draw.draw[current_draw.size_draw].function = BUCKET;
+		getrgb(&(current_draw.draw[current_draw.size_draw].red), &(current_draw.draw[current_draw.size_draw].green), &(current_draw.draw[current_draw.size_draw].blue));
+		current_draw.draw[current_draw.size_draw].x = mouse_t.x_mouse;
+		current_draw.draw[current_draw.size_draw].y = mouse_t.x_mouse;
 		break;
 	}
 	case SQUARE:
 	{
 		draw_square();
+
+		current_draw.size_draw = current_draw.size_draw + 1;
+		abs_current_draw = current_draw.size_draw;
+		current_draw.draw[current_draw.size_draw].tick = TIMER_TICKS;
+		current_draw.draw[current_draw.size_draw].function = BUCKET;
+		getrgb(&(current_draw.draw[current_draw.size_draw].red), &(current_draw.draw[current_draw.size_draw].green), &(current_draw.draw[current_draw.size_draw].blue));
+		current_draw.draw[current_draw.size_draw].x = mouse_t.x_mouse;
+		current_draw.draw[current_draw.size_draw].y = mouse_t.x_mouse;
 		return 0;
 		break;
 	}
@@ -510,7 +558,7 @@ void selectDraw()
 		{
 			if (mouse_t.LB == 1)
 			{
-				//undo
+				undo();
 			}
 		}
 	}
@@ -521,7 +569,7 @@ void selectDraw()
 		{
 			if (mouse_t.LB == 1)
 			{
-				//redo
+				redo();
 			}
 		}
 	}
@@ -867,4 +915,94 @@ void WriteArray(char * name, int length, Bitmap ** key_scancode)
 		}
 	}
 
+}
+
+void getrgb(int *red, int *green, int *blue)
+{
+	if (colour == BLACK)
+	{
+		*red = 0;
+		*green = 0;
+		*blue = 0;
+	}
+	else if (colour == YELLOW){
+		*red = 255;
+		*green = 251;
+		*blue = 0;
+		}
+	else if (colour == BLUE){
+		*red = 0;
+		*green = 16;
+		*blue = 255;
+		}
+	else if (colour == PINK){
+		*red = 255;
+		*green = 0;
+		*blue = 173;
+		}
+	else if (colour == WHITE){
+		*red = 255;
+		*green = 255;
+		*blue = 255;
+		}
+	else if (colour == GREEN){
+		*red = 16;
+		*green = 138;
+		*blue = 0;
+		}
+	else if (colour == RED){
+		*red = 255;
+		*green = 0;
+		*blue = 0;
+		}
+	else if (colour == GRAY){
+		*red = 107;
+		*green = 109;
+		*blue = 107;
+		}
+	else if (colour == CYAN){
+		*red = 0;
+		*green = 255;
+		*blue = 255;
+		}
+	else if (colour == ORANGE){
+		*red = 255;
+		*green = 113;
+		*blue = 0;
+		}
+	else if (colour == NAVY){
+		*red = 0;
+		*green = 0;
+		*blue = 128;
+		}
+	else if (colour == SILVER){
+		*red = 192;
+		*green = 192;
+		*blue = 192;
+		}
+	else if (colour == TEAL){
+		*red = 0;
+		*green = 128;
+		*blue = 128;
+		}
+	else if (colour == PURPLE){
+		*red = 123;
+		*green = 4;
+		*blue = 156;
+		}
+	else if (colour == BROWN){
+		*red = 132;
+		*green = 61;
+		*blue = 8;
+		}
+	else if (colour == DARK_GRAY){
+		*red = 169;
+		*green = 169;
+		*blue = 169;
+		}
+	else if (colour == LIGHT_GRAY){
+		*red = 211;
+		*green = 211;
+		*blue = 211;
+		}
 }
