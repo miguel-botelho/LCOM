@@ -382,37 +382,7 @@ void drawLINE()
 		draw_line(previous_before);
 		previous_before = mouse_t;
 	}
-	/*
-	static mouse_st previous_after;
-	static int flag;
 
-	if (flag == 0)
-	{
-		flag = 1;
-		previous_before.LB = 0;
-		previous_after = mouse_t;
-	}
-
-	printf("previous_before.LB = %d\n", previous_before.LB);
-	printf("previous_after.LB = %d\n", previous_after.LB);
-	printf("atual.LB = %d\n", mouse_t.LB);
-
-	if ((previous_before.LB == 1) && (previous_after.LB == 0) && (mouse_t.LB == 1))
-	{
-		draw_line(previous_before);
-		previous_before = previous_after;
-		previous_after = mouse_t;
-	}
-	else if ( (previous_before.LB == 0) && (previous_after.LB == 1) && (mouse_t.LB == 1) )
-	{
-		previous_after = mouse_t;
-	}
-	else if ( (previous_before.LB == 1) && (previous_after.LB == 1) && (mouse_t.LB == 0) )
-	{
-		previous_before = previous_after;
-		previous_after = mouse_t;
-	}
-	 */
 }
 
 void draw_pencil()

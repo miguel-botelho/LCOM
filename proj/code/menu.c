@@ -641,7 +641,7 @@ void selectColour()
 
 }
 
-int displayTimer(int contador, Bitmap ** numbers)
+int displayTimer(int contador, Bitmap ** numbers, bitmap_struct bitmaps)
 {
 	unsigned int l = 0;
 	unsigned int a = 0;
@@ -661,8 +661,44 @@ int displayTimer(int contador, Bitmap ** numbers)
 		screen_buffer += 1024 * 2 - 100 * 2;
 		human_machine += 1024 * 2 - 100 * 2;
 	}
+
 	screen_buffer = getScreenBuffer();
-	drawBitmap(numbers[contador], 1024 - 60, 30, ALIGN_LEFT, screen_buffer);
+	drawMouse(numbers[contador], 1024 - 60, 30, ALIGN_LEFT, screen_buffer);
 
 	human_machine = getHumanMachine();
+	screen_to_mouse(screen_buffer, getMouseBuffer());
+	drawMouse(bitmaps.mouse, mouse_t.x_mouse, mouse_t.y_mouse, ALIGN_LEFT, getMouseBuffer());
+	mouse_to_video(getMouseBuffer(), getVideoMem());
+}
+
+int displayTimer10(int contador, Bitmap ** numbers, bitmap_struct bitmaps)
+{
+	int nr1 = contador / 10;
+	int nr2 = contador % 10;
+
+	unsigned int l = 0;
+	unsigned int a = 0;
+	char * human_machine = getHumanMachine();
+	char * screen_buffer = getScreenBuffer();
+	human_machine = human_machine + (1024 - 100) * 2 + 100 * 1024 * 2;
+	screen_buffer = screen_buffer + (1024 - 100) * 2 + 100 * 1024 * 2;
+	for(; a < 100; a++)
+	{
+		for (; l < 100;l++)
+		{
+			*(uint16_t *)screen_buffer = *(uint16_t *)human_machine;
+			screen_buffer+=2;
+			human_machine+=2;
+		}
+		l = 0;
+		screen_buffer += 1024 * 2 - 100 * 2;
+		human_machine += 1024 * 2 - 100 * 2;
+	}
+	screen_buffer = getScreenBuffer();
+	drawMouse(numbers[nr1], 1024 - 60, 30, ALIGN_LEFT, screen_buffer);
+	drawMouse(numbers[nr2], 1024 - 30, 30, ALIGN_LEFT, screen_buffer);
+	screen_to_mouse(screen_buffer, getMouseBuffer());
+	drawMouse(bitmaps.mouse, mouse_t.x_mouse, mouse_t.y_mouse, ALIGN_LEFT, getMouseBuffer());
+	mouse_to_video(getMouseBuffer(), getVideoMem());
+
 }
