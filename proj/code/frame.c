@@ -5,81 +5,8 @@
 /////////////// NEEDS TO BE MADE ///////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////
-void draw_line(mouse_st previous,  int xf, int yf)
+void draw_line(mouse_st previous)
 {
-	/*
-	int dx = abs(xf - xi);
-	int dy = abs(yf - yi);
-	int i;
-	char * screen_buffer;
-	if (dx > dy) {
-		if (xf - xi < 0) {
-			int temp = xi;
-			xi = xf;
-			xf = temp;
-			temp = yi;
-			yi = yf;
-			yf = temp;
-		}
-		for (i = 0; i <= dx; i++) {
-			double y = (double) dy * (double) i / (double) dx;
-			if (yf - yi < 0) {
-				screen_buffer = getScreenBuffer();
-				screen_buffer = screen_buffer + (1024 * (yi - (int) (y + 0.5))) * 2 + (xi + i)*2;
-	 *(uint16_t *)screen_buffer = colour;
-			}
-			else {
-				screen_buffer = getScreenBuffer();
-				screen_buffer = screen_buffer + (1024 * (yi + (int) (y + 0.5))) * 2 + (xi + i) * 2;
-	 *(uint16_t *)screen_buffer = colour;
-			}
-		}
-	}
-
-	else {
-		if (yf - yi < 0) {
-			int temp = xi;
-			xi = xf;
-			xf = temp;
-			temp = yi;
-			yi = yf;
-			yf = temp;
-		}
-
-		for (i = 0; i <= dy; i++) {
-			double x = (double) dx * (double) i / (double) dy;
-			if (xf - xi < 0) {
-				screen_buffer = getScreenBuffer();
-				screen_buffer = screen_buffer + (1024 * (yi + i)) * 2 + (xi - (int) (x + 0.5) * 2);
-	 *(uint16_t *)screen_buffer = colour;
-			}
-			else {
-				screen_buffer = getScreenBuffer();
-				screen_buffer = screen_buffer + (1024 * (yi + i)) * 2 + (xi + (int) (x + 0.5) * 2);
-	 *(uint16_t *)screen_buffer = colour;
-			}
-		}
-	}
-
-
-	int dx = abs(xf-xi), sx = xi<xf ? 1 : -1;
-	int dy = abs(yf-yi), sy = yi<yf ? 1 : -1;
-	int err = (dx>dy ? dx : -dy)/2, e2;
-	char * screen_buffer;
-
-	for(;;){
-		//setPixel(x0,y0);
-		screen_buffer = getScreenBuffer();
-		screen_buffer = screen_buffer + xi * 2 + 1024 * yi * 2;
-	 *(uint16_t *)screen_buffer = colour;
-
-		if (xi==xf && yi==yf) break;
-		e2 = err;
-		if (e2 >-dx) { err -= dy; xi += sx; }
-		if (e2 < dy) { err += dx; yi += sy; }
-	}
-
-	 */
 
 	long dx,dy;
 	char * screen_buffer;
@@ -87,66 +14,65 @@ void draw_line(mouse_st previous,  int xf, int yf)
 	int temp;
 	int xi = previous.x_mouse;
 	int yi = previous.y_mouse;
+	int xf = mouse_t.x_mouse;
+	int yf = mouse_t.y_mouse;
 
-	if (previous.LB == 1)
+	dx=abs(xi-xf);dy=abs(yi-yf);
+	if(dy>dx)
 	{
-		dx=abs(xi-xf);dy=abs(yi-yf);
-		if(dy>dx)
-		{
-			temp = xi;
-			xi = yi;
-			yi = temp;
-			//swap(&xi,&yi);
-			temp = xf;
-			xf = yf;
-			yf = temp;
-			//swap(&xf,&yf);
-			temp = dx;
-			dx = dy;
-			dy = temp;
-			//swap(&dx,&dy);
-			slopegt1=1;
-		}
-		if(xi>xf)
-		{
-			temp = xi;
-			xi = xf;
-			xf = temp;
-			//swap(&xi,&xf);
-			temp = yi;
-			yi = yf;
-			yf = temp;
-			//swap(&yi,&yf);
-		}
-		if(yi>yf)
-			incry=-1;
+		temp = xi;
+		xi = yi;
+		yi = temp;
+		//swap(&xi,&yi);
+		temp = xf;
+		xf = yf;
+		yf = temp;
+		//swap(&xf,&yf);
+		temp = dx;
+		dx = dy;
+		dy = temp;
+		//swap(&dx,&dy);
+		slopegt1=1;
+	}
+	if(xi>xf)
+	{
+		temp = xi;
+		xi = xf;
+		xf = temp;
+		//swap(&xi,&xf);
+		temp = yi;
+		yi = yf;
+		yf = temp;
+		//swap(&yi,&yf);
+	}
+	if(yi>yf)
+		incry=-1;
+	else
+		incry=1;
+	d=2*dy-dx;
+	incre=2*dy;
+	incrne=2*(dy-dx);
+	while(xi<xf)
+	{
+		if(d<=0)
+			d+=incre;
 		else
-			incry=1;
-		d=2*dy-dx;
-		incre=2*dy;
-		incrne=2*(dy-dx);
-		while(xi<xf)
 		{
-			if(d<=0)
-				d+=incre;
-			else
-			{
-				d+=incrne;
-				yi+=incry;
-			}
-			xi++;
-			if(slopegt1)
-			{
-				screen_buffer = getScreenBuffer();
-				screen_buffer = screen_buffer + yi * 2 + 1024 * xi * 2;
-				*(uint16_t *)screen_buffer = colour;
-			}
-			else
-			{
-				screen_buffer = getScreenBuffer();
-				screen_buffer = screen_buffer + xi * 2 + 1024 * yi * 2;
-				*(uint16_t *)screen_buffer = colour;
-			}
+			d+=incrne;
+			yi+=incry;
+		}
+		xi++;
+		if(slopegt1)
+		{
+			screen_buffer = getScreenBuffer();
+			screen_buffer = screen_buffer + yi * 2 + 1024 * xi * 2;
+			*(uint16_t *)screen_buffer = colour;
+		}
+		else
+		{
+			screen_buffer = getScreenBuffer();
+			screen_buffer = screen_buffer + xi * 2 + 1024 * yi * 2;
+			*(uint16_t *)screen_buffer = colour;
 		}
 	}
 
@@ -444,16 +370,91 @@ void draw_bucket()
 void drawLINE()
 {
 
+	static mouse_st previous_before;
+	static int flag;
+	if (flag == 0)
+	{
+		flag = 1;
+		previous_before = mouse_t;
+	}
+	else
+	{
+		draw_line(previous_before);
+		previous_before = mouse_t;
+	}
+	/*
+	static mouse_st previous_after;
+	static int flag;
+
+	if (flag == 0)
+	{
+		flag = 1;
+		previous_before.LB = 0;
+		previous_after = mouse_t;
+	}
+
+	printf("previous_before.LB = %d\n", previous_before.LB);
+	printf("previous_after.LB = %d\n", previous_after.LB);
+	printf("atual.LB = %d\n", mouse_t.LB);
+
+	if ((previous_before.LB == 1) && (previous_after.LB == 0) && (mouse_t.LB == 1))
+	{
+		draw_line(previous_before);
+		previous_before = previous_after;
+		previous_after = mouse_t;
+	}
+	else if ( (previous_before.LB == 0) && (previous_after.LB == 1) && (mouse_t.LB == 1) )
+	{
+		previous_after = mouse_t;
+	}
+	else if ( (previous_before.LB == 1) && (previous_after.LB == 1) && (mouse_t.LB == 0) )
+	{
+		previous_before = previous_after;
+		previous_after = mouse_t;
+	}
+	 */
 }
 
 void draw_pencil()
 {
-	static mouse_st previous;
+	static mouse_st previous_before;
+	/*
+static mouse_st previous_after;
+	static int flag;
 
-	char * screen_buffer = getScreenBuffer() + mouse_t.x_mouse * 2 + 1024 * mouse_t.y_mouse * 2;
-	if (previous.x_mouse != 0)
+	if (flag == 0)
 	{
-		draw_line(previous, mouse_t.x_mouse, mouse_t.y_mouse);
+		flag = 1;
+		previous_before.LB = 0;
+		previous_after = mouse_t;
 	}
-	previous = mouse_t;
+
+	if ((previous_before.LB == 1) && (previous_after.LB == 0) && (mouse_t.LB == 1))
+	{
+		draw_line(previous_before);
+		previous_before = previous_after;
+		previous_after = mouse_t;
+	}
+	else if ( (previous_before.LB == 0) && (previous_after.LB == 1) && (mouse_t.LB == 1) )
+	{
+		previous_after = mouse_t;
+	}
+	else if ( (previous_before.LB == 1) && (previous_after.LB == 1) && (mouse_t.LB == 0) )
+	{
+		previous_before = previous_after;
+		previous_after = mouse_t;
+	}
+	 */
+	static int flag;
+	if (flag == 0)
+	{
+		flag = 1;
+		previous_before = mouse_t;
+	}
+	else
+	{
+		draw_line(previous_before);
+		previous_before = mouse_t;
+	}
+
 }
