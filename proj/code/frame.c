@@ -5,8 +5,150 @@
 /////////////// NEEDS TO BE MADE ///////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////
-void draw_line()
+void draw_line(mouse_st previous,  int xf, int yf)
 {
+	/*
+	int dx = abs(xf - xi);
+	int dy = abs(yf - yi);
+	int i;
+	char * screen_buffer;
+	if (dx > dy) {
+		if (xf - xi < 0) {
+			int temp = xi;
+			xi = xf;
+			xf = temp;
+			temp = yi;
+			yi = yf;
+			yf = temp;
+		}
+		for (i = 0; i <= dx; i++) {
+			double y = (double) dy * (double) i / (double) dx;
+			if (yf - yi < 0) {
+				screen_buffer = getScreenBuffer();
+				screen_buffer = screen_buffer + (1024 * (yi - (int) (y + 0.5))) * 2 + (xi + i)*2;
+	 *(uint16_t *)screen_buffer = colour;
+			}
+			else {
+				screen_buffer = getScreenBuffer();
+				screen_buffer = screen_buffer + (1024 * (yi + (int) (y + 0.5))) * 2 + (xi + i) * 2;
+	 *(uint16_t *)screen_buffer = colour;
+			}
+		}
+	}
+
+	else {
+		if (yf - yi < 0) {
+			int temp = xi;
+			xi = xf;
+			xf = temp;
+			temp = yi;
+			yi = yf;
+			yf = temp;
+		}
+
+		for (i = 0; i <= dy; i++) {
+			double x = (double) dx * (double) i / (double) dy;
+			if (xf - xi < 0) {
+				screen_buffer = getScreenBuffer();
+				screen_buffer = screen_buffer + (1024 * (yi + i)) * 2 + (xi - (int) (x + 0.5) * 2);
+	 *(uint16_t *)screen_buffer = colour;
+			}
+			else {
+				screen_buffer = getScreenBuffer();
+				screen_buffer = screen_buffer + (1024 * (yi + i)) * 2 + (xi + (int) (x + 0.5) * 2);
+	 *(uint16_t *)screen_buffer = colour;
+			}
+		}
+	}
+
+
+	int dx = abs(xf-xi), sx = xi<xf ? 1 : -1;
+	int dy = abs(yf-yi), sy = yi<yf ? 1 : -1;
+	int err = (dx>dy ? dx : -dy)/2, e2;
+	char * screen_buffer;
+
+	for(;;){
+		//setPixel(x0,y0);
+		screen_buffer = getScreenBuffer();
+		screen_buffer = screen_buffer + xi * 2 + 1024 * yi * 2;
+	 *(uint16_t *)screen_buffer = colour;
+
+		if (xi==xf && yi==yf) break;
+		e2 = err;
+		if (e2 >-dx) { err -= dy; xi += sx; }
+		if (e2 < dy) { err += dx; yi += sy; }
+	}
+
+	 */
+
+	long dx,dy;
+	char * screen_buffer;
+	int d,incry,incre,incrne,slopegt1=0;
+	int temp;
+	int xi = previous.x_mouse;
+	int yi = previous.y_mouse;
+
+	if (previous.LB == 1)
+	{
+		dx=abs(xi-xf);dy=abs(yi-yf);
+		if(dy>dx)
+		{
+			temp = xi;
+			xi = yi;
+			yi = temp;
+			//swap(&xi,&yi);
+			temp = xf;
+			xf = yf;
+			yf = temp;
+			//swap(&xf,&yf);
+			temp = dx;
+			dx = dy;
+			dy = temp;
+			//swap(&dx,&dy);
+			slopegt1=1;
+		}
+		if(xi>xf)
+		{
+			temp = xi;
+			xi = xf;
+			xf = temp;
+			//swap(&xi,&xf);
+			temp = yi;
+			yi = yf;
+			yf = temp;
+			//swap(&yi,&yf);
+		}
+		if(yi>yf)
+			incry=-1;
+		else
+			incry=1;
+		d=2*dy-dx;
+		incre=2*dy;
+		incrne=2*(dy-dx);
+		while(xi<xf)
+		{
+			if(d<=0)
+				d+=incre;
+			else
+			{
+				d+=incrne;
+				yi+=incry;
+			}
+			xi++;
+			if(slopegt1)
+			{
+				screen_buffer = getScreenBuffer();
+				screen_buffer = screen_buffer + yi * 2 + 1024 * xi * 2;
+				*(uint16_t *)screen_buffer = colour;
+			}
+			else
+			{
+				screen_buffer = getScreenBuffer();
+				screen_buffer = screen_buffer + xi * 2 + 1024 * yi * 2;
+				*(uint16_t *)screen_buffer = colour;
+			}
+		}
+	}
 
 }
 
@@ -31,35 +173,69 @@ void draw_brush()
 	{
 		screen_buffer = getScreenBuffer();
 		screen_buffer += (x + x0)* 2 + (y + y0) * 1024 * 2;
-		*(uint16_t *)screen_buffer = colour;
+		if ( (x + x0 > 1020) || (y + y0 < 120) || (x + x0 > 717) || (y + y0 < 183) )
+		{
+
+		}
+		else *(uint16_t *)screen_buffer = colour;
+
+
 
 		screen_buffer = getScreenBuffer();
 		screen_buffer += (y + x0)* 2 + (x + y0) * 1024 * 2;
-		*(uint16_t *)screen_buffer = colour;
+		if ( (y + x0 > 1020) || (y + x0 < 120) || (x + y0 > 717) || (x + y0 < 187) )
+		{
+
+		}
+		else *(uint16_t *)screen_buffer = colour;
 
 		screen_buffer = getScreenBuffer();
 		screen_buffer += (-x + x0)* 2 + (y + y0) * 1024 * 2;
-		*(uint16_t *)screen_buffer = colour;
+		if ( (-x + x0 > 1020) || (-x + x0 < 120) || (y + y0 > 717) || (y + y0 < 187) )
+		{
+
+		}
+		else *(uint16_t *)screen_buffer = colour;
 
 		screen_buffer = getScreenBuffer();
 		screen_buffer += (-y + x0)* 2 + (x + y0) * 1024 * 2;
-		*(uint16_t *)screen_buffer = colour;
+		if ( (-y + x0 > 1020) || (-y + x0 < 120) || (x + y0 > 717) || (x + y0 < 187) )
+		{
+
+		}
+		else *(uint16_t *)screen_buffer = colour;
 
 		screen_buffer = getScreenBuffer();
 		screen_buffer += (-x + x0)* 2 + (-y + y0) * 1024 * 2;
-		*(uint16_t *)screen_buffer = colour;
+		if ( (-x + x0 > 1020) || (-x + x0 < 120) || (-y + y0 > 717) || (-y + y0 < 187) )
+		{
+
+		}
+		else *(uint16_t *)screen_buffer = colour;
 
 		screen_buffer = getScreenBuffer();
 		screen_buffer += (-y + x0)* 2 + (-x + y0) * 1024 * 2;
-		*(uint16_t *)screen_buffer = colour;
+		if ( (-y + x0 > 1020) || (-y + x0 < 120) || (-x + y0 > 717) || (-x + y0 < 187) )
+		{
+
+		}
+		else *(uint16_t *)screen_buffer = colour;
 
 		screen_buffer = getScreenBuffer();
 		screen_buffer += (x + x0)* 2 + (-y + y0) * 1024 * 2;
-		*(uint16_t *)screen_buffer = colour;
+		if ( (x + x0 > 1020) || (x + x0 < 120) || (-y + y0 > 717) || (-y + y0 < 187) )
+		{
+
+		}
+		else *(uint16_t *)screen_buffer = colour;
 
 		screen_buffer = getScreenBuffer();
 		screen_buffer += (y + x0)* 2 + (-x + y0) * 1024 * 2;
-		*(uint16_t *)screen_buffer = colour;
+		if ( (y + x0 > 1020) || (y + x0 < 120) || (-x + y0 > 717) || (-x + y0 < 187) )
+		{
+
+		}
+		else *(uint16_t *)screen_buffer = colour;
 
 		y++;
 
@@ -93,22 +269,38 @@ void draw_circle()
 		{
 			screen_buffer = getScreenBuffer();
 			screen_buffer += i * 2 +(y0 +y) * 1024 * 2;
-			*(uint16_t *)screen_buffer = colour;
+			if ( (i < 120) || (i > 1020) || (y0 + y < 187) || (y0 + y > 717) )
+			{
+
+			}
+			else *(uint16_t *)screen_buffer = colour;
 
 			screen_buffer = getScreenBuffer();
 			screen_buffer += i * 2 +(y0 -y) * 1024 * 2;
-			*(uint16_t *)screen_buffer = colour;
+			if ( (i < 120) || (i > 1020) || (y0 - y < 187) || (y0 - y > 717) )
+			{
+
+			}
+			else *(uint16_t *)screen_buffer = colour;
 		}
 
 		for (i = x0 -y; i <= x0 +y; i++)
 		{
 			screen_buffer = getScreenBuffer();
 			screen_buffer += i * 2 +(y0 +x) * 1024 * 2;
-			*(uint16_t *)screen_buffer = colour;
+			if ( (i < 120) || (i > 1020) || (y0 + x < 187) || (y0 + x > 717) )
+			{
+
+			}
+			else *(uint16_t *)screen_buffer = colour;
 
 			screen_buffer = getScreenBuffer();
 			screen_buffer += i * 2 +(y0 -x) * 1024 * 2;
-			*(uint16_t *)screen_buffer = colour;
+			if ( (i < 120) || (i > 1020) || (y0 - x < 187) || (y0 - x > 717) )
+			{
+
+			}
+			else *(uint16_t *)screen_buffer = colour;
 		}
 
 		y++;
@@ -133,8 +325,6 @@ void draw_circle()
 void draw_square()
 {
 	int x = mouse_t.x_mouse;
-	int xi;
-	int yi;
 	int y = mouse_t.y_mouse;
 	/*
 	if (x - radius < 120)
@@ -167,7 +357,11 @@ void draw_square()
 	{
 		for (; j < size; j++)
 		{
-			*(uint16_t *)screen_buffer = colour;
+			if ((x - radius + j > 1020) || (x - radius + j < 120) || (y - radius + i > 717) || (y - radius + i < 187))
+			{
+
+			}
+			else *(uint16_t *)screen_buffer = colour;
 			screen_buffer+=2;
 		}
 		j = 0;
@@ -247,14 +441,20 @@ void draw_bucket()
 	}
 }
 
+void drawLINE()
+{
+
+
+}
+
 void draw_pencil()
 {
+	static mouse_st previous;
+
 	char * screen_buffer = getScreenBuffer() + mouse_t.x_mouse * 2 + 1024 * mouse_t.y_mouse * 2;
-	*(uint16_t *)screen_buffer = colour;
-	screen_buffer+=2;
-	*(uint16_t *)screen_buffer = colour;
-	screen_buffer = screen_buffer - 2 + 1024 * 2;
-	*(uint16_t *)screen_buffer = colour;
-	screen_buffer+=2;
-	*(uint16_t *)screen_buffer = colour;
+	if (previous.x_mouse != 0)
+	{
+		draw_line(previous, mouse_t.x_mouse, mouse_t.y_mouse);
+	}
+	previous = mouse_t;
 }
