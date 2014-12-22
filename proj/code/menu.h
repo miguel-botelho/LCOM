@@ -155,5 +155,6 @@ void selectColour();
 
 int toolHandler();
 
-int displayTimer(int contador, Bitmap ** numbers);
+int displayTimer(int contador, Bitmap ** numbers, bitmap_struct bitmaps);
+int displayTimer10(int contador, Bitmap ** numbers, bitmap_struct bitmaps);
 #endif
