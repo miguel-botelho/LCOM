@@ -16,6 +16,7 @@ extern char OPTION;
 extern int radius;
 extern char tool;
 extern int colour;
+extern scores_t highscore;
 
 //in case of highscore it changes OPTION to GET_NAME
 //return -1 if not highscore or the position otherwise
@@ -157,4 +158,6 @@ int toolHandler();
 
 int displayTimer(int contador, Bitmap ** numbers, bitmap_struct bitmaps);
 int displayTimer10(int contador, Bitmap ** numbers, bitmap_struct bitmaps);
+
+void WriteArray(char * name, int length, Bitmap ** key_scancode);
 #endif

@@ -186,6 +186,9 @@ int online_menu(bitmap_struct bitmaps)
 
 	mouse_to_video(getMouseBuffer(), getVideoMem());
 
+	//se ele acertar, ou acabar o timer, chamar is highscore
+	//pedir nome
+
 	return 0;
 }
 
@@ -200,6 +203,9 @@ int Head_to_Head(bitmap_struct bitmaps)
 	drawMouse(bitmaps.mouse, mouse_t.x_mouse, mouse_t.y_mouse, ALIGN_LEFT, getMouseBuffer());
 
 	mouse_to_video(getMouseBuffer(), getVideoMem());
+
+	//se ele acertar, ou acabar o timer, chamar is highscore
+	//pedir nome
 
 	return 0;
 }
@@ -242,9 +248,12 @@ int HumanMachine(bitmap_struct bitmaps)
 				{
 					draw_pencil();
 				}
+
 			}
 		}
 	}
+	//se ele acertar, ou acabar o timer, chamar is highscore
+	//pedir nome
 
 	return 0;
 }
@@ -658,8 +667,10 @@ int displayTimer(int contador, Bitmap ** numbers, bitmap_struct bitmaps)
 	unsigned int a = 0;
 	char * human_machine = getHumanMachine();
 	char * screen_buffer = getScreenBuffer();
-	human_machine = human_machine + (1024 - 100) * 2 + 100 * 1024 * 2;
-	screen_buffer = screen_buffer + (1024 - 100) * 2 + 100 * 1024 * 2;
+	drawBitmap(bitmaps.frame, 0, 0, ALIGN_LEFT, human_machine);
+	human_machine = human_machine + (1024 - 100) * 2;
+	screen_buffer = screen_buffer + (1024 - 100) * 2;
+
 	for(; a < 100; a++)
 	{
 		for (; l < 100;l++)
@@ -674,9 +685,9 @@ int displayTimer(int contador, Bitmap ** numbers, bitmap_struct bitmaps)
 	}
 
 	screen_buffer = getScreenBuffer();
+
 	drawMouse(numbers[contador], 1024 - 60, 30, ALIGN_LEFT, screen_buffer);
 
-	human_machine = getHumanMachine();
 	screen_to_mouse(screen_buffer, getMouseBuffer());
 	drawMouse(bitmaps.mouse, mouse_t.x_mouse, mouse_t.y_mouse, ALIGN_LEFT, getMouseBuffer());
 	mouse_to_video(getMouseBuffer(), getVideoMem());
@@ -691,8 +702,8 @@ int displayTimer10(int contador, Bitmap ** numbers, bitmap_struct bitmaps)
 	unsigned int a = 0;
 	char * human_machine = getHumanMachine();
 	char * screen_buffer = getScreenBuffer();
-	human_machine = human_machine + (1024 - 100) * 2 + 100 * 1024 * 2;
-	screen_buffer = screen_buffer + (1024 - 100) * 2 + 100 * 1024 * 2;
+	human_machine = human_machine + (1024 - 100) * 2;
+	screen_buffer = screen_buffer + (1024 - 100) * 2;
 	for(; a < 100; a++)
 	{
 		for (; l < 100;l++)
@@ -711,5 +722,149 @@ int displayTimer10(int contador, Bitmap ** numbers, bitmap_struct bitmaps)
 	screen_to_mouse(screen_buffer, getMouseBuffer());
 	drawMouse(bitmaps.mouse, mouse_t.x_mouse, mouse_t.y_mouse, ALIGN_LEFT, getMouseBuffer());
 	mouse_to_video(getMouseBuffer(), getVideoMem());
+
+}
+
+void WriteArray(char * name, int length, Bitmap ** key_scancode)
+{
+	int i = 0;
+	int espaco = 0;
+	char * screen_buffer = getScreenBuffer();
+	for(; i <= length; i++)
+	{
+		switch (name[length])
+		{
+		case 'Q':
+		{
+			drawBitmap(key_scancode[KEY_Q], 400 + espaco, 768 / 2, ALIGN_LEFT, screen_buffer);
+			break;
+		}
+		case 'W':
+		{
+			drawBitmap(key_scancode[KEY_W], 400 + espaco, 768 / 2, ALIGN_LEFT, screen_buffer);
+			break;
+		}
+		case 'E':
+		{
+			drawBitmap(key_scancode[KEY_E], 400 + espaco, 768 / 2, ALIGN_LEFT, screen_buffer);
+			break;
+		}
+		case 'R':
+		{
+			drawBitmap(key_scancode[KEY_R], 400 + espaco, 768 / 2, ALIGN_LEFT, screen_buffer);
+			break;
+		}
+		case 'T':
+		{
+			drawBitmap(key_scancode[KEY_T], 400 + espaco, 768 / 2, ALIGN_LEFT, screen_buffer);
+			break;
+		}
+		case 'Y':
+		{
+			drawBitmap(key_scancode[KEY_Y], 400 + espaco, 768 / 2, ALIGN_LEFT, screen_buffer);
+			break;
+		}
+		case 'U':
+		{
+			drawBitmap(key_scancode[KEY_U], 400 + espaco, 768 / 2, ALIGN_LEFT, screen_buffer);
+			break;
+		}
+		case 'I':
+		{
+			drawBitmap(key_scancode[KEY_I], 400 + espaco, 768 / 2, ALIGN_LEFT, screen_buffer);
+			break;
+		}
+		case 'O':
+		{
+			drawBitmap(key_scancode[KEY_O], 400 + espaco, 768 / 2, ALIGN_LEFT, screen_buffer);
+			break;
+		}
+		case 'P':
+		{
+			drawBitmap(key_scancode[KEY_P], 400 + espaco, 768 / 2, ALIGN_LEFT, screen_buffer);
+			break;
+		}
+		case 'A':
+		{
+			drawBitmap(key_scancode[KEY_A], 400 + espaco, 768 / 2, ALIGN_LEFT, screen_buffer);
+			break;
+		}
+		case 'S':
+		{
+			drawBitmap(key_scancode[KEY_S], 400 + espaco, 768 / 2, ALIGN_LEFT, screen_buffer);
+			break;
+		}
+		case 'D':
+		{
+			drawBitmap(key_scancode[KEY_D], 400 + espaco, 768 / 2, ALIGN_LEFT, screen_buffer);
+			break;
+		}
+		case 'F':
+		{
+			drawBitmap(key_scancode[KEY_F], 400 + espaco, 768 / 2, ALIGN_LEFT, screen_buffer);
+			break;
+		}
+		case 'G':
+		{
+			drawBitmap(key_scancode[KEY_G], 400 + espaco, 768 / 2, ALIGN_LEFT, screen_buffer);
+			break;
+		}
+		case 'H':
+		{
+			drawBitmap(key_scancode[KEY_H], 400 + espaco, 768 / 2, ALIGN_LEFT, screen_buffer);
+			break;
+		}
+		case 'J':
+		{
+			drawBitmap(key_scancode[KEY_J], 400 + espaco, 768 / 2, ALIGN_LEFT, screen_buffer);
+			break;
+		}
+		case 'K':
+		{
+			drawBitmap(key_scancode[KEY_K], 400 + espaco, 768 / 2, ALIGN_LEFT, screen_buffer);
+			break;
+		}
+		case 'L':
+		{
+			drawBitmap(key_scancode[KEY_L], 400 + espaco, 768 / 2, ALIGN_LEFT, screen_buffer);
+			break;
+		}
+		case 'Z':
+		{
+			drawBitmap(key_scancode[KEY_Z], 400 + espaco, 768 / 2, ALIGN_LEFT, screen_buffer);
+			break;
+		}
+		case 'X':
+		{
+			drawBitmap(key_scancode[KEY_X], 400 + espaco, 768 / 2, ALIGN_LEFT, screen_buffer);
+			break;
+		}
+		case 'C':
+		{
+			drawBitmap(key_scancode[KEY_C], 400 + espaco, 768 / 2, ALIGN_LEFT, screen_buffer);
+			break;
+		}
+		case 'V':
+		{
+			drawBitmap(key_scancode[KEY_V], 400 + espaco, 768 / 2, ALIGN_LEFT, screen_buffer);
+			break;
+		}
+		case 'B':
+		{
+			drawBitmap(key_scancode[KEY_B], 400 + espaco, 768 / 2, ALIGN_LEFT, screen_buffer);
+			break;
+		}
+		case 'N':
+		{
+			drawBitmap(key_scancode[KEY_N], 400 + espaco, 768 / 2, ALIGN_LEFT, screen_buffer);
+			break;
+		}
+		case 'M':
+		{
+			drawBitmap(key_scancode[KEY_M], 400 + espaco, 768 / 2, ALIGN_LEFT, screen_buffer);
+			break;
+		}
+		}
+	}
 
 }
