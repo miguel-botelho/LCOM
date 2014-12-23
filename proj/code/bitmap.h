@@ -11,6 +11,11 @@
 #include "bitmap_macros.h"
 #include "video_gr.h"
 #include "bmpfile.h"
+#include "global_variables.h"
+
+extern int screen_abs;
+extern int screen_current;
+#define Dx			27
 
 #pragma once
 
@@ -53,9 +58,13 @@ typedef struct {
 
 //void createBitmap(int option);
 
-void aagetrgb(int *red, int *green, int *blue, int rgbaaaa);
+void getrgbBitmap(int *red, int *green, int *blue, int rgbaaaa);
 
 void createBitmap();
+
+void createBitmapsUndoRedo();
+
+void createDBitmap();
 
 /**
  * @brief Loads a bmp image (made by Henrique Ferrolho)

@@ -22,7 +22,7 @@
 #define PINK	rgb(255,0,173)
 #define WHITE	rgb(255,255,255)
 #define GREEN	rgb(16,138,0)
-#define	RED		rgb(255,0,0)
+#define	RED		rgb(254,0,0)
 #define	GRAY	rgb(107,109,107)
 #define	CYAN	rgb(0,255,255)
 #define	ORANGE	rgb(255,113,0)
@@ -30,7 +30,7 @@
 #define SILVER	rgb(192,192,192)
 #define	TEAL	rgb(0,128,128)
 #define PURPLE	rgb(123,4,156)
-#define BROWN	rgb(132,61,8)
+#define BROWN	rgb(132,60,8)
 #define DARK_GRAY	rgb(169,169,169)
 #define LIGHT_GRAY	rgb(211,211,211)
 

@@ -57,9 +57,12 @@ array_keyboard.o:	array_keyboard.h
 array_keyboard.o:	bitmap.h
 array_keyboard.o:	bitmap_macros.h
 array_keyboard.o:	bmpfile.h
+array_keyboard.o:	global_variables.h
 array_keyboard.o:	keyboard_mouse_macros.h
 array_keyboard.o:	lib.h
 array_keyboard.o:	lmlib.h
+array_keyboard.o:	menu_macros.h
+array_keyboard.o:	struct_scores.h
 array_keyboard.o:	subscribe_macros.h
 array_keyboard.o:	vbe_struct.h
 array_keyboard.o:	video_gr.h
@@ -122,9 +125,12 @@ bitmap.o:	bitmap.c
 bitmap.o:	bitmap.h
 bitmap.o:	bitmap_macros.h
 bitmap.o:	bmpfile.h
+bitmap.o:	global_variables.h
 bitmap.o:	keyboard_mouse_macros.h
 bitmap.o:	lib.h
 bitmap.o:	lmlib.h
+bitmap.o:	menu_macros.h
+bitmap.o:	struct_scores.h
 bitmap.o:	subscribe_macros.h
 bitmap.o:	vbe_struct.h
 bitmap.o:	video_gr.h
@@ -299,6 +305,9 @@ frame.o:	/usr/pkg/gcc44/lib/gcc/i686-pc-minix/4.4.3/include-fixed/string.h
 frame.o:	/usr/pkg/gcc44/lib/gcc/i686-pc-minix/4.4.3/include-fixed/syslimits.h
 frame.o:	/usr/pkg/gcc44/lib/gcc/i686-pc-minix/4.4.3/include-fixed/unistd.h
 frame.o:	/usr/pkg/gcc44/lib/gcc/i686-pc-minix/4.4.3/include/stdarg.h
+frame.o:	bitmap.h
+frame.o:	bitmap_macros.h
+frame.o:	bmpfile.h
 frame.o:	frame.c
 frame.o:	frame.h
 frame.o:	global_variables.h
@@ -652,9 +661,11 @@ read_write.o:	/usr/pkg/gcc44/lib/gcc/i686-pc-minix/4.4.3/include/stdarg.h
 read_write.o:	bitmap.h
 read_write.o:	bitmap_macros.h
 read_write.o:	bmpfile.h
+read_write.o:	global_variables.h
 read_write.o:	keyboard_mouse_macros.h
 read_write.o:	lib.h
 read_write.o:	lmlib.h
+read_write.o:	menu_macros.h
 read_write.o:	read_write.c
 read_write.o:	read_write.h
 read_write.o:	struct_bmp.h

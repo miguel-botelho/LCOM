@@ -54,7 +54,6 @@ int main(int argc, char **argv) {
 	unsigned int mouse;
 	unsigned long key_register;
 	mouse_int_handler(SET_STREAM); //define o rato como stream mode
-	printf("mouse\n");
 	mouse_int_handler(ESDP); //ativa o envio dos dados por parte do rato
 
 	//timer
@@ -121,9 +120,11 @@ int main(int argc, char **argv) {
 	//atributes
 	mouse_t.LB = 0; //to prevent the selection of the first menu
 
-	//highscore E GLOBAL
-
+	//read highscore
 	read_all();
+
+	//Create 10 white bitmaps
+	createBitmapsUndoRedo();
 
 	while(1) {
 
@@ -200,7 +201,7 @@ int main(int argc, char **argv) {
 							name[2] = 'S';
 							name[3] = '\0';
 						}
-						createBitmap();
+						//createBitmap();
 						OPTION = MAIN_MENU;
 						drawBitmap(bitmaps.background, 0, 0, ALIGN_LEFT, screen_buffer);
 						screen_to_mouse(screen_buffer, mouse_buffer);
@@ -314,11 +315,9 @@ int main(int argc, char **argv) {
 
 				if (msg.NOTIFY_ARG & irq_set_rtc) /* subscribed interrupt for rtc */
 				{
-					printf("SUB2\n");
 
 					if ((OPTION == HUMAN_VS_MACHINE) || (OPTION == HEAD_TO_HEAD) || (OPTION == ONLINE))
 					{
-						printf("GAME: %d\n", RTC_COUNTER);
 						RTC_COUNTER--;
 						if (RTC_COUNTER < 10)
 						{
@@ -331,6 +330,8 @@ int main(int argc, char **argv) {
 					}
 					else
 					{
+						screen_abs = 0;
+						screen_current = 0;
 						RTC_COUNTER = 60;
 					}
 				}

@@ -1,46 +1,159 @@
 #include "bitmap.h"
 
-void createBitmap()
+void createDBitmap()
 {
 	bmpfile_t *bmp;
 
 	char * screen_buffer = getScreenBuffer();
 	size_t ax, ay;
-	for (ax = 500; ax < 1024; ++ax)
-	{
-		for (ay = 500; ay < 768; ++ay)
-		{
-			printf("pixel: 0x%X\n", *((uint16_t *)screen_buffer + ax + ay * 768));
-		}
-	}
 	screen_buffer += ((1024 * 768) - 1) * 2;
 
 	int red, green, blue;
 	////canvas: x = 120 a 1020; y = 187 a 717
 	int i, j;
 	bmp = bmp_create(1025 - 126, 717 - 186,16);
+
 	for(i = 126; i < 1025; i++)
 	{
 		for (j = 187; j < 717; j++)
 		{
-			aagetrgb(&red, &green, &blue, *((uint16_t *)screen_buffer + i + j * 1024));
+			getrgbBitmap(&red, &green, &blue, *((uint16_t *)screen_buffer + i + j * 1024));
 			rgb_pixel_t pixel = {blue, green, red, 0};
-			//printf("*(uint16_t *)screen_buffer: 0x%X R: %d G: %d B: %d\n", *(uint16_t *)screen_buffer, red, green, blue);
 			bmp_set_pixel(bmp,(uint32_t)(i - 126),(uint32_t)(j - 187),pixel);
 		}
 	}
 
-	bmp_save(bmp,"home/lcom/proj/code/files/current_draw.bmp");
-	//printf("adssad\n");
-	//drawBitmap(loadBitmap("home/lcom/proj/code/images/teste.bmp"), 0, 0 , ALIGN_LEFT, getScreenBuffer());
-	//screen_to_mouse(getScreenBuffer(), getMouseBuffer());
-	//mouse_to_video(getMouseBuffer(), getVideoMem());
-	//printf("1111\n");
-	//*((char *)NULL) = 0; // e suposto encravar por causa desta linha (para ver o bmp)
+	char a[] = "home/lcom/proj/code/files/d0.bmp";
+
+	if (screen_current >= 9)
+	{
+		screen_current = 9;
+		screen_abs = screen_current;
+		remove("home/lcom/proj/code/files/d0.bmp");
+		rename("home/lcom/proj/code/files/d1.bmp", "home/lcom/proj/code/files/d0.bmp");
+		rename("home/lcom/proj/code/files/d2.bmp", "home/lcom/proj/code/files/d1.bmp");
+		rename("home/lcom/proj/code/files/d3.bmp", "home/lcom/proj/code/files/d2.bmp");
+		rename("home/lcom/proj/code/files/d4.bmp", "home/lcom/proj/code/files/d3.bmp");
+		rename("home/lcom/proj/code/files/d5.bmp", "home/lcom/proj/code/files/d4.bmp");
+		rename("home/lcom/proj/code/files/d6.bmp", "home/lcom/proj/code/files/d5.bmp");
+		rename("home/lcom/proj/code/files/d7.bmp", "home/lcom/proj/code/files/d6.bmp");
+		rename("home/lcom/proj/code/files/d8.bmp", "home/lcom/proj/code/files/d7.bmp");
+		rename("home/lcom/proj/code/files/d9.bmp", "home/lcom/proj/code/files/d8.bmp");
+	}
+	else
+	{
+		screen_current++;
+		screen_abs = screen_current;
+	}
+
+	a[Dx] = screen_current + '0';
+
+
+	bmp_save(bmp,a);
 	bmp_destroy(bmp);
 }
 
-void aagetrgb(int *red, int *green, int *blue, int rgbaaaa)
+void createBitmapsUndoRedo()
+{
+	bmpfile_t *bmp;
+
+	bmp = bmp_create(1025 - 126, 717 - 186,16);
+
+	int i, j;
+
+	for(i = 126; i < 1025; i++)
+	{
+		for (j = 187; j < 717; j++)
+		{
+			rgb_pixel_t pixel = {255, 255, 255, 0}; //white
+			bmp_set_pixel(bmp,(uint32_t)(i - 126),(uint32_t)(j - 187),pixel);
+		}
+	}
+
+
+	char a[] = "home/lcom/proj/code/files/d0.bmp";
+
+	for (i = 0; i < 10; i++)
+	{
+		a[Dx] = i + '0';
+		bmp_save(bmp, a);
+	}
+	bmp_destroy(bmp);
+}
+
+void createBitmap()
+
+{
+
+	bmpfile_t *bmp;
+
+	char * screen_buffer = getScreenBuffer();
+
+	size_t ax, ay;
+
+	for (ax = 500; ax < 1024; ++ax)
+
+	{
+
+		for (ay = 500; ay < 768; ++ay)
+
+		{
+
+			printf("pixel: 0x%X\n", *((uint16_t *)screen_buffer + ax + ay * 768));
+
+		}
+
+	}
+
+	screen_buffer += ((1024 * 768) - 1) * 2;
+
+	int red, green, blue;
+
+	////canvas: x = 120 a 1020; y = 187 a 717
+
+	int i, j;
+
+	bmp = bmp_create(1025 - 126, 717 - 186,16);
+
+	for(i = 126; i < 1025; i++)
+
+	{
+
+		for (j = 187; j < 717; j++)
+
+		{
+
+			getrgbBitmap(&red, &green, &blue, *((uint16_t *)screen_buffer + i + j * 1024));
+
+			rgb_pixel_t pixel = {blue, green, red, 0};
+
+			//printf("*(uint16_t *)screen_buffer: 0x%X R: %d G: %d B: %d\n", *(uint16_t *)screen_buffer, red, green, blue);
+
+			bmp_set_pixel(bmp,(uint32_t)(i - 126),(uint32_t)(j - 187),pixel);
+
+		}
+
+	}
+
+	bmp_save(bmp,"home/lcom/proj/code/images/teste.bmp");
+
+	//printf("adssad\n");
+
+	drawBitmap(loadBitmap("home/lcom/proj/code/images/teste.bmp"), 0, 0 , ALIGN_LEFT, getScreenBuffer());
+
+	screen_to_mouse(getScreenBuffer(), getMouseBuffer());
+
+	mouse_to_video(getMouseBuffer(), getVideoMem());
+
+	//printf("1111\n");
+
+	//*((char *)NULL) = 0; // e suposto encravar por causa desta linha (para ver o bmp)
+
+	bmp_destroy(bmp);
+
+}
+
+void getrgbBitmap(int *red, int *green, int *blue, int rgbaaaa)
 {
 	/**red = 255;//255 - 255; //255
 	 *green = 106;//106 - 1; //106
@@ -59,8 +172,8 @@ void aagetrgb(int *red, int *green, int *blue, int rgbaaaa)
 	}
 	else if (rgbaaaa == BLUE){
 		*red = 0;
-		*green = 0;
-		*blue = 181;
+		*green = 12;
+		*blue = 255;
 	}
 	else if (rgbaaaa == PINK){
 		*red = 255;

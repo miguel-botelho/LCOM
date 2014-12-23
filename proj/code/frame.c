@@ -297,12 +297,38 @@ void draw_square()
 
 void undo()
 {
+	char a[] = "home/lcom/proj/code/files/d0.bmp";
 
+	if ((screen_current - 1) <= 0)
+	{
+		white_screen();
+	}
+	else
+	{
+		a[NUMBER_TO_CHANGE] = screen_current + '0';
+		screen_current--;
+		printf("Undo: screen_current=%d | screen_abs=%d\n", screen_current, screen_abs);
+		printf("Path Undo: %s\n", a);
+		drawBitmap(loadBitmap(a), 120, 183, ALIGN_LEFT, getScreenBuffer());
+	}
 }
 
 void redo()
 {
+	char a[] = "home/lcom/proj/code/files/d0.bmp";
 
+	if (screen_current >= screen_abs)
+	{
+		screen_current = screen_abs;
+	}
+	else
+	{
+		screen_current++;
+		a[NUMBER_TO_CHANGE] = screen_current + '0';
+		printf("Redo: screen_current=%d | screen_abs=%d\n", screen_current, screen_abs);
+		printf("Path Redo: %s\n", a);
+		drawBitmap(loadBitmap(a), 120, 183, ALIGN_LEFT, getScreenBuffer());
+	}
 }
 
 void plus()
