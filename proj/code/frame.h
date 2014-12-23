@@ -1,7 +1,6 @@
 #ifndef __FRAME_H
 #define __FRAME_H
 
-#include"struct_color.h"
 #include"mouse_struct.h"
 #include"video_gr.h"
 #include"global_variables.h"

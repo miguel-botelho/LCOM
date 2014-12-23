@@ -30,13 +30,13 @@ void createBitmap()
 		}
 	}
 
-	bmp_save(bmp,"home/lcom/proj/code/images/teste.bmp");
+	bmp_save(bmp,"home/lcom/proj/code/files/current_draw.bmp");
 	//printf("adssad\n");
-	drawBitmap(loadBitmap("home/lcom/proj/code/images/teste.bmp"), 0, 0 , ALIGN_LEFT, getScreenBuffer());
-	screen_to_mouse(getScreenBuffer(), getMouseBuffer());
-	mouse_to_video(getMouseBuffer(), getVideoMem());
+	//drawBitmap(loadBitmap("home/lcom/proj/code/images/teste.bmp"), 0, 0 , ALIGN_LEFT, getScreenBuffer());
+	//screen_to_mouse(getScreenBuffer(), getMouseBuffer());
+	//mouse_to_video(getMouseBuffer(), getVideoMem());
 	//printf("1111\n");
-	*((char *)NULL) = 0; // e suposto encravar por causa desta linha (para ver o bmp)
+	//*((char *)NULL) = 0; // e suposto encravar por causa desta linha (para ver o bmp)
 	bmp_destroy(bmp);
 }
 

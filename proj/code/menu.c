@@ -250,10 +250,10 @@ int HumanMachine(bitmap_struct bitmaps)
 
 	if ((RTC_COUNTER < 55) || (tries > 3) )
 	{
-			drawBitmap(bitmaps.lost,0,0,ALIGN_LEFT, getScreenBuffer());
-			screen_to_mouse(getScreenBuffer(), getMouseBuffer());
-			drawMouse(bitmaps.mouse,mouse_t.x_mouse,mouse_t.y_mouse, ALIGN_LEFT, getMouseBuffer());
-			mouse_to_video(getMouseBuffer(), getVideoMem());
+		drawBitmap(bitmaps.lost,0,0,ALIGN_LEFT, getScreenBuffer());
+		screen_to_mouse(getScreenBuffer(), getMouseBuffer());
+		drawMouse(bitmaps.mouse,mouse_t.x_mouse,mouse_t.y_mouse, ALIGN_LEFT, getMouseBuffer());
+		mouse_to_video(getMouseBuffer(), getVideoMem());
 	}
 	//se ele acertar, ou acabar o timer, chamar is highscore
 	//pedir nome
@@ -349,57 +349,88 @@ int toolHandler()
 	return 1;
 }
 
-int is_highscore(scores_t *t, position_t *draw)
+int is_highscore(position_t *draw)
 {
 	int place = -1;
 	char discard1, discard2;
 
-	if (draw->score >= t->first.score)
+	if (draw->score >= top_highscores.first.score)
 	{
 		read_time(&(draw->year), &(draw->month), &(draw->day), &discard1, &(draw->hour), &(draw->minutes), &discard2);
-		t->fifth = t->fourth;
-		t->fourth = t->third;
-		t->third = t-> second;
-		t->second = t->first;
-		t->first = (*draw);
+		top_highscores.fifth = top_highscores.fourth;
+		top_highscores.fourth = top_highscores.third;
+		top_highscores.third = top_highscores. second;
+		top_highscores.second = top_highscores.first;
+		top_highscores.first = (*draw);
+
+		remove("home/lcom/proj/code/files/5.bmp");
+		rename("home/lcom/proj/code/files/4.bmp", "home/lcom/proj/code/files/5.bmp");
+		rename("home/lcom/proj/code/files/3.bmp", "home/lcom/proj/code/files/4.bmp");
+		rename("home/lcom/proj/code/files/2.bmp", "home/lcom/proj/code/files/3.bmp");
+		rename("home/lcom/proj/code/files/1.bmp", "home/lcom/proj/code/files/2.bmp");
+		rename("home/lcom/proj/code/files/current_draw.bmp", "home/lcom/proj/code/files/1.bmp");
+
 		place = 1;
 		OPTION = GET_NAME;
 		return place;
 	}
-	else if(draw->score >= t->second.score)
+	else if(draw->score >= top_highscores.second.score)
 	{
 		read_time(&(draw->year), &(draw->month), &(draw->day), &discard1, &(draw->hour), &(draw->minutes), &discard2);
-		t->fifth = t->fourth;
-		t->fourth = t->third;
-		t->third = t-> second;
-		t->second = (*draw);
+		top_highscores.fifth = top_highscores.fourth;
+		top_highscores.fourth = top_highscores.third;
+		top_highscores.third = top_highscores. second;
+		top_highscores.second = (*draw);
+
+		remove("home/lcom/proj/code/files/5.bmp");
+		rename("home/lcom/proj/code/files/4.bmp", "home/lcom/proj/code/files/5.bmp");
+		rename("home/lcom/proj/code/files/3.bmp", "home/lcom/proj/code/files/4.bmp");
+		rename("home/lcom/proj/code/files/2.bmp", "home/lcom/proj/code/files/3.bmp");
+		rename("home/lcom/proj/code/files/current_draw.bmp", "home/lcom/proj/code/files/2.bmp");
+
 		place = 2;
 		OPTION = GET_NAME;
 		return place;
 	}
-	else if(draw->score >= t->third.score)
+	else if(draw->score >= top_highscores.third.score)
 	{
 		read_time(&(draw->year), &(draw->month), &(draw->day), &discard1, &(draw->hour), &(draw->minutes), &discard2);
-		t->fifth = t->fourth;
-		t->fourth = t->third;
-		t->third = (*draw);
+		top_highscores.fifth = top_highscores.fourth;
+		top_highscores.fourth = top_highscores.third;
+		top_highscores.third = (*draw);
+
+		remove("home/lcom/proj/code/files/5.bmp");
+		rename("home/lcom/proj/code/files/4.bmp", "home/lcom/proj/code/files/5.bmp");
+		rename("home/lcom/proj/code/files/3.bmp", "home/lcom/proj/code/files/4.bmp");
+		rename("home/lcom/proj/code/files/current_draw.bmp", "home/lcom/proj/code/files/3.bmp");
+
 		place = 3;
 		OPTION = GET_NAME;
 		return place;
 	}
-	else if(draw->score >= t->fourth.score)
+	else if(draw->score >= top_highscores.fourth.score)
 	{
 		read_time(&(draw->year), &(draw->month), &(draw->day), &discard1, &(draw->hour), &(draw->minutes), &discard2);
-		t->fifth = t->fourth;
-		t->fourth = (*draw);
+		top_highscores.fifth = top_highscores.fourth;
+		top_highscores.fourth = (*draw);
+
+		remove("home/lcom/proj/code/files/5.bmp");
+		rename("home/lcom/proj/code/files/4.bmp", "home/lcom/proj/code/files/5.bmp");
+		rename("home/lcom/proj/code/files/current_draw.bmp", "home/lcom/proj/code/files/4.bmp");
+
+
 		place = 4;
 		OPTION = GET_NAME;
 		return place;
 	}
-	else if(draw->score >= t->fifth.score)
+	else if(draw->score >= top_highscores.fifth.score)
 	{
 		read_time(&(draw->year), &(draw->month), &(draw->day), &discard1, &(draw->hour), &(draw->minutes), &discard2);
-		t->fifth = (*draw);
+		top_highscores.fifth = (*draw);
+
+		remove("home/lcom/proj/code/files/5.bmp");
+		rename("home/lcom/proj/code/files/current_draw.bmp", "home/lcom/proj/code/files/5.bmp");
+
 		place = 5;
 		OPTION = GET_NAME;
 		return place;

@@ -307,7 +307,6 @@ frame.o:	lib.h
 frame.o:	lmlib.h
 frame.o:	menu_macros.h
 frame.o:	mouse_struct.h
-frame.o:	struct_color.h
 frame.o:	struct_scores.h
 frame.o:	subscribe_macros.h
 frame.o:	vbe_struct.h
@@ -317,7 +316,6 @@ frame.o:	video_gr_macros.h
 global_variables.o:	global_variables.c
 global_variables.o:	global_variables.h
 global_variables.o:	menu_macros.h
-global_variables.o:	struct_color.h
 global_variables.o:	struct_scores.h
 global_variables.o:	video_gr_macros.h
 
@@ -450,7 +448,6 @@ menu.o:	mouse_struct.h
 menu.o:	rtc.h
 menu.o:	rtc_macros.h
 menu.o:	struct_bmp.h
-menu.o:	struct_color.h
 menu.o:	struct_scores.h
 menu.o:	subscribe_macros.h
 menu.o:	vbe_struct.h
@@ -591,7 +588,6 @@ proj.o:	rtc.h
 proj.o:	rtc_macros.h
 proj.o:	serial_port_macros.h
 proj.o:	struct_bmp.h
-proj.o:	struct_color.h
 proj.o:	struct_scores.h
 proj.o:	subscribe_macros.h
 proj.o:	timer.h
@@ -662,7 +658,6 @@ read_write.o:	lmlib.h
 read_write.o:	read_write.c
 read_write.o:	read_write.h
 read_write.o:	struct_bmp.h
-read_write.o:	struct_color.h
 read_write.o:	struct_scores.h
 read_write.o:	subscribe_macros.h
 read_write.o:	vbe_struct.h

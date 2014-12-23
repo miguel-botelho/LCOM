@@ -13,3 +13,5 @@ int RTC_COUNTER = 60;
 char name[11];
 
 int tries = 0;
+
+scores_t top_highscores;

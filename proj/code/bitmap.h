@@ -51,7 +51,7 @@ typedef struct {
 } Bitmap;
 
 
-void createBitmap(int option);
+//void createBitmap(int option);
 
 void aagetrgb(int *red, int *green, int *blue, int rgbaaaa);
 

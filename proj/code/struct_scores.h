@@ -1,8 +1,6 @@
 #ifndef __STRUCT_SCORES_H
 #define __STRUCT_SCORES_H
 
-#include "struct_color.h"
-
 #define MAX_DRAW_SIZE			999
 
 typedef struct
@@ -17,8 +15,7 @@ typedef struct
 
 	char name[11];
 
-	int size_draw;
-	color_st draw[MAX_DRAW_SIZE];
+	char word[11];
 
 
 } position_t;

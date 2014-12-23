@@ -3,7 +3,7 @@
 
 #include "struct_bmp.h"
 #include "struct_scores.h"
-#include "struct_color.h"
+extern scores_t top_highscores;
 
 /**
  * @brief Fill a struct from a file
@@ -24,7 +24,7 @@ void read_position(FILE *fp, position_t *t);
  * @param *t struct to be filled
  *
  */
-void read_all(scores_t *t);
+void read_all();
 
 /**
  * @brief Write a struct to a file
@@ -45,6 +45,6 @@ void write_position(FILE *fp, position_t *t);
  * @param *t struct that has the information to be written
  *
  */
-void write_all(scores_t *t);
+void write_all();
 
 #endif

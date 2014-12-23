@@ -1,82 +1,5 @@
 #include "read_write.h"
 
-void read_array(FILE *fp, int size, color_st *a)
-{
-	char x[1];
-	char ch1, ch2, ch3, ch4;
-
-	a = (color_st*) realloc (x, size * sizeof(color_st));
-
-	int i;
-
-	for (i = 0; i < size; i++)
-	{
-		//tick
-		ch1 = fgetc(fp);
-		ch2 = fgetc(fp);
-		ch3 = fgetc(fp);
-		ch4 = fgetc(fp);
-		a[i].tick = (ch1 - '0') * 1000 + (ch2 - '0') * 100 + (ch3 - '0') * 10 + (ch4 - '0');
-
-		// ignores the new line '\n'
-		ch1 = fgetc(fp);
-
-		//x
-		ch1 = fgetc(fp);
-		ch2 = fgetc(fp);
-		ch3 = fgetc(fp);
-		ch4 = fgetc(fp);
-		a[i].x = (ch1 - '0') * 1000 + (ch2 - '0') * 100 + (ch3 - '0') * 10 + (ch4 - '0');
-
-		// ignores the new line '\n'
-		ch1 = fgetc(fp);
-
-		//y
-		ch1 = fgetc(fp);
-		ch2 = fgetc(fp);
-		ch3 = fgetc(fp);
-		a[i].y = (ch1 - '0') * 100 + (ch2 - '0') * 10 + (ch3 - '0');
-
-		// ignores the new line '\n'
-		ch1 = fgetc(fp);
-
-		//function
-		ch1 = fgetc(fp);
-		ch2 = fgetc(fp);
-		a[i].function = (ch1 - '0') * 10 + (ch2 - '0');
-
-		// ignores the new line '\n'
-		ch1 = fgetc(fp);
-
-		//red
-		ch1 = fgetc(fp);
-		ch2 = fgetc(fp);
-		ch3 = fgetc(fp);
-		a[i].red = (ch1 - '0') * 100 + (ch2 - '0') * 10 + (ch3 - '0');
-
-		// ignores the space ' '
-		ch1 = fgetc(fp);
-
-		//green
-		ch1 = fgetc(fp);
-		ch2 = fgetc(fp);
-		ch3 = fgetc(fp);
-		a[i].green = (ch1 - '0') * 100 + (ch2 - '0') * 10 + (ch3 - '0');
-
-		// ignores the space ' '
-		ch1 = fgetc(fp);
-
-		//blue
-		ch1 = fgetc(fp);
-		ch2 = fgetc(fp);
-		ch3 = fgetc(fp);
-		a[i].blue = (ch1 - '0') * 100 + (ch2 - '0') * 10 + (ch3 - '0');
-
-		// ignores the new line '\n'
-		ch1 = fgetc(fp);
-	}
-}
-
 void read_position(FILE *fp, position_t *t)
 {
 	char ch1, ch2, ch3, ch4, ch5;
@@ -85,6 +8,7 @@ void read_position(FILE *fp, position_t *t)
 	ch1 = fgetc(fp);
 	ch2 = fgetc(fp);
 	t->day = (ch1 - '0') * 10 + (ch2 - '0');
+
 
 	// ignores the space ' '
 	ch1 = fgetc(fp);
@@ -108,7 +32,7 @@ void read_position(FILE *fp, position_t *t)
 	//hour
 	ch1 = fgetc(fp);
 	ch2 = fgetc(fp);
-	t->year = (ch1 - '0') * 10 + (ch2 - '0');
+	t->hour = (ch1 - '0') * 10 + (ch2 - '0');
 
 	// ignores the space ' '
 	ch1 = fgetc(fp);
@@ -116,7 +40,7 @@ void read_position(FILE *fp, position_t *t)
 	//minutes
 	ch1 = fgetc(fp);
 	ch2 = fgetc(fp);
-	t->year = (ch1 - '0') * 10 + (ch2 - '0');
+	t->minutes = (ch1 - '0') * 10 + (ch2 - '0');
 
 	// ignores the new line '\n'
 	ch1 = fgetc(fp);
@@ -139,25 +63,25 @@ void read_position(FILE *fp, position_t *t)
 	while (a[i] != '\0')
 	{
 		(t->name)[i] = a[i];
+		i++;
 	}
 
 	// the new line '\n' is already ignored
 
-	//reads the size of the array (max value = 3600)
-	ch1 = fgetc(fp);
-	ch2 = fgetc(fp);
-	ch3 = fgetc(fp);
-	ch4 = fgetc(fp);
-	t->size_draw = (ch1 - '0') * 1000 + (ch2 - '0') * 100 + (ch3 - '0') * 10 + (ch4 - '0');
+	//word
+	char b[11];
+	fgets(b, 11, fp);
+	i = 0;
+	while (b[i] != '\0')
+	{
+		(t->word)[i] = b[i];
+		i++;
+	}
 
-	// ignores the new line '\n'
-	ch1 = fgetc(fp);
-
-	//reads the array
-	read_array(fp, t->size_draw, t->draw);
+	// the new line '\n' is already ignored
 }
 
-void read_all(scores_t *t)
+void read_all()
 {
 	FILE *fp;
 
@@ -169,174 +93,13 @@ void read_all(scores_t *t)
 		exit(EXIT_FAILURE);
 	}
 
-	read_position(fp, &(t->first));
-	read_position(fp, &(t->second));
-	read_position(fp, &(t->third));
-	read_position(fp, &(t->fourth));
-	read_position(fp, &(t->fifth));
+	read_position(fp, &(top_highscores.first));
+	read_position(fp, &(top_highscores.second));
+	read_position(fp, &(top_highscores.third));
+	read_position(fp, &(top_highscores.fourth));
+	read_position(fp, &(top_highscores.fifth));
 
 	fclose(fp);
-}
-
-
-void write_array(FILE *fp, int size, color_st *a)
-{
-	int i;
-
-	for (i = 0; i < size; i++)
-	{
-		//tick
-		if (a[i].tick >= 1000)
-		{
-			fputc((a[i].tick / 1000) + '0', fp);
-			fputc((a[i].tick / 100) % 10 + '0', fp);
-			fputc((a[i].tick / 10) % 10 + '0', fp);
-			fputc((a[i].tick) % 10 + '0', fp);
-		}
-		else if (a[i].tick >= 100)
-		{
-			fputc('0', fp);
-			fputc((a[i].tick / 100) % 10 + '0', fp);
-			fputc((a[i].tick / 10) % 10 + '0', fp);
-			fputc((a[i].tick) % 10 + '0', fp);
-		}
-		else if (a[i].tick >= 10)
-		{
-			fputc('0', fp);
-			fputc('0', fp);
-			fputc((a[i].tick / 10) % 10 + '0', fp);
-			fputc((a[i].tick) % 10 + '0', fp);
-		}
-		else
-		{
-			fputc('0', fp);
-			fputc('0', fp);
-			fputc('0', fp);
-			fputc((a[i].tick) % 10 + '0', fp);
-		}
-		fputc('\n', fp);
-
-		//x (0->1024)
-		if (a[i].x >= 1000)
-		{
-			fputc((a[i].x / 1000) + '0', fp);
-			fputc((a[i].x / 100) % 10 + '0', fp);
-			fputc((a[i].x / 10) % 10 + '0', fp);
-			fputc((a[i].x) % 10 + '0', fp);
-		}
-		else if (a[i].x >= 100)
-		{
-			fputc('0', fp);
-			fputc((a[i].x / 100) % 10 + '0', fp);
-			fputc((a[i].x / 10) % 10 + '0', fp);
-			fputc((a[i].x) % 10 + '0', fp);
-		}
-		else if (a[i].x >= 10)
-		{
-			fputc('0', fp);
-			fputc('0', fp);
-			fputc((a[i].x / 10) % 10 + '0', fp);
-			fputc((a[i].x) % 10 + '0', fp);
-		}
-		else
-		{
-			fputc('0', fp);
-			fputc('0', fp);
-			fputc('0', fp);
-			fputc((a[i].x) % 10 + '0', fp);
-		}
-		fputc('\n', fp);
-
-		//y (0->768)
-		if (a[i].x >= 100)
-		{
-			fputc((a[i].y / 100) + '0', fp);
-			fputc((a[i].y / 10) % 10 + '0', fp);
-			fputc((a[i].y) % 10 + '0', fp);
-		}
-		else if (a[i].y >= 10)
-		{
-			fputc('0', fp);
-			fputc((a[i].y / 10) % 10 + '0', fp);
-			fputc((a[i].y) % 10 + '0', fp);
-		}
-		else
-		{
-			fputc('0', fp);
-			fputc('0', fp);
-			fputc((a[i].y) % 10 + '0', fp);
-		}
-		fputc('\n', fp);
-
-		//function (50->xx)
-		fputc((a[i].function / 10) + '0', fp);
-		fputc((a[i].function) % 10 + '0', fp);
-		fputc('\n', fp);
-
-		//red
-		if (a[i].red >= 100)
-		{
-			fputc((a[i].red / 100) % 10 + '0', fp);
-			fputc((a[i].red / 10) % 10 + '0', fp);
-			fputc((a[i].red) % 10 + '0', fp);
-		}
-		else if (a[i].red >= 10)
-		{
-			fputc('0', fp);
-			fputc((a[i].red / 10) % 10 + '0', fp);
-			fputc((a[i].red) % 10 + '0', fp);
-		}
-		else
-		{
-			fputc('0', fp);
-			fputc('0', fp);
-			fputc((a[i].red) % 10 + '0', fp);
-		}
-		fputc(' ', fp);
-
-		//green
-		if (a[i].green >= 100)
-		{
-			fputc((a[i].green / 100) % 10 + '0', fp);
-			fputc((a[i].green / 10) % 10 + '0', fp);
-			fputc((a[i].green) % 10 + '0', fp);
-		}
-		else if (a[i].green >= 10)
-		{
-			fputc('0', fp);
-			fputc((a[i].green / 10) % 10 + '0', fp);
-			fputc((a[i].green) % 10 + '0', fp);
-		}
-		else
-		{
-			fputc('0', fp);
-			fputc('0', fp);
-			fputc((a[i].green) % 10 + '0', fp);
-		}
-		fputc(' ', fp);
-
-		//blue
-		if (a[i].blue >= 100)
-		{
-			fputc((a[i].blue / 100) % 10 + '0', fp);
-			fputc((a[i].blue / 10) % 10 + '0', fp);
-			fputc((a[i].blue) % 10 + '0', fp);
-		}
-		else if (a[i].blue >= 10)
-		{
-			fputc('0', fp);
-			fputc((a[i].blue / 10) % 10 + '0', fp);
-			fputc((a[i].blue) % 10 + '0', fp);
-		}
-		else
-		{
-			fputc('0', fp);
-			fputc('0', fp);
-			fputc((a[i].blue) % 10 + '0', fp);
-		}
-		fputc('\n', fp);
-	}
-
 }
 
 void write_position(FILE *fp, position_t *t)
@@ -431,7 +194,7 @@ void write_position(FILE *fp, position_t *t)
 		fputc((t->score / 10) % 10 + '0', fp);
 		fputc((t->score) % 10 + '0', fp);
 	}
-	else if (t->size_draw >= 10)
+	else if (t->score >= 10)
 	{
 		fputc('0', fp);
 		fputc('0', fp);
@@ -451,44 +214,14 @@ void write_position(FILE *fp, position_t *t)
 
 	//name
 	fputs(t->name, fp);
-	fputc('\n', fp);
+	//fputc('\n', fp);
 
-	//size of the array
-	if (t->size_draw >= 1000)
-	{
-		fputc((t->size_draw / 1000) + '0', fp);
-		fputc((t->size_draw / 100) % 10 + '0', fp);
-		fputc((t->size_draw / 10) % 10 + '0', fp);
-		fputc((t->size_draw) % 10 + '0', fp);
-	}
-	else if (t->size_draw >= 100)
-	{
-		fputc('0', fp);
-		fputc((t->size_draw / 100) + '0', fp);
-		fputc((t->size_draw / 10) % 10 + '0', fp);
-		fputc((t->size_draw) % 10 + '0', fp);
-	}
-	else if (t->size_draw >= 10)
-	{
-		fputc('0', fp);
-		fputc('0', fp);
-		fputc((t->size_draw / 10) + '0', fp);
-		fputc((t->size_draw) % 10 + '0', fp);
-	}
-	else
-	{
-		fputc('0', fp);
-		fputc('0', fp);
-		fputc('0', fp);
-		fputc((t->size_draw) % 10 + '0', fp);
-	}
-	fputc('\n', fp);
-
-	write_array(fp, t->size_draw, t->draw);
-
+	//word
+	fputs(t->word, fp);
+	//fputc('\n', fp);
 }
 
-void write_all(scores_t *t)
+void write_all()
 {
 	FILE *fp;
 
@@ -500,11 +233,11 @@ void write_all(scores_t *t)
 		exit(EXIT_FAILURE);
 	}
 
-	write_position(fp, &(t->first));
-	write_position(fp, &(t->second));
-	write_position(fp, &(t->third));
-	write_position(fp, &(t->fourth));
-	write_position(fp, &(t->fifth));
+	write_position(fp, &(top_highscores.first));
+	write_position(fp, &(top_highscores.second));
+	write_position(fp, &(top_highscores.third));
+	write_position(fp, &(top_highscores.fourth));
+	write_position(fp, &(top_highscores.fifth));
 
 	fclose(fp);
 }
