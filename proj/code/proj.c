@@ -5,7 +5,6 @@
 #include "bmpfile.h"
 
 #include "rtc_macros.h"
-#include "struct_color.h"
 #include "frame.h"
 #include "menu_macros.h"
 #include "array_keyboard.h"
@@ -26,8 +25,7 @@
 
 extern int RTC_COUNTER;
 extern char name[11];
-extern scores_t scores;
-extern scores_t highscore;
+extern scores_t top_highscores;
 
 int main(int argc, char **argv) {
 
@@ -70,9 +68,6 @@ int main(int argc, char **argv) {
 	int r;
 	int ipc_status;
 	message msg;
-
-	//Color array
-	color_st *color;
 
 	// graphics mode
 	bitmap_struct bitmaps;
@@ -128,7 +123,7 @@ int main(int argc, char **argv) {
 
 	//highscore E GLOBAL
 
-	//read_all(&highscore);
+	read_all();
 
 	while(1) {
 
@@ -367,7 +362,7 @@ int main(int argc, char **argv) {
 		return -1;
 	}
 
-	//write_all(&highscore);
+	write_all();
 
 	return 0;
 }

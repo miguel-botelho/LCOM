@@ -6,7 +6,6 @@
 #include "menu_macros.h"
 #include "struct_bmp.h"
 #include "struct_scores.h"
-#include "struct_color.h"
 #include "array_keyboard.h"
 #include "mouse_struct.h"
 #include "video_gr.h"
@@ -20,13 +19,13 @@ extern int tries;
 extern int radius;
 extern char tool;
 extern int colour;
-extern scores_t highscore;
+extern scores_t top_highscores;
 
 void getrgb(int *red, int *green, int *blue);
 
 //in case of highscore it changes OPTION to GET_NAME
 //return -1 if not highscore or the position otherwise
-int is_highscore(scores_t *t, position_t *draw);
+int is_highscore(position_t *draw);
 
 ////////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////
