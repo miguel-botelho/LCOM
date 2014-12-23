@@ -27,6 +27,7 @@ int exit_menu(bitmap_struct bitmaps)
 		printf("Failure to unsubscribe!! \n\n");
 		return -1;
 	}
+	write_all();
 	exit(0);
 }
 
@@ -248,7 +249,7 @@ int HumanMachine(bitmap_struct bitmaps)
 		}
 	}
 
-	if ((RTC_COUNTER < 55) || (tries > 3) )
+	if ((RTC_COUNTER <= 0) || (tries > 4) )
 	{
 		drawBitmap(bitmaps.lost,0,0,ALIGN_LEFT, getScreenBuffer());
 		screen_to_mouse(getScreenBuffer(), getMouseBuffer());
@@ -307,36 +308,73 @@ int menu_handler (bitmap_struct bitmaps)
 
 int toolHandler()
 {
+	static int previous_tool = 0;//PENCIL;
+	char is_not_previous; //1 = TRUE
+
+	if (previous_tool != tool)
+	{
+		is_not_previous = 1;
+		previous_tool = tool;
+	}
+	else
+	{
+		is_not_previous = 0;
+	}
+
 	switch (tool)
 	{
 	case BUCKET:
 	{
 		draw_bucket();
+		if (is_not_previous)
+		{
+			createDBitmap();
+		}
 		break;
 	}
 	case PENCIL:
 	{
 		draw_pencil();
+		if (is_not_previous)
+		{
+			createDBitmap();
+		}
 		break;
 	}
 	case BRUSH:
 	{
 		draw_brush();
+		if (is_not_previous)
+		{
+			createDBitmap();
+		}
 		break;
 	}
 	case LINE:
 	{
 		drawLINE();
+		if (is_not_previous)
+		{
+			createDBitmap();
+		}
 		break;
 	}
 	case CIRCLE:
 	{
 		draw_circle();
+		if (is_not_previous)
+		{
+			createDBitmap();
+		}
 		break;
 	}
 	case SQUARE:
 	{
 		draw_square();
+		if (is_not_previous)
+		{
+			createDBitmap();
+		}
 		return 0;
 		break;
 	}
@@ -443,7 +481,7 @@ int score(int tick)
 {
 	int ret;
 
-	ret = -135 * (tick / 60.0) + 10000;
+	ret = -135 * (tick / 60.0) + 10000 - tries * 100;
 
 	return ret;
 }
@@ -556,7 +594,7 @@ void selectDraw()
 		{
 			if (mouse_t.LB == 1)
 			{
-				//undo();
+				undo();
 			}
 		}
 	}
@@ -567,7 +605,7 @@ void selectDraw()
 		{
 			if (mouse_t.LB == 1)
 			{
-				//redo();
+				redo();
 			}
 		}
 	}
@@ -949,7 +987,7 @@ void getrgb(int *red, int *green, int *blue)
 		*blue = 0;
 	}
 	else if (colour == RED){
-		*red = 255;
+		*red = 254;
 		*green = 0;
 		*blue = 0;
 	}

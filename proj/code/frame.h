@@ -4,9 +4,14 @@
 #include"mouse_struct.h"
 #include"video_gr.h"
 #include"global_variables.h"
+#include "bitmap.h"
 
 extern int radius;
 extern int colour;
+extern int screen_abs;
+extern int screen_current;
+
+#define NUMBER_TO_CHANGE			27
 
 //remember to draw only inside the board!!!
 //collisions?
