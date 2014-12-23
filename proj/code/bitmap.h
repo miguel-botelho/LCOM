@@ -10,6 +10,7 @@
 #include "lib.h"
 #include "bitmap_macros.h"
 #include "video_gr.h"
+#include "bmpfile.h"
 
 #pragma once
 
@@ -48,6 +49,13 @@ typedef struct {
     BitmapInfoHeader bitmapInfoHeader;
     unsigned char* bitmapData;
 } Bitmap;
+
+
+void createBitmap(int option);
+
+void aagetrgb(int *red, int *green, int *blue, int rgbaaaa);
+
+void createBitmap();
 
 /**
  * @brief Loads a bmp image (made by Henrique Ferrolho)
