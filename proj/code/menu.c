@@ -212,11 +212,6 @@ int Head_to_Head(bitmap_struct bitmaps)
 
 int HumanMachine(bitmap_struct bitmaps)
 {
-	if (OPTION == HUMAN_VS_MACHINE)
-	{
-
-	}
-
 	screen_to_mouse(getScreenBuffer(), getMouseBuffer());
 	drawMouse(bitmaps.mouse, mouse_t.x_mouse, mouse_t.y_mouse, ALIGN_LEFT, getMouseBuffer());
 
@@ -251,6 +246,14 @@ int HumanMachine(bitmap_struct bitmaps)
 
 			}
 		}
+	}
+
+	if ((RTC_COUNTER < 55) || (tries > 3) )
+	{
+			drawBitmap(bitmaps.lost,0,0,ALIGN_LEFT, getScreenBuffer());
+			screen_to_mouse(getScreenBuffer(), getMouseBuffer());
+			drawMouse(bitmaps.mouse,mouse_t.x_mouse,mouse_t.y_mouse, ALIGN_LEFT, getMouseBuffer());
+			mouse_to_video(getMouseBuffer(), getVideoMem());
 	}
 	//se ele acertar, ou acabar o timer, chamar is highscore
 	//pedir nome
@@ -444,6 +447,8 @@ void selectDraw()
 		{
 			if (mouse_t.LB == 1)
 			{
+				change_color(25,84,337,625,RED,BLACK, getScreenBuffer());
+				change_color(25, 84, 337, 385, BLACK, RED, getScreenBuffer());
 				tool = BUCKET;
 			}
 		}
@@ -455,6 +460,8 @@ void selectDraw()
 		{
 			if (mouse_t.LB == 1)
 			{
+				change_color(25,84,337,625,RED,BLACK, getScreenBuffer());
+				change_color(25, 84, 385, 433, BLACK, RED, getScreenBuffer());
 				tool = BRUSH;
 			}
 		}
@@ -466,6 +473,8 @@ void selectDraw()
 		{
 			if (mouse_t.LB == 1)
 			{
+				change_color(25,84,337,625,RED,BLACK, getScreenBuffer());
+				change_color(25, 84, 433, 481, BLACK, RED, getScreenBuffer());
 				tool = PENCIL;
 			}
 		}
@@ -477,6 +486,8 @@ void selectDraw()
 		{
 			if (mouse_t.LB == 1)
 			{
+				change_color(25,84,337,625,RED,BLACK, getScreenBuffer());
+				change_color(25, 84, 481, 529, BLACK, RED, getScreenBuffer());
 				tool = LINE;
 			}
 		}
@@ -488,6 +499,8 @@ void selectDraw()
 		{
 			if (mouse_t.LB == 1)
 			{
+				change_color(25,84,337,625,RED,BLACK, getScreenBuffer());
+				change_color(25, 84, 529, 577, BLACK, RED, getScreenBuffer());
 				tool = CIRCLE;
 			}
 		}
@@ -499,6 +512,8 @@ void selectDraw()
 		{
 			if (mouse_t.LB == 1)
 			{
+				change_color(25,84,337,625,RED,BLACK, getScreenBuffer());
+				change_color(25, 84, 577, 625, BLACK, RED, getScreenBuffer());
 				tool = SQUARE;
 			}
 		}

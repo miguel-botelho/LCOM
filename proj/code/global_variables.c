@@ -11,3 +11,5 @@ int colour = 22;
 int RTC_COUNTER = 60;
 
 char name[11];
+
+int tries = 0;

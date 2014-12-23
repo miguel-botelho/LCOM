@@ -15,6 +15,8 @@
 #include "video_gr_macros.h"
 
 extern char OPTION;
+extern int RTC_COUNTER;
+extern int tries;
 extern int radius;
 extern char tool;
 extern int colour;

@@ -152,7 +152,7 @@ int main(int argc, char **argv) {
 							}
 							else
 							{
-								displayTimer(contador, numbers, bitmaps);
+								//displayTimer(contador, numbers, bitmaps);
 							}
 
 						}
@@ -315,6 +315,8 @@ int main(int argc, char **argv) {
 
 				if (msg.NOTIFY_ARG & irq_set_rtc) /* subscribed interrupt for rtc */
 				{
+					printf("SUB2\n");
+
 					if ((OPTION == HUMAN_VS_MACHINE) || (OPTION == HEAD_TO_HEAD) || (OPTION == ONLINE))
 					{
 						printf("GAME: %d\n", RTC_COUNTER);
