@@ -2,6 +2,8 @@
 #include "global_variables.h"
 #include "lib.h"
 
+#include "bmpfile.h"
+
 #include "rtc_macros.h"
 #include "struct_color.h"
 #include "frame.h"
@@ -54,6 +56,7 @@ int main(int argc, char **argv) {
 	unsigned int mouse;
 	unsigned long key_register;
 	mouse_int_handler(SET_STREAM); //define o rato como stream mode
+	printf("mouse\n");
 	mouse_int_handler(ESDP); //ativa o envio dos dados por parte do rato
 
 	//timer
@@ -202,6 +205,7 @@ int main(int argc, char **argv) {
 							name[2] = 'S';
 							name[3] = '\0';
 						}
+						createBitmap();
 						OPTION = MAIN_MENU;
 						drawBitmap(bitmaps.background, 0, 0, ALIGN_LEFT, screen_buffer);
 						screen_to_mouse(screen_buffer, mouse_buffer);

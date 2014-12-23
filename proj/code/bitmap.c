@@ -1,5 +1,139 @@
 #include "bitmap.h"
 
+void createBitmap()
+{
+	bmpfile_t *bmp;
+
+	char * screen_buffer = getScreenBuffer();
+	size_t ax, ay;
+	for (ax = 500; ax < 1024; ++ax)
+	{
+		for (ay = 500; ay < 768; ++ay)
+		{
+			printf("pixel: 0x%X\n", *((uint16_t *)screen_buffer + ax + ay * 768));
+		}
+	}
+	screen_buffer += ((1024 * 768) - 1) * 2;
+
+	int red, green, blue;
+	////canvas: x = 120 a 1020; y = 187 a 717
+	int i, j;
+	bmp = bmp_create(1025 - 126, 717 - 186,16);
+	for(i = 126; i < 1025; i++)
+	{
+		for (j = 187; j < 717; j++)
+		{
+			aagetrgb(&red, &green, &blue, *((uint16_t *)screen_buffer + i + j * 1024));
+			rgb_pixel_t pixel = {blue, green, red, 0};
+			//printf("*(uint16_t *)screen_buffer: 0x%X R: %d G: %d B: %d\n", *(uint16_t *)screen_buffer, red, green, blue);
+			bmp_set_pixel(bmp,(uint32_t)(i - 126),(uint32_t)(j - 187),pixel);
+		}
+	}
+
+	bmp_save(bmp,"home/lcom/proj/code/images/teste.bmp");
+	//printf("adssad\n");
+	drawBitmap(loadBitmap("home/lcom/proj/code/images/teste.bmp"), 0, 0 , ALIGN_LEFT, getScreenBuffer());
+	screen_to_mouse(getScreenBuffer(), getMouseBuffer());
+	mouse_to_video(getMouseBuffer(), getVideoMem());
+	//printf("1111\n");
+	*((char *)NULL) = 0; // e suposto encravar por causa desta linha (para ver o bmp)
+	bmp_destroy(bmp);
+}
+
+void aagetrgb(int *red, int *green, int *blue, int rgbaaaa)
+{
+	/**red = 255;//255 - 255; //255
+	 *green = 106;//106 - 1; //106
+	 *blue = 0;//255 - 0; //0
+		return;*/
+	if (rgbaaaa == BLACK)
+	{
+		*red = 0;
+		*green = 0;
+		*blue = 0;
+	}
+	else if (rgbaaaa == YELLOW){
+		*red = 255;
+		*green = 251;
+		*blue = 0;
+	}
+	else if (rgbaaaa == BLUE){
+		*red = 0;
+		*green = 0;
+		*blue = 181;
+	}
+	else if (rgbaaaa == PINK){
+		*red = 255;
+		*green = 0;
+		*blue = 173;
+	}
+	else if (rgbaaaa == WHITE){
+		*red = 255;
+		*green = 255;
+		*blue = 255;
+	}
+	else if (rgbaaaa == GREEN){
+		*red = 16;
+		*green = 138;
+		*blue = 0;
+	}
+	else if (rgbaaaa == RED){
+		*red = 255;
+		*green = 0;
+		*blue = 0;
+	}
+	else if (rgbaaaa == GRAY){
+		*red = 107;
+		*green = 109;
+		*blue = 107;
+	}
+	else if (rgbaaaa == CYAN){
+		*red = 0;
+		*green = 255;
+		*blue = 255;
+	}
+	else if (rgbaaaa == ORANGE){
+		*red = 255;
+		*green = 113;
+		*blue = 0;
+	}
+	else if (rgbaaaa == NAVY){
+		*red = 0;
+		*green = 0;
+		*blue = 128;
+	}
+	else if (rgbaaaa == SILVER){
+		*red = 192;
+		*green = 192;
+		*blue = 192;
+	}
+	else if (rgbaaaa == TEAL){
+		*red = 0;
+		*green = 128;
+		*blue = 128;
+	}
+	else if (rgbaaaa == PURPLE){
+		*red = 123;
+		*green = 4;
+		*blue = 156;
+	}
+	else if (rgbaaaa == BROWN){
+		*red = 132;
+		*green = 61;
+		*blue = 8;
+	}
+	else if (rgbaaaa == DARK_GRAY){
+		*red = 169;
+		*green = 169;
+		*blue = 169;
+	}
+	else /*if (rgbaaaa == LIGHT_GRAY)*/{
+		*red = 211;
+		*green = 211;
+		*blue = 211;
+	}
+}
+
 Bitmap* loadBitmap(const char* filename) {
 	// allocating necessary size
 	Bitmap* bmp = (Bitmap*) malloc(sizeof(Bitmap));
