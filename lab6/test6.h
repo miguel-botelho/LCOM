@@ -10,7 +10,7 @@
 extern int rtc_hook_id;
 
 
-unsigned long rtc_subscribe_int(void);
+unsigned long rtc_subscribe_int();
 int rtc_unsubscribe_int();
 short read_rtc(long array);
 void write_rtc(long array, long temp);

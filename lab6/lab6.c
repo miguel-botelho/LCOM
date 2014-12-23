@@ -3,11 +3,11 @@
 #include <machine/int86.h>
 #include <sys/mman.h>
 #include <sys/types.h>
+#include <stdio.h>
 
 #include "test6.h"
 
 int main(int argc, char **argv) {
-
 
 	 /* Initialize service */
 
