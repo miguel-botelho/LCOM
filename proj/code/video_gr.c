@@ -285,6 +285,13 @@ int rgb(unsigned char r, unsigned char g, unsigned char b) {
 	return (red << 11) | (green << 5) | blue;
 }
 
+void reverse_rgb(int *red, int *green, int *blue, int color)
+{
+	*red = (((color >> 11) & 0x1F) * 255) / 31;
+	*green = (((color >> 5) & 0x3F) * 255) / 63;
+	*blue = ((color & 0x1F) * 255) / 31;
+}
+
 void screen_to_mouse(char * screen_buffer, char * mouse_buffer) {
 
 	memcpy(mouse_buffer, screen_buffer, (h_res * v_res * bits_per_pixel / 8));

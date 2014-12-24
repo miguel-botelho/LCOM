@@ -22,10 +22,12 @@
 #include "menu.h"
 #include "struct_bmp.h"
 #include "read_write.h"
+#include "serial_port.h"
 
 extern int RTC_COUNTER;
 extern char name[11];
 extern scores_t top_highscores;
+extern int key;
 
 int main(int argc, char **argv) {
 
@@ -40,7 +42,6 @@ int main(int argc, char **argv) {
 		printf("Failure to subscribe!! \n\n");
 		return -1;
 	}
-
 
 	// mouse
 	unsigned int i = 0;
@@ -61,7 +62,6 @@ int main(int argc, char **argv) {
 	int temp_counter = 0;
 
 	//keyboard
-	int key = 0;
 
 	//hardware
 	int r;
@@ -137,25 +137,66 @@ int main(int argc, char **argv) {
 			case HARDWARE: /* hardware interrupt notification */
 				if (msg.NOTIFY_ARG & irq_set_timer) /* subscribed interrupt for timer*/
 				{
-					/*if (OPTION == HUMAN_VS_MACHINE)
+					if (0 == com1_receive())
 					{
-						temp_counter++;
-						if (temp_counter == 60)
+						OPTION = GUESS;
+						if ( 0 == menu_handler(bitmaps))
 						{
-
-							contador++;
-							temp_counter = 0;
-							if (contador > 10)
-							{
-
-							}
-							else
-							{
-								//displayTimer(contador, numbers, bitmaps);
-							}
-
+							return 0;
 						}
-					}*/
+
+						if (key != -1)
+						{
+							if (OPTION == GET_NAME)
+							{
+								int length = 0;
+								if (length == 10)
+								{
+									if (key == KEY_ENTER_M || key == KEY_NUM_ENTER_M)
+									{
+										length++;
+										name[length] = '\0';
+										OPTION = MAIN_MENU;
+									}
+								}
+								else if ((key == KEY_ENTER_M || key == KEY_NUM_ENTER_M) && (length > 0))
+								{
+									length++;
+									name[length] = '\0';
+									OPTION = MAIN_MENU;
+								}
+								else
+								{
+									name[length] = get_char(key);
+
+									if (name[length] >= 'A' && name[length] <= 'Z')
+									{
+										WriteArray(name, length, key_scancode);
+										length++;
+									}
+								}
+							}
+
+							if (key == KEY_ESC)
+							{
+								if (OPTION == GET_NAME)
+								{
+									name[0] = 'U';
+									name[1] = 'P';
+									name[2] = 'S';
+									name[3] = '\0';
+								}
+								//createBitmap();
+								OPTION = MAIN_MENU;
+								drawBitmap(bitmaps.background, 0, 0, ALIGN_LEFT, screen_buffer);
+							}
+						}
+
+						screen_to_mouse(screen_buffer, mouse_buffer);
+						drawMouse(bitmaps.mouse, mouse_t.x_mouse, mouse_t.y_mouse, ALIGN_LEFT, mouse_buffer);
+
+						mouse_to_video(mouse_buffer, video_memory);
+					}
 				}
 
 				if (msg.NOTIFY_ARG & irq_set_keyboard) /* subscribed interrupt for keyboard*/
@@ -266,7 +307,7 @@ int main(int argc, char **argv) {
 					sys_inb(BASE_ADDRESS_COM1 + INTERRUPT_IDENTIFICATION, &line_status);
 					if (INTERRUPT_ORIGIN_RECEIVED_DATA & line_status)
 					{
-						com1_receive_interrupt(size_send, send);
+						com1_receive_interrupt(&size_send, send);
 						/////////////////////////////////////////////////////////
 						// need to call the handler (don exist, need to create)//
 						/////////////////////////////////////////////////////////
@@ -292,7 +333,7 @@ int main(int argc, char **argv) {
 					sys_inb(BASE_ADDRESS_COM2 + INTERRUPT_IDENTIFICATION, &line_status);
 					if (INTERRUPT_ORIGIN_RECEIVED_DATA & line_status)
 					{
-						com2_receive_interrupt(size_send, send);
+						com2_receive_interrupt(&size_send, send);
 						/////////////////////////////////////////////////////////
 						// need to call the handler (don exist, need to create)//
 						/////////////////////////////////////////////////////////

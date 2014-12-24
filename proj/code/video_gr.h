@@ -134,4 +134,6 @@ int get_vbe_info(vbe_info_block *vib_p);
  * @return color
  */
 int rgb(unsigned char r, unsigned char g, unsigned char b);
+
+void reverse_rgb(int *red, int *green, int *blue, int color);
 #endif /* __VIDEO_GR_H */

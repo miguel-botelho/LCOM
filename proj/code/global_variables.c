@@ -22,6 +22,8 @@ int screen_abs = 0; //começa a 0 ||| MAX = 9 (incluindo)
 
 int screen_current = 0; //começa a 0 ||| MAX = 9 (incluindo)
 
+int key = 0;
+
 /*
  * NAO ESTA FEITO!! O SCORE NAO TEM O CASO QUE ACERTA (TEM QUE SER FEITO NO FINAL)
  * score = 4 tentativas * 100 (perde)
