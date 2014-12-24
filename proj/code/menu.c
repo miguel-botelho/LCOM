@@ -387,10 +387,12 @@ int toolHandler()
 	return 1;
 }
 
-int is_highscore(position_t *draw)
+int is_highscore(position_t *draw) //tem de ser executada antes de se mudar o ecra (frame)
 {
 	int place = -1;
 	char discard1, discard2;
+
+	createBitmap();
 
 	if (draw->score >= top_highscores.first.score)
 	{

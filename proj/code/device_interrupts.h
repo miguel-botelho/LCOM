@@ -5,6 +5,7 @@
 #include "subscribe_macros.h"
 #include "rtc_macros.h"
 #include "rtc.h"
+#include "serial_port.h"
 
 // This file only subscribes and unsubscribes
 

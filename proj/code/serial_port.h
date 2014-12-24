@@ -3,6 +3,14 @@
 
 #include"serial_port_macros.h"
 #include"lib.h"
+#include"global_variables.h"
+#include"mouse_struct.h"
+
+extern int key;
+extern mouse_st mouse_t;
+
+//return 0 se recebeu alguma coisa
+int com1_receive();
 
 /**
  * @brief Configures the serial port
