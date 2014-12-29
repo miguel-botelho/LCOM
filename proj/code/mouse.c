@@ -116,17 +116,25 @@ int mouse_int_handler(unsigned long cmd){
 int mouse_send_command(unsigned long cmd){
 
 	unsigned long stat;
+	unsigned long temp;
 
 	while(1)
 	{
 		sys_inb(STAT_REG, &stat); /*assuming it returns OK*/
+		while (stat & BIT(0) == BIT(0))
+		{
+			printf("CHEIO\n");
+			sys_inb(0x64, &temp);
+			tickdelay(micros_to_ticks(DELAY_US));
+			sys_inb(STAT_REG, &stat);
+		}
 		/*loop while 8042 input buffer is not empty*/
 		if ((stat & IBF) == 0)
 		{
 			sys_outb(COMMAND_PORT, cmd);
 			return 0;
 		}
-		tickdelay(micros_to_ticks(DELAY_US));
+
 	}
 
 }

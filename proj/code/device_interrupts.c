@@ -166,8 +166,6 @@ int sp1_subscribe_int()
 		return -1;
 	}
 
-	sp_config();
-
 	return BIT(hook_temp);
 }
 
@@ -186,8 +184,6 @@ int sp2_subscribe_int()
 		printf("irq enable\n");
 		return -1;
 	}
-
-	sp_config();
 
 	return BIT(hook_temp);
 }

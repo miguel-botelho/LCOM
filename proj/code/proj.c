@@ -1,4 +1,3 @@
-
 #include "global_variables.h"
 #include "lib.h"
 
@@ -22,12 +21,16 @@
 #include "menu.h"
 #include "struct_bmp.h"
 #include "read_write.h"
-#include "serial_port.h"
 
 extern int RTC_COUNTER;
 extern char name[11];
+extern char word[11];
 extern scores_t top_highscores;
-extern int key;
+extern int espaco;
+extern int length;
+extern int length_word;
+extern int contador_high;
+extern int tentativas;
 
 int main(int argc, char **argv) {
 
@@ -37,8 +40,7 @@ int main(int argc, char **argv) {
 	// Enable IO-sensitive operations for ourselves
 	sys_enable_iop(SELF);
 
-	if (subscribe_all() == -1)
-	{
+	if (subscribe_all() == -1) {
 		printf("Failure to subscribe!! \n\n");
 		return -1;
 	}
@@ -58,10 +60,10 @@ int main(int argc, char **argv) {
 	mouse_int_handler(ESDP); //ativa o envio dos dados por parte do rato
 
 	//timer
-	int contador = 0;
 	int temp_counter = 0;
 
 	//keyboard
+	int key = 0;
 
 	//hardware
 	int r;
@@ -105,17 +107,18 @@ int main(int argc, char **argv) {
 	char * human_machine = getHumanMachine();
 
 	// Draw of the background
-	drawBitmap(bitmaps.background, 0, 0 , ALIGN_LEFT, screen_buffer);
+	drawBitmap(bitmaps.background, 0, 0, ALIGN_LEFT, screen_buffer);
 
 	screen_to_mouse(screen_buffer, mouse_buffer);
 
 	// Draw the mouse
-	drawMouse(bitmaps.mouse, mouse_t.x_mouse, mouse_t.y_mouse, ALIGN_LEFT, mouse_buffer);
+	drawMouse(bitmaps.mouse, mouse_t.x_mouse, mouse_t.y_mouse, ALIGN_LEFT,
+			mouse_buffer);
 
 	mouse_to_video(mouse_buffer, video_memory);
 
 	// Draw Human Machine
-	drawBitmap(bitmaps.frame,0,0,ALIGN_LEFT,human_machine);
+	drawBitmap(bitmaps.frame, 0, 0, ALIGN_LEFT, human_machine);
 
 	//atributes
 	mouse_t.LB = 0; //to prevent the selection of the first menu
@@ -126,9 +129,9 @@ int main(int argc, char **argv) {
 	//Create 10 white bitmaps
 	createBitmapsUndoRedo();
 
-	while(1) {
+	while (1) {
 
-		if ( (r = driver_receive(ANY, &msg, &ipc_status)) != 0 ) {
+		if ((r = driver_receive(ANY, &msg, &ipc_status)) != 0) {
 			printf("driver_receive failed with: %d", r);
 			continue;
 		}
@@ -137,65 +140,22 @@ int main(int argc, char **argv) {
 			case HARDWARE: /* hardware interrupt notification */
 				if (msg.NOTIFY_ARG & irq_set_timer) /* subscribed interrupt for timer*/
 				{
-					if (0 == com1_receive())
+
+					screen_to_mouse(screen_buffer, mouse_buffer);
+					drawMouse(bitmaps.mouse, mouse_t.x_mouse, mouse_t.y_mouse, ALIGN_LEFT, mouse_buffer);
+
+					mouse_to_video(mouse_buffer, video_memory);
+
+
+					if (OPTION == HUMAN_VS_MACHINE)
 					{
-						OPTION = GUESS;
-						if ( 0 == menu_handler(bitmaps))
+						temp_counter++;
+						if (temp_counter == 60)
 						{
-							return 0;
+
+							contador_high++;
+							temp_counter = 0;
 						}
-
-						if (key != -1)
-						{
-							if (OPTION == GET_NAME)
-							{
-								int length = 0;
-								if (length == 10)
-								{
-									if (key == KEY_ENTER_M || key == KEY_NUM_ENTER_M)
-									{
-										length++;
-										name[length] = '\0';
-										OPTION = MAIN_MENU;
-									}
-								}
-								else if ((key == KEY_ENTER_M || key == KEY_NUM_ENTER_M) && (length > 0))
-								{
-									length++;
-									name[length] = '\0';
-									OPTION = MAIN_MENU;
-								}
-								else
-								{
-									name[length] = get_char(key);
-
-									if (name[length] >= 'A' && name[length] <= 'Z')
-									{
-										WriteArray(name, length, key_scancode);
-										length++;
-									}
-								}
-							}
-
-							if (key == KEY_ESC)
-							{
-								if (OPTION == GET_NAME)
-								{
-									name[0] = 'U';
-									name[1] = 'P';
-									name[2] = 'S';
-									name[3] = '\0';
-								}
-								//createBitmap();
-								OPTION = MAIN_MENU;
-								drawBitmap(bitmaps.background, 0, 0, ALIGN_LEFT, screen_buffer);
-							}
-						}
-
-						screen_to_mouse(screen_buffer, mouse_buffer);
-						drawMouse(bitmaps.mouse, mouse_t.x_mouse, mouse_t.y_mouse, ALIGN_LEFT, mouse_buffer);
-
-						mouse_to_video(mouse_buffer, video_memory);
 					}
 				}
 
@@ -203,40 +163,163 @@ int main(int argc, char **argv) {
 				{
 					kbd_scan_c(&key);
 
-					if (OPTION == GET_NAME)
-					{
-						int length = 0;
+					if (OPTION == GET_NAME) {
+
 						if (length == 10)
 						{
-							if (key == KEY_ENTER_M || key == KEY_NUM_ENTER_M)
+							if (key == KEY_ENTER || key == KEY_NUM_ENTER)
 							{
 								length++;
 								name[length] = '\0';
 								OPTION = MAIN_MENU;
 							}
 						}
-						else if ((key == KEY_ENTER_M || key == KEY_NUM_ENTER_M) && (length > 0))
+						else if ((key == KEY_ENTER || key == KEY_NUM_ENTER) && (length > 0))
 						{
 							length++;
 							name[length] = '\0';
-							OPTION = MAIN_MENU;
+							drawBitmap(bitmaps.frame, 0,0, ALIGN_LEFT, getScreenBuffer());
+							WriteArrayFrame(name, length, key_scancode, bitmaps);
+							OPTION = HEAD_TO_HEAD;
 						}
-						else
-						{
-							name[length] = get_char(key);
+						else {
 
-							if (name[length] >= 'A' && name[length] <= 'Z')
+							if (get_char(key) >= 'A' && get_char(key) <= 'Z')
 							{
-								WriteArray(name, length, key_scancode);
+								name[length] = get_char(key);
+								WriteArray(name, length, key_scancode, bitmaps);
 								length++;
 							}
+							if (key == KEY_BACKSPACE)
+							{
+								unsigned int l = 0;
+								unsigned int a = 0;
+								char * human_machine = getHumanMachine();
+								char * screen_buffer = getScreenBuffer();
+								drawBitmap(bitmaps.pre_head_to_head, 0, 0, ALIGN_LEFT, human_machine);
+								human_machine = human_machine + 251 * 2 + 1024 * 481 * 2;
+								screen_buffer = screen_buffer + 251 * 2 + 1024 * 481 * 2;
+								for(; a < (581 - 481); a++)
+								{
+									for (; l < (719 - 251);l++)
+									{
+										*(uint16_t *)screen_buffer = *(uint16_t *)human_machine;
+										screen_buffer+=2;
+										human_machine+=2;
+									}
+									l = 0;
+									screen_buffer += 1024 * 2 - (719 - 251) * 2;
+									human_machine += 1024 * 2 - (719 - 251) * 2;
+								}
+								int i = 0;
+								for (; i < length; i++)
+								{
+									name[i] = '0';
+								}
+								length = 0;
+							}
+
+						}
+						continue;
+					}
+					if (OPTION == HEAD_TO_HEAD)
+					{
+						unsigned int l = 0;
+						unsigned int a = 0;
+						char * human_machine = getHumanMachine();
+						char * screen_buffer = getScreenBuffer();
+						int j = 0;
+						if (key == KEY_BACKSPACE)
+						{
+							drawBitmap(bitmaps.frame, 0, 0, ALIGN_LEFT, human_machine);
+							human_machine = human_machine + 116 * 2 + 1024 * 127 * 2;
+							screen_buffer = screen_buffer + 116 * 2 + 1024 * 127 * 2;
+							for(; a < (183 - 127); a++)
+							{
+								for (; l < (470 - 116);l++)
+								{
+									*(uint16_t *)screen_buffer = *(uint16_t *)human_machine;
+									screen_buffer+=2;
+									human_machine+=2;
+								}
+								l = 0;
+								screen_buffer += 1024 * 2 - (470 - 116) * 2;
+								human_machine += 1024 * 2 - (470 - 116) * 2;
+							}
+							l = 0;
+							a = 0;
+
+							for (; j < length_word; j++)
+							{
+								word[j] = '0';
+							}
+							j = 0;
+							length_word = 0;
+						}
+						if (key == KEY_SPACE)
+						{
+							tries++;
+							human_machine = getHumanMachine();
+							screen_buffer = getScreenBuffer();
+							drawBitmap(bitmaps.frame, 0, 0, ALIGN_LEFT, human_machine);
+							human_machine = human_machine + 116 * 2 + 1024 * 127 * 2;
+							screen_buffer = screen_buffer + 116 * 2 + 1024 * 127 * 2;
+							for(; a < (183 - 127); a++)
+							{
+								for (; l < (470 - 116);l++)
+								{
+									*(uint16_t *)screen_buffer = *(uint16_t *)human_machine;
+									screen_buffer+=2;
+									human_machine+=2;
+								}
+								l = 0;
+								screen_buffer += 1024 * 2 - (470 - 116) * 2;
+								human_machine += 1024 * 2 - (470 - 116) * 2;
+							}
+							a = 0;
+							l = 0;
+
+							for (; j < length_word; j++)
+							{
+								word[j] = '0';
+							}
+							length_word = 0;
+							j = 0;
+						}
+
+						if (get_char(key) >= 'A' && get_char(key) <= 'Z')
+						{
+							word[length_word] = get_char(key);
+							WriteArrayFrame2(word, length_word, key_scancode, bitmaps);
+							length_word++;
+						}
+
+						if (key == KEY_ENTER)
+						{
+							int score_conta;
+							score_conta = score(contador_high);
+							drawBitmap(bitmaps.win, 0,0, ALIGN_LEFT, getScreenBuffer());
+							OPTION = MAIN_MENU;
+							tries = 0;
+							int k = 0;
+							for (; k < length; k++)
+							{
+								name[k] = '0';
+							}
+							k = 0;
+							for (; k < length_word; k++)
+							{
+								word[k] = '0';
+							}
+							RTC_COUNTER = 60;
+							OPTION = MAIN_MENU;
+							tries = 0;
+							tentativas = 0;
 						}
 					}
 
-					if (key == KEY_ESC)
-					{
-						if (OPTION == GET_NAME)
-						{
+					if (key == KEY_ESC) {
+						if (OPTION == GET_NAME) {
 							name[0] = 'U';
 							name[1] = 'P';
 							name[2] = 'S';
@@ -249,6 +332,20 @@ int main(int argc, char **argv) {
 						drawMouse(bitmaps.mouse, mouse_t.x_mouse, mouse_t.y_mouse, ALIGN_LEFT, mouse_buffer);
 
 						mouse_to_video(mouse_buffer, video_memory);
+						espaco = 0;
+						tentativas = 0;
+						tries = 0;
+						RTC_COUNTER = 60;
+						int k = 0;
+						for (; k < length; k++)
+						{
+							name[k] = '0';
+						}
+						k = 0;
+						for (; k < length_word; k++)
+						{
+							word[k] = '0';
+						}
 					}
 				}
 
@@ -257,25 +354,18 @@ int main(int argc, char **argv) {
 					sys_inb(OUT_BUF, &key_register);
 					mouse = (unsigned int) key_register;
 					//le o packet
-					if (bool1 == 0)
-					{
-						if (BIT(3) == (BIT(3) & mouse))
-						{
+					if (bool1 == 0) {
+						if (BIT(3) == (BIT(3) & mouse)) {
 							bool1 = 1; //o primeiro byte
 							byte1 = mouse;
-						}
-						else continue;
+						} else
+							continue;
 
-					}
-					else
-					{
-						if (bool2 == 0)
-						{
+					} else {
+						if (bool2 == 0) {
 							bool2 = 1; //o segundo byte
 							byte2 = mouse;
-						}
-						else
-						{
+						} else {
 							//este e o 3 byte
 							//estao todos lidos
 							//bool3 = 1;
@@ -289,31 +379,25 @@ int main(int argc, char **argv) {
 							a[2] = byte3;
 							fill_struct(a);
 
-							if ( 0 == menu_handler(bitmaps))
-							{
+							if (0 == menu_handler(bitmaps, numbers)) {
 								return 0;
 							}
 
-							screen_to_mouse(screen_buffer, mouse_buffer);
-							drawMouse(bitmaps.mouse, mouse_t.x_mouse, mouse_t.y_mouse, ALIGN_LEFT, mouse_buffer);
-
-							mouse_to_video(mouse_buffer, video_memory);
 						}
 					}
 				}
 
 				if (msg.NOTIFY_ARG & irq_set_sp1) /* subscribed interrupt for serial port 1*/
 				{
-					sys_inb(BASE_ADDRESS_COM1 + INTERRUPT_IDENTIFICATION, &line_status);
-					if (INTERRUPT_ORIGIN_RECEIVED_DATA & line_status)
-					{
-						com1_receive_interrupt(&size_send, send);
+					sys_inb(BASE_ADDRESS_COM1 + INTERRUPT_IDENTIFICATION,
+							&line_status);
+					if (INTERRUPT_ORIGIN_RECEIVED_DATA & line_status) {
+						com1_receive_interrupt(size_send, send);
 						/////////////////////////////////////////////////////////
 						// need to call the handler (don exist, need to create)//
 						/////////////////////////////////////////////////////////
-					}
-					else if (INTERRUPT_ORIGIN_TRANSMITTER_EMPTY & line_status)
-					{
+					} else if (INTERRUPT_ORIGIN_TRANSMITTER_EMPTY
+							& line_status) {
 						if (need_to_write) //need_to_write = 1 = true
 						{
 							/////////////////////////////////////////////////////////
@@ -321,25 +405,22 @@ int main(int argc, char **argv) {
 							/////////////////////////////////////////////////////////
 							need_to_write = 0;
 						}
-					}
-					else
-					{
+					} else {
 						printf("Error on serial port 1!\n");
 					}
 				}
 
 				if (msg.NOTIFY_ARG & irq_set_sp2) /* subscribed interrupt for serial port 2*/
 				{
-					sys_inb(BASE_ADDRESS_COM2 + INTERRUPT_IDENTIFICATION, &line_status);
-					if (INTERRUPT_ORIGIN_RECEIVED_DATA & line_status)
-					{
-						com2_receive_interrupt(&size_send, send);
+					sys_inb(BASE_ADDRESS_COM2 + INTERRUPT_IDENTIFICATION,
+							&line_status);
+					if (INTERRUPT_ORIGIN_RECEIVED_DATA & line_status) {
+						com2_receive_interrupt(size_send, send);
 						/////////////////////////////////////////////////////////
 						// need to call the handler (don exist, need to create)//
 						/////////////////////////////////////////////////////////
-					}
-					else if (INTERRUPT_ORIGIN_TRANSMITTER_EMPTY & line_status)
-					{
+					} else if (INTERRUPT_ORIGIN_TRANSMITTER_EMPTY
+							& line_status) {
 						if (need_to_write) //need_to_write = 1 = true
 						{
 							/////////////////////////////////////////////////////////
@@ -347,9 +428,7 @@ int main(int argc, char **argv) {
 							/////////////////////////////////////////////////////////
 							need_to_write = 0;
 						}
-					}
-					else
-					{
+					} else {
 						printf("Error on serial port 1!\n");
 					}
 				}
@@ -357,20 +436,15 @@ int main(int argc, char **argv) {
 				if (msg.NOTIFY_ARG & irq_set_rtc) /* subscribed interrupt for rtc */
 				{
 
-					if ((OPTION == HUMAN_VS_MACHINE) || (OPTION == HEAD_TO_HEAD) || (OPTION == ONLINE))
-					{
+					if ((OPTION == HUMAN_VS_MACHINE) || (OPTION == HEAD_TO_HEAD)
+							|| (OPTION == ONLINE)) {
 						RTC_COUNTER--;
-						if (RTC_COUNTER < 10)
-						{
+						if (RTC_COUNTER < 10) {
 							displayTimer(RTC_COUNTER, numbers, bitmaps);
-						}
-						else
-						{
+						} else {
 							displayTimer10(RTC_COUNTER, numbers, bitmaps);
 						}
-					}
-					else
-					{
+					} else {
 						screen_abs = 0;
 						screen_current = 0;
 						RTC_COUNTER = 60;
@@ -398,8 +472,7 @@ int main(int argc, char **argv) {
 	mouse_int_handler(DISABLE_STREAM); //desativa a stream
 	mouse_int_handler(SET_STREAM); //volta a ativar a stream, isto foi feito para desativar o envio dos pacotes
 
-	if (unsubscribe_all() == -1)
-	{
+	if (unsubscribe_all() == -1) {
 		printf("Failure to unsubscribe!! \n\n");
 		return -1;
 	}

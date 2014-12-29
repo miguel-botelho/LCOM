@@ -5,7 +5,7 @@ void bitmaps_load(bitmap_struct *t)
 	t->background = loadBitmap("home/lcom/proj/code/images/Fundo.bmp");
 	t->highscores = loadBitmap("home/lcom/proj/code/images/Highscores.bmp");
 	t->mouse = loadBitmap("home/lcom/proj/code/images/Mouse.bmp");
-	t->frame = loadBitmap("home/lcom/proj/code/images/Frame_test.bmp");
+	t->frame = loadBitmap("home/lcom/proj/code/images/Frame.bmp");
 	t->pre_head_to_head = loadBitmap("home/lcom/proj/code/images/Pre-Head_to_Head.bmp");
 	t->lost = loadBitmap("home/lcom/proj/code/images/Lost.bmp");
 	t->win = loadBitmap("home/lcom/proj/code/images/Win.bmp");
@@ -31,7 +31,7 @@ int exit_menu(bitmap_struct bitmaps)
 	exit(0);
 }
 
-char position_menu(bitmap_struct bitmaps)
+char position_menu(bitmap_struct bitmaps, Bitmap ** numbers)
 {
 	char bool = 1;
 
@@ -43,7 +43,7 @@ char position_menu(bitmap_struct bitmaps)
 			if (mouse_t.LB == 1)
 			{
 				OPTION = EXIT_OPT;
-				menu_handler(bitmaps);
+				menu_handler(bitmaps, numbers);
 				return 0;
 			}
 			else
@@ -99,7 +99,7 @@ char position_menu(bitmap_struct bitmaps)
 			bool = 0;
 			if (mouse_t.LB == 1)
 			{
-				OPTION = HEAD_TO_HEAD;
+				OPTION = GET_NAME;
 				drawBitmap(bitmaps.pre_head_to_head, 0, 0, ALIGN_LEFT, getScreenBuffer());
 			}
 			else
@@ -116,8 +116,8 @@ char position_menu(bitmap_struct bitmaps)
 			bool = 0;
 			if (mouse_t.LB == 1)
 			{
-				OPTION = HUMAN_VS_MACHINE;
-				drawBitmap(bitmaps.frame, 0, 0, ALIGN_LEFT, getScreenBuffer());
+				OPTION = GET_NAME;
+				drawBitmap(bitmaps.pre_head_to_head, 0, 0, ALIGN_LEFT, getScreenBuffer());
 			}
 			else
 			{
@@ -193,82 +193,113 @@ int online_menu(bitmap_struct bitmaps)
 	return 0;
 }
 
-int Head_to_Head(bitmap_struct bitmaps)
+int HumanMachine(bitmap_struct bitmaps)
+{
+	if (OPTION == HUMAN_VS_MACHINE)
+	{
+
+	}
+
+	screen_to_mouse(getScreenBuffer(), getMouseBuffer());
+	drawMouse(bitmaps.mouse, mouse_t.x_mouse, mouse_t.y_mouse, ALIGN_LEFT, getMouseBuffer());
+
+	mouse_to_video(getMouseBuffer(), getVideoMem());
+
+	//se ele acertar, ou acabar o timer, chamar is highscore
+	//pedir nome
+
+	return 0;
+}
+
+int Head_to_Head(bitmap_struct bitmaps, Bitmap ** numbers)
 {
 	if (OPTION == HEAD_TO_HEAD)
 	{
-
-	}
-
-	screen_to_mouse(getScreenBuffer(), getMouseBuffer());
-	drawMouse(bitmaps.mouse, mouse_t.x_mouse, mouse_t.y_mouse, ALIGN_LEFT, getMouseBuffer());
-
-	mouse_to_video(getMouseBuffer(), getVideoMem());
-
-	//se ele acertar, ou acabar o timer, chamar is highscore
-	//pedir nome
-
-	return 0;
-}
-
-int HumanMachine(bitmap_struct bitmaps)
-{
-	screen_to_mouse(getScreenBuffer(), getMouseBuffer());
-	drawMouse(bitmaps.mouse, mouse_t.x_mouse, mouse_t.y_mouse, ALIGN_LEFT, getMouseBuffer());
-
-	mouse_to_video(getMouseBuffer(), getVideoMem());
-
-	selectDraw();
-
-	selectColour();
-
-	if ((mouse_t.x_mouse >= 120) && (mouse_t.x_mouse <= 1020))
-	{
-		if ((mouse_t.y_mouse >= 183) && (mouse_t.y_mouse <= 717))
+		drawMouse(numbers[tries], 162,8, ALIGN_LEFT, getScreenBuffer());
+		if (tentativas != tries)
 		{
-			if (mouse_t.LB == 1)
-			{
-				//PINTAR NA TELA
-				if (-1 == toolHandler())
-				{
-					return -1;
-				}
-			}
-			else
-			{
-				if (tool == LINE)
-				{
-					drawLINE();
-				}
-				else if (tool == PENCIL)
-				{
-					draw_pencil();
-				}
+			printf("tentativas: %d\n", tentativas);
+			int a = 0;
+			int l = 0;
 
+			char* human_machine = getHumanMachine();
+			char* screen_buffer = getScreenBuffer();
+			drawBitmap(bitmaps.frame, 0, 0, ALIGN_LEFT, human_machine);
+			human_machine = human_machine + 162 * 2 + 1024 * 8 * 2;
+			screen_buffer = screen_buffer + 162 * 2 + 1024 * 8 * 2;
+			for(; a < 50; a++)
+			{
+				for (; l < 40;l++)
+				{
+					*(uint16_t *)screen_buffer = *(uint16_t *)human_machine;
+					screen_buffer+=2;
+					human_machine+=2;
+				}
+				l = 0;
+				screen_buffer += 1024 * 2 - 40 * 2;
+				human_machine += 1024 * 2 - 40 * 2;
 			}
+			tentativas++;
+		}
+
+
+		selectDraw();
+
+		selectColour();
+
+		if ((mouse_t.x_mouse >= 120) && (mouse_t.x_mouse <= 1020))
+		{
+			if ((mouse_t.y_mouse >= 183) && (mouse_t.y_mouse <= 717))
+			{
+				if (mouse_t.LB == 1)
+				{
+					//PINTAR NA TELA
+					if (-1 == toolHandler())
+					{
+						return -1;
+					}
+				}
+				else
+				{
+					if (tool == LINE)
+					{
+						drawLINE();
+					}
+					else if (tool == PENCIL)
+					{
+						draw_pencil();
+					}
+
+				}
+			}
+		}
+
+		if ((RTC_COUNTER <= 0) || (tries > 4) )
+		{
+			drawBitmap(bitmaps.lost,0,0,ALIGN_LEFT, getScreenBuffer());
+			screen_to_mouse(getScreenBuffer(), getMouseBuffer());
+			drawMouse(bitmaps.mouse,mouse_t.x_mouse,mouse_t.y_mouse, ALIGN_LEFT, getMouseBuffer());
+			mouse_to_video(getMouseBuffer(), getVideoMem());
+			tries = 0;
+			OPTION = MAIN_MENU;
+			tentativas = 0;
 		}
 	}
 
-	if ((RTC_COUNTER <= 0) || (tries > 4) )
-	{
-		drawBitmap(bitmaps.lost,0,0,ALIGN_LEFT, getScreenBuffer());
-		screen_to_mouse(getScreenBuffer(), getMouseBuffer());
-		drawMouse(bitmaps.mouse,mouse_t.x_mouse,mouse_t.y_mouse, ALIGN_LEFT, getMouseBuffer());
-		mouse_to_video(getMouseBuffer(), getVideoMem());
-	}
+
 	//se ele acertar, ou acabar o timer, chamar is highscore
 	//pedir nome
 
 	return 0;
 }
 
-int menu_handler (bitmap_struct bitmaps)
+int menu_handler (bitmap_struct bitmaps, Bitmap ** numbers)
 {
 	switch (OPTION)
 	{
 	case MAIN_MENU:
 	{
-		position_menu(bitmaps);
+		position_menu(bitmaps, numbers);
 		break;
 	}
 	case HUMAN_VS_MACHINE:
@@ -278,7 +309,7 @@ int menu_handler (bitmap_struct bitmaps)
 	}
 	case HEAD_TO_HEAD:
 	{
-		Head_to_Head(bitmaps);
+		Head_to_Head(bitmaps, numbers);
 		break;
 	}
 	case ONLINE:
@@ -295,6 +326,10 @@ int menu_handler (bitmap_struct bitmaps)
 	{
 		exit_menu(bitmaps);
 		return 0;
+		break;
+	}
+	case GET_NAME:
+	{
 		break;
 	}
 	default:
@@ -387,12 +422,10 @@ int toolHandler()
 	return 1;
 }
 
-int is_highscore(position_t *draw) //tem de ser executada antes de se mudar o ecra (frame)
+int is_highscore(position_t *draw)
 {
 	int place = -1;
 	char discard1, discard2;
-
-	createBitmap();
 
 	if (draw->score >= top_highscores.first.score)
 	{
@@ -788,6 +821,7 @@ int displayTimer10(int contador, Bitmap ** numbers, bitmap_struct bitmaps)
 	unsigned int a = 0;
 	char * human_machine = getHumanMachine();
 	char * screen_buffer = getScreenBuffer();
+	drawBitmap(bitmaps.frame, 0, 0, ALIGN_LEFT, human_machine);
 	human_machine = human_machine + (1024 - 100) * 2;
 	screen_buffer = screen_buffer + (1024 - 100) * 2;
 	for(; a < 100; a++)
@@ -811,143 +845,169 @@ int displayTimer10(int contador, Bitmap ** numbers, bitmap_struct bitmaps)
 
 }
 
-void WriteArray(char * name, int length, Bitmap ** key_scancode)
+void WriteArray(char * name, int length, Bitmap ** key_scancode, bitmap_struct bitmaps)
 {
 	int i = 0;
-	int espaco = 0;
 	char * screen_buffer = getScreenBuffer();
+	espaco = 0;
 	for(; i <= length; i++)
 	{
-		switch (name[length])
+		switch (name[i])
 		{
 		case 'Q':
 		{
-			drawBitmap(key_scancode[KEY_Q], 400 + espaco, 768 / 2, ALIGN_LEFT, screen_buffer);
+			drawMouse(key_scancode[KEY_Q], 258 + espaco, 492, ALIGN_LEFT, screen_buffer);
+			espaco = espaco + 35;
 			break;
 		}
 		case 'W':
 		{
-			drawBitmap(key_scancode[KEY_W], 400 + espaco, 768 / 2, ALIGN_LEFT, screen_buffer);
+			drawMouse(key_scancode[KEY_W], 258 + espaco, 492, ALIGN_LEFT, screen_buffer);
+			espaco = espaco + 35;
 			break;
 		}
 		case 'E':
 		{
-			drawBitmap(key_scancode[KEY_E], 400 + espaco, 768 / 2, ALIGN_LEFT, screen_buffer);
+			drawMouse(key_scancode[KEY_E], 258 + espaco, 492, ALIGN_LEFT, screen_buffer);
+			espaco = espaco + 35;
 			break;
 		}
 		case 'R':
 		{
-			drawBitmap(key_scancode[KEY_R], 400 + espaco, 768 / 2, ALIGN_LEFT, screen_buffer);
+			drawMouse(key_scancode[KEY_R], 258 + espaco, 492, ALIGN_LEFT, screen_buffer);
+			espaco = espaco + 35;
 			break;
 		}
 		case 'T':
 		{
-			drawBitmap(key_scancode[KEY_T], 400 + espaco, 768 / 2, ALIGN_LEFT, screen_buffer);
+			drawMouse(key_scancode[KEY_T], 258 + espaco, 492, ALIGN_LEFT, screen_buffer);
+			espaco = espaco + 35;
 			break;
 		}
 		case 'Y':
 		{
-			drawBitmap(key_scancode[KEY_Y], 400 + espaco, 768 / 2, ALIGN_LEFT, screen_buffer);
+			drawMouse(key_scancode[KEY_Y], 258 + espaco, 492, ALIGN_LEFT, screen_buffer);
+			espaco = espaco + 35;
 			break;
 		}
 		case 'U':
 		{
-			drawBitmap(key_scancode[KEY_U], 400 + espaco, 768 / 2, ALIGN_LEFT, screen_buffer);
+			drawMouse(key_scancode[KEY_U], 258 + espaco, 492, ALIGN_LEFT, screen_buffer);
+			espaco = espaco + 35;
 			break;
 		}
 		case 'I':
 		{
-			drawBitmap(key_scancode[KEY_I], 400 + espaco, 768 / 2, ALIGN_LEFT, screen_buffer);
+			drawMouse(key_scancode[KEY_I], 258 + espaco, 492, ALIGN_LEFT, screen_buffer);
+			espaco = espaco + 35;
 			break;
 		}
 		case 'O':
 		{
-			drawBitmap(key_scancode[KEY_O], 400 + espaco, 768 / 2, ALIGN_LEFT, screen_buffer);
+			drawMouse(key_scancode[KEY_O], 258 + espaco, 492, ALIGN_LEFT, screen_buffer);
+			espaco = espaco + 35;
 			break;
 		}
 		case 'P':
 		{
-			drawBitmap(key_scancode[KEY_P], 400 + espaco, 768 / 2, ALIGN_LEFT, screen_buffer);
+			drawMouse(key_scancode[KEY_P], 258 + espaco, 492, ALIGN_LEFT, screen_buffer);
+			espaco = espaco + 35;
 			break;
 		}
 		case 'A':
 		{
-			drawBitmap(key_scancode[KEY_A], 400 + espaco, 768 / 2, ALIGN_LEFT, screen_buffer);
+			drawMouse(key_scancode[KEY_A], 258 + espaco, 492, ALIGN_LEFT, screen_buffer);
+			espaco = espaco + 35;
 			break;
 		}
 		case 'S':
 		{
-			drawBitmap(key_scancode[KEY_S], 400 + espaco, 768 / 2, ALIGN_LEFT, screen_buffer);
+			drawMouse(key_scancode[KEY_S], 258 + espaco, 492, ALIGN_LEFT, screen_buffer);
+			espaco = espaco + 35;
 			break;
 		}
 		case 'D':
 		{
-			drawBitmap(key_scancode[KEY_D], 400 + espaco, 768 / 2, ALIGN_LEFT, screen_buffer);
+			drawMouse(key_scancode[KEY_D], 258 + espaco, 492, ALIGN_LEFT, screen_buffer);
+			espaco = espaco + 35;
 			break;
 		}
 		case 'F':
 		{
-			drawBitmap(key_scancode[KEY_F], 400 + espaco, 768 / 2, ALIGN_LEFT, screen_buffer);
+			drawMouse(key_scancode[KEY_F], 258 + espaco, 492, ALIGN_LEFT, screen_buffer);
+			espaco = espaco + 35;
 			break;
 		}
 		case 'G':
 		{
-			drawBitmap(key_scancode[KEY_G], 400 + espaco, 768 / 2, ALIGN_LEFT, screen_buffer);
+			drawMouse(key_scancode[KEY_G], 258 + espaco, 492, ALIGN_LEFT, screen_buffer);
+			espaco = espaco + 35;
 			break;
 		}
 		case 'H':
 		{
-			drawBitmap(key_scancode[KEY_H], 400 + espaco, 768 / 2, ALIGN_LEFT, screen_buffer);
+			drawMouse(key_scancode[KEY_H], 258 + espaco, 492, ALIGN_LEFT, screen_buffer);
+			espaco = espaco + 35;
 			break;
 		}
 		case 'J':
 		{
-			drawBitmap(key_scancode[KEY_J], 400 + espaco, 768 / 2, ALIGN_LEFT, screen_buffer);
+			drawMouse(key_scancode[KEY_J], 258 + espaco, 492, ALIGN_LEFT, screen_buffer);
+			espaco = espaco + 35;
 			break;
 		}
 		case 'K':
 		{
-			drawBitmap(key_scancode[KEY_K], 400 + espaco, 768 / 2, ALIGN_LEFT, screen_buffer);
+			drawMouse(key_scancode[KEY_K], 258 + espaco, 492, ALIGN_LEFT, screen_buffer);
+			espaco = espaco + 35;
 			break;
 		}
 		case 'L':
 		{
-			drawBitmap(key_scancode[KEY_L], 400 + espaco, 768 / 2, ALIGN_LEFT, screen_buffer);
+			drawMouse(key_scancode[KEY_L], 258 + espaco, 492, ALIGN_LEFT, screen_buffer);
+			espaco = espaco + 35;
 			break;
 		}
 		case 'Z':
 		{
-			drawBitmap(key_scancode[KEY_Z], 400 + espaco, 768 / 2, ALIGN_LEFT, screen_buffer);
+			drawMouse(key_scancode[KEY_Z], 258 + espaco, 492, ALIGN_LEFT, screen_buffer);
+			espaco = espaco + 35;
 			break;
 		}
 		case 'X':
 		{
-			drawBitmap(key_scancode[KEY_X], 400 + espaco, 768 / 2, ALIGN_LEFT, screen_buffer);
+			drawMouse(key_scancode[KEY_X], 258 + espaco, 492, ALIGN_LEFT, screen_buffer);
+			espaco = espaco + 35;
 			break;
 		}
 		case 'C':
 		{
-			drawBitmap(key_scancode[KEY_C], 400 + espaco, 768 / 2, ALIGN_LEFT, screen_buffer);
+			drawMouse(key_scancode[KEY_C], 258 + espaco, 492, ALIGN_LEFT, screen_buffer);
+			espaco = espaco + 35;
 			break;
 		}
 		case 'V':
 		{
-			drawBitmap(key_scancode[KEY_V], 400 + espaco, 768 / 2, ALIGN_LEFT, screen_buffer);
+			drawMouse(key_scancode[KEY_V], 258 + espaco, 492, ALIGN_LEFT, screen_buffer);
+			espaco = espaco + 35;
 			break;
 		}
 		case 'B':
 		{
-			drawBitmap(key_scancode[KEY_B], 400 + espaco, 768 / 2, ALIGN_LEFT, screen_buffer);
+			drawMouse(key_scancode[KEY_B], 258 + espaco, 492, ALIGN_LEFT, screen_buffer);
+			espaco = espaco + 35;
 			break;
 		}
 		case 'N':
 		{
-			drawBitmap(key_scancode[KEY_N], 400 + espaco, 768 / 2, ALIGN_LEFT, screen_buffer);
+			drawMouse(key_scancode[KEY_N], 258 + espaco, 492, ALIGN_LEFT, screen_buffer);
+			espaco = espaco + 35;
 			break;
 		}
 		case 'M':
 		{
-			drawBitmap(key_scancode[KEY_M], 400 + espaco, 768 / 2, ALIGN_LEFT, screen_buffer);
+			drawMouse(key_scancode[KEY_M], 258 + espaco, 492, ALIGN_LEFT, screen_buffer);
+			espaco = espaco + 35;
 			break;
 		}
 		}
@@ -1043,4 +1103,345 @@ void getrgb(int *red, int *green, int *blue)
 		*green = 211;
 		*blue = 211;
 	}
+}
+
+
+void WriteArrayFrame(char * name, int length, Bitmap ** key_scancode, bitmap_struct bitmaps)
+{
+	int i = 0;
+	char * screen_buffer = getScreenBuffer();
+	espaco = 0;
+	for(; i <= length; i++)
+	{
+		switch (name[i])
+		{
+		case 'Q':
+		{
+			drawMouse(key_scancode[KEY_Q], 117 + espaco, 61, ALIGN_LEFT, screen_buffer);
+			espaco = espaco + 35;
+			break;
+		}
+		case 'W':
+		{
+			drawMouse(key_scancode[KEY_W], 117 + espaco, 61, ALIGN_LEFT, screen_buffer);
+			espaco = espaco + 35;
+			break;
+		}
+		case 'E':
+		{
+			drawMouse(key_scancode[KEY_E], 117 + espaco, 61, ALIGN_LEFT, screen_buffer);
+			espaco = espaco + 35;
+			break;
+		}
+		case 'R':
+		{
+			drawMouse(key_scancode[KEY_R], 117 + espaco, 61, ALIGN_LEFT, screen_buffer);
+			espaco = espaco + 35;
+			break;
+		}
+		case 'T':
+		{
+			drawMouse(key_scancode[KEY_T], 117 + espaco, 61, ALIGN_LEFT, screen_buffer);
+			espaco = espaco + 35;
+			break;
+		}
+		case 'Y':
+		{
+			drawMouse(key_scancode[KEY_Y], 117 + espaco, 61, ALIGN_LEFT, screen_buffer);
+			espaco = espaco + 35;
+			break;
+		}
+		case 'U':
+		{
+			drawMouse(key_scancode[KEY_U], 117 + espaco, 61, ALIGN_LEFT, screen_buffer);
+			espaco = espaco + 35;
+			break;
+		}
+		case 'I':
+		{
+			drawMouse(key_scancode[KEY_I], 117 + espaco, 61, ALIGN_LEFT, screen_buffer);
+			espaco = espaco + 35;
+			break;
+		}
+		case 'O':
+		{
+			drawMouse(key_scancode[KEY_O], 117 + espaco, 61, ALIGN_LEFT, screen_buffer);
+			espaco = espaco + 35;
+			break;
+		}
+		case 'P':
+		{
+			drawMouse(key_scancode[KEY_P], 117 + espaco, 61, ALIGN_LEFT, screen_buffer);
+			espaco = espaco + 35;
+			break;
+		}
+		case 'A':
+		{
+			drawMouse(key_scancode[KEY_A], 117 + espaco, 61, ALIGN_LEFT, screen_buffer);
+			espaco = espaco + 35;
+			break;
+		}
+		case 'S':
+		{
+			drawMouse(key_scancode[KEY_S], 117 + espaco, 61, ALIGN_LEFT, screen_buffer);
+			espaco = espaco + 35;
+			break;
+		}
+		case 'D':
+		{
+			drawMouse(key_scancode[KEY_D], 117 + espaco, 61, ALIGN_LEFT, screen_buffer);
+			espaco = espaco + 35;
+			break;
+		}
+		case 'F':
+		{
+			drawMouse(key_scancode[KEY_F], 117 + espaco, 61, ALIGN_LEFT, screen_buffer);
+			espaco = espaco + 35;
+			break;
+		}
+		case 'G':
+		{
+			drawMouse(key_scancode[KEY_G], 117 + espaco, 61, ALIGN_LEFT, screen_buffer);
+			espaco = espaco + 35;
+			break;
+		}
+		case 'H':
+		{
+			drawMouse(key_scancode[KEY_H], 117 + espaco, 61, ALIGN_LEFT, screen_buffer);
+			espaco = espaco + 35;
+			break;
+		}
+		case 'J':
+		{
+			drawMouse(key_scancode[KEY_J], 117 + espaco, 61, ALIGN_LEFT, screen_buffer);
+			espaco = espaco + 35;
+			break;
+		}
+		case 'K':
+		{
+			drawMouse(key_scancode[KEY_K], 117 + espaco, 61, ALIGN_LEFT, screen_buffer);
+			espaco = espaco + 35;
+			break;
+		}
+		case 'L':
+		{
+			drawMouse(key_scancode[KEY_L], 117 + espaco, 61, ALIGN_LEFT, screen_buffer);
+			espaco = espaco + 35;
+			break;
+		}
+		case 'Z':
+		{
+			drawMouse(key_scancode[KEY_Z], 117 + espaco, 61, ALIGN_LEFT, screen_buffer);
+			espaco = espaco + 35;
+			break;
+		}
+		case 'X':
+		{
+			drawMouse(key_scancode[KEY_X], 117 + espaco, 61, ALIGN_LEFT, screen_buffer);
+			espaco = espaco + 35;
+			break;
+		}
+		case 'C':
+		{
+			drawMouse(key_scancode[KEY_C], 117 + espaco, 61, ALIGN_LEFT, screen_buffer);
+			espaco = espaco + 35;
+			break;
+		}
+		case 'V':
+		{
+			drawMouse(key_scancode[KEY_V], 117 + espaco, 61, ALIGN_LEFT, screen_buffer);
+			espaco = espaco + 35;
+			break;
+		}
+		case 'B':
+		{
+			drawMouse(key_scancode[KEY_B], 117 + espaco, 61, ALIGN_LEFT, screen_buffer);
+			espaco = espaco + 35;
+			break;
+		}
+		case 'N':
+		{
+			drawMouse(key_scancode[KEY_N], 117 + espaco, 61, ALIGN_LEFT, screen_buffer);
+			espaco = espaco + 35;
+			break;
+		}
+		case 'M':
+		{
+			drawMouse(key_scancode[KEY_M], 117 + espaco, 61, ALIGN_LEFT, screen_buffer);
+			espaco = espaco + 35;
+			break;
+		}
+		}
+	}
+
+}
+
+void WriteArrayFrame2(char * name, int length, Bitmap ** key_scancode, bitmap_struct bitmaps)
+{
+	int i = 0;
+	char * screen_buffer = getScreenBuffer();
+	espaco = 0;
+	for(; i <= length; i++)
+	{
+		switch (name[i])
+		{
+		case 'Q':
+		{
+			drawMouse(key_scancode[KEY_Q], 117 + espaco, 134, ALIGN_LEFT, screen_buffer);
+			espaco = espaco + 35;
+			break;
+		}
+		case 'W':
+		{
+			drawMouse(key_scancode[KEY_W], 117 + espaco, 134, ALIGN_LEFT, screen_buffer);
+			espaco = espaco + 35;
+			break;
+		}
+		case 'E':
+		{
+			drawMouse(key_scancode[KEY_E], 117 + espaco, 134, ALIGN_LEFT, screen_buffer);
+			espaco = espaco + 35;
+			break;
+		}
+		case 'R':
+		{
+			drawMouse(key_scancode[KEY_R], 117 + espaco, 134, ALIGN_LEFT, screen_buffer);
+			espaco = espaco + 35;
+			break;
+		}
+		case 'T':
+		{
+			drawMouse(key_scancode[KEY_T], 117 + espaco, 134, ALIGN_LEFT, screen_buffer);
+			espaco = espaco + 35;
+			break;
+		}
+		case 'Y':
+		{
+			drawMouse(key_scancode[KEY_Y], 117 + espaco, 134, ALIGN_LEFT, screen_buffer);
+			espaco = espaco + 35;
+			break;
+		}
+		case 'U':
+		{
+			drawMouse(key_scancode[KEY_U], 117 + espaco, 134, ALIGN_LEFT, screen_buffer);
+			espaco = espaco + 35;
+			break;
+		}
+		case 'I':
+		{
+			drawMouse(key_scancode[KEY_I], 117 + espaco, 134, ALIGN_LEFT, screen_buffer);
+			espaco = espaco + 35;
+			break;
+		}
+		case 'O':
+		{
+			drawMouse(key_scancode[KEY_O], 117 + espaco, 134, ALIGN_LEFT, screen_buffer);
+			espaco = espaco + 35;
+			break;
+		}
+		case 'P':
+		{
+			drawMouse(key_scancode[KEY_P], 117 + espaco, 134, ALIGN_LEFT, screen_buffer);
+			espaco = espaco + 35;
+			break;
+		}
+		case 'A':
+		{
+			drawMouse(key_scancode[KEY_A], 117 + espaco, 134, ALIGN_LEFT, screen_buffer);
+			espaco = espaco + 35;
+			break;
+		}
+		case 'S':
+		{
+			drawMouse(key_scancode[KEY_S], 117 + espaco, 134, ALIGN_LEFT, screen_buffer);
+			espaco = espaco + 35;
+			break;
+		}
+		case 'D':
+		{
+			drawMouse(key_scancode[KEY_D], 117 + espaco, 134, ALIGN_LEFT, screen_buffer);
+			espaco = espaco + 35;
+			break;
+		}
+		case 'F':
+		{
+			drawMouse(key_scancode[KEY_F], 117 + espaco, 134, ALIGN_LEFT, screen_buffer);
+			espaco = espaco + 35;
+			break;
+		}
+		case 'G':
+		{
+			drawMouse(key_scancode[KEY_G], 117 + espaco, 134, ALIGN_LEFT, screen_buffer);
+			espaco = espaco + 35;
+			break;
+		}
+		case 'H':
+		{
+			drawMouse(key_scancode[KEY_H], 117 + espaco, 134, ALIGN_LEFT, screen_buffer);
+			espaco = espaco + 35;
+			break;
+		}
+		case 'J':
+		{
+			drawMouse(key_scancode[KEY_J], 117 + espaco, 134, ALIGN_LEFT, screen_buffer);
+			espaco = espaco + 35;
+			break;
+		}
+		case 'K':
+		{
+			drawMouse(key_scancode[KEY_K], 117 + espaco, 134, ALIGN_LEFT, screen_buffer);
+			espaco = espaco + 35;
+			break;
+		}
+		case 'L':
+		{
+			drawMouse(key_scancode[KEY_L], 117 + espaco, 134, ALIGN_LEFT, screen_buffer);
+			espaco = espaco + 35;
+			break;
+		}
+		case 'Z':
+		{
+			drawMouse(key_scancode[KEY_Z], 117 + espaco, 134, ALIGN_LEFT, screen_buffer);
+			espaco = espaco + 35;
+			break;
+		}
+		case 'X':
+		{
+			drawMouse(key_scancode[KEY_X], 117 + espaco, 134, ALIGN_LEFT, screen_buffer);
+			espaco = espaco + 35;
+			break;
+		}
+		case 'C':
+		{
+			drawMouse(key_scancode[KEY_C], 117 + espaco, 134, ALIGN_LEFT, screen_buffer);
+			espaco = espaco + 35;
+			break;
+		}
+		case 'V':
+		{
+			drawMouse(key_scancode[KEY_V], 117 + espaco, 134, ALIGN_LEFT, screen_buffer);
+			espaco = espaco + 35;
+			break;
+		}
+		case 'B':
+		{
+			drawMouse(key_scancode[KEY_B], 117 + espaco, 134, ALIGN_LEFT, screen_buffer);
+			espaco = espaco + 35;
+			break;
+		}
+		case 'N':
+		{
+			drawMouse(key_scancode[KEY_N], 117 + espaco, 134, ALIGN_LEFT, screen_buffer);
+			espaco = espaco + 35;
+			break;
+		}
+		case 'M':
+		{
+			drawMouse(key_scancode[KEY_M], 117 + espaco, 134, ALIGN_LEFT, screen_buffer);
+			espaco = espaco + 35;
+			break;
+		}
+		}
+	}
+
 }

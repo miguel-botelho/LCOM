@@ -21,8 +21,11 @@ scores_t top_highscores;
 int screen_abs = 0; //começa a 0 ||| MAX = 9 (incluindo)
 
 int screen_current = 0; //começa a 0 ||| MAX = 9 (incluindo)
-
-int key = 0;
+int espaco = 0;
+int length = 0;
+int length_word = 0;
+int contador_high = 0;
+int tentativas = 0;
 
 /*
  * NAO ESTA FEITO!! O SCORE NAO TEM O CASO QUE ACERTA (TEM QUE SER FEITO NO FINAL)

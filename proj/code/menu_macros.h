@@ -8,8 +8,6 @@
 #define HIGHSCORES							4
 #define EXIT_OPT							5 //otherwise there is a conflict
 #define GET_NAME							6
-#define DRAW								7
-#define GUESS								8
 
 #define BUCKET								50
 #define BRUSH								51

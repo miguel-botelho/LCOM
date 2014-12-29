@@ -17,8 +17,7 @@ void createDBitmap()
 	{
 		for (j = 187; j < 717; j++)
 		{
-			reverse_rgb(&red, &green, &blue, *((uint16_t *)screen_buffer + i + j * 1024));
-			//getrgbBitmap(&red, &green, &blue, *((uint16_t *)screen_buffer + i + j * 1024));
+			getrgbBitmap(&red, &green, &blue, *((uint16_t *)screen_buffer + i + j * 1024));
 			rgb_pixel_t pixel = {blue, green, red, 0};
 			bmp_set_pixel(bmp,(uint32_t)(i - 126),(uint32_t)(j - 187),pixel);
 		}
@@ -85,31 +84,71 @@ void createBitmapsUndoRedo()
 void createBitmap()
 
 {
+
 	bmpfile_t *bmp;
 
 	char * screen_buffer = getScreenBuffer();
+
 	size_t ax, ay;
+
+	for (ax = 500; ax < 1024; ++ax)
+
+	{
+
+		for (ay = 500; ay < 768; ++ay)
+
+		{
+
+			printf("pixel: 0x%X\n", *((uint16_t *)screen_buffer + ax + ay * 768));
+
+		}
+
+	}
+
 	screen_buffer += ((1024 * 768) - 1) * 2;
 
 	int red, green, blue;
+
 	////canvas: x = 120 a 1020; y = 187 a 717
+
 	int i, j;
+
 	bmp = bmp_create(1025 - 126, 717 - 186,16);
 
 	for(i = 126; i < 1025; i++)
+
 	{
+
 		for (j = 187; j < 717; j++)
+
 		{
-			reverse_rgb(&red, &green, &blue, *((uint16_t *)screen_buffer + i + j * 1024));
-			//getrgbBitmap(&red, &green, &blue, *((uint16_t *)screen_buffer + i + j * 1024));
+
+			getrgbBitmap(&red, &green, &blue, *((uint16_t *)screen_buffer + i + j * 1024));
+
 			rgb_pixel_t pixel = {blue, green, red, 0};
+
+			//printf("*(uint16_t *)screen_buffer: 0x%X R: %d G: %d B: %d\n", *(uint16_t *)screen_buffer, red, green, blue);
+
 			bmp_set_pixel(bmp,(uint32_t)(i - 126),(uint32_t)(j - 187),pixel);
+
 		}
+
 	}
 
-	char a[] = "home/lcom/proj/code/files/current_draw.bmp";
+	bmp_save(bmp,"home/lcom/proj/code/images/teste.bmp");
 
-	bmp_save(bmp,a);
+	//printf("adssad\n");
+
+	drawBitmap(loadBitmap("home/lcom/proj/code/images/teste.bmp"), 0, 0 , ALIGN_LEFT, getScreenBuffer());
+
+	screen_to_mouse(getScreenBuffer(), getMouseBuffer());
+
+	mouse_to_video(getMouseBuffer(), getVideoMem());
+
+	//printf("1111\n");
+
+	//*((char *)NULL) = 0; // e suposto encravar por causa desta linha (para ver o bmp)
+
 	bmp_destroy(bmp);
 
 }
