@@ -20,6 +20,8 @@ extern int radius;
 extern char tool;
 extern int colour;
 extern scores_t top_highscores;
+extern int espaco;
+extern int tentativas;
 
 void getrgb(int *red, int *green, int *blue);
 
@@ -67,7 +69,7 @@ void erase_letter();
 //given the position (*m) and the screen (*option), this function calls the respective menu
 //this function has a switch statement and after finding the screen (meaning, the option)
 //it will see where is the mouse over and call the respective function
-int menu_handler (bitmap_struct bitmaps);
+int menu_handler (bitmap_struct bitmaps, Bitmap ** numbers);
 
 ////////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////
@@ -105,7 +107,7 @@ void bitmaps_load(bitmap_struct *t);
  *
  * @return 0 if the user pressed any option in the menu, 1 otherwise
  */
-char position_menu(bitmap_struct bitmaps);
+char position_menu(bitmap_struct bitmaps, Bitmap ** numbers);
 
 /**
  * @brief exits the main menu
@@ -147,13 +149,13 @@ int Online_menu(bitmap_struct bitmaps);
  * @brief Player vs Player option (on the same pc)
  *
  */
-int Head_to_Head(bitmap_struct bitmaps);
+int HumanMachine(bitmap_struct bitmaps);
 
 /**
  * @brief Player vs Computer
  *
  */
-int HumanMachine(bitmap_struct bitmaps);
+int Head_to_Head(bitmap_struct bitmaps, Bitmap ** numbers);
 
 void selectDraw();
 
@@ -164,5 +166,9 @@ int toolHandler();
 int displayTimer(int contador, Bitmap ** numbers, bitmap_struct bitmaps);
 int displayTimer10(int contador, Bitmap ** numbers, bitmap_struct bitmaps);
 
-void WriteArray(char * name, int length, Bitmap ** key_scancode);
+void WriteArray(char * name, int length, Bitmap ** key_scancode, bitmap_struct bitmaps);
+
+void WriteArrayFrame(char * name, int length, Bitmap ** key_scancode, bitmap_struct bitmaps);
+
+void WriteArrayFrame2(char * name, int length, Bitmap ** key_scancode, bitmap_struct bitmaps);
 #endif

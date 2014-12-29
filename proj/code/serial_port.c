@@ -1,52 +1,6 @@
 #include"serial_port.h"
 
 
-int com1_receive()
-{
-	long int line_status, receive;
-	sys_inb(BASE_ADDRESS_COM1 + LINE_STATUS, &line_status);
-	if (RECEIVER_READY & line_status) // receiver ready
-	{
-		sys_inb(BASE_ADDRESS_COM1, &receive);
-		mouse_t.x_mouse	= receive;
-
-		printf("mouse_t.x_mouse	= %d\n", mouse_t.x_mouse);
-
-		while ((RECEIVER_READY & line_status) == 0)
-		{
-
-		}
-		sys_inb(BASE_ADDRESS_COM1, &receive);
-		mouse_t.y_mouse	= receive;
-
-		printf("mouse_t.y_mouse	= %d\n", mouse_t.y_mouse);
-
-		while ((RECEIVER_READY & line_status) == 0)
-		{
-
-		}
-
-		sys_inb(BASE_ADDRESS_COM1, &receive);
-		mouse_t.LB	= receive;
-
-		while ((RECEIVER_READY & line_status) == 0)
-		{
-
-		}
-
-		sys_inb(BASE_ADDRESS_COM1, &receive);
-		key	= receive;
-
-		if ((OVERRUN_ERROR | PARITY_ERROR | FRAMING_ERROR) & line_status)
-		{
-			printf("Error!!!!!!!!\n");
-		}
-		return 0;
-	}
-
-	return 1;
-}
-
 void sp_config()
 {
 	// COM1
@@ -86,7 +40,6 @@ void sp_config()
 
 }
 
-//para ja nao se usa esta funcao (fala comigo primeiro)
 int com1_receive_interrupt(int *size_array, char *a)
 {
 	long unsigned int line_status;

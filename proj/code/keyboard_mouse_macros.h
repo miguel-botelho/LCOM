@@ -59,7 +59,7 @@ typedef enum {
     KEY_0 = 0x000B,
     KEY_APOSTROPHE = 0x000C,
     KEY_ANGLE_QUOTES = 0x000D,
-    KEY_BKSP = 0x000E,
+    KEY_BACKSPACE = 0x000E,
     KEY_TAB = 0x000F,
     KEY_Q = 0x0010,
     KEY_W = 0x0011,
