@@ -128,6 +128,10 @@ int vg_exit() {
 	reg86.u.b.ah = 0x00;    /* Set Video Mode function */
 	reg86.u.b.al = 0x03;    /* 80x25 text mode*/
 
+	free(screen_buffer);
+	free(mouse_buffer);
+	free(human_machine_screen);
+
 	if( sys_int86(&reg86) != OK ) {
 		printf("\tvg_exit(): sys_int86() failed \n");
 		return 1;

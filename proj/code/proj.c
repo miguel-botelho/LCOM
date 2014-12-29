@@ -31,6 +31,7 @@ extern int length;
 extern int length_word;
 extern int contador_high;
 extern int tentativas;
+extern int ai_or_pvp;
 
 int main(int argc, char **argv) {
 
@@ -73,9 +74,14 @@ int main(int argc, char **argv) {
 	// graphics mode
 	bitmap_struct bitmaps;
 	bitmaps_load(&bitmaps); // this operation may require a lot of time
+
+
 	Bitmap *key_scancode[86];
+
 	fill_key_scancode(key_scancode);
+
 	Bitmap *numbers[10];
+
 	fill_number(numbers);
 
 	// scores E GLOBAL
@@ -147,7 +153,7 @@ int main(int argc, char **argv) {
 					mouse_to_video(mouse_buffer, video_memory);
 
 
-					if (OPTION == HUMAN_VS_MACHINE)
+					if ((OPTION == HUMAN_VS_MACHINE) || (OPTION == HEAD_TO_HEAD))
 					{
 						temp_counter++;
 						if (temp_counter == 60)
@@ -180,7 +186,9 @@ int main(int argc, char **argv) {
 							name[length] = '\0';
 							drawBitmap(bitmaps.frame, 0,0, ALIGN_LEFT, getScreenBuffer());
 							WriteArrayFrame(name, length, key_scancode, bitmaps);
-							OPTION = HEAD_TO_HEAD;
+							if (ai_or_pvp == 1)
+								OPTION = HEAD_TO_HEAD;
+							else OPTION = HUMAN_VS_MACHINE;
 						}
 						else {
 
@@ -329,10 +337,7 @@ int main(int argc, char **argv) {
 						//createBitmap();
 						OPTION = MAIN_MENU;
 						drawBitmap(bitmaps.background, 0, 0, ALIGN_LEFT, screen_buffer);
-						screen_to_mouse(screen_buffer, mouse_buffer);
-						drawMouse(bitmaps.mouse, mouse_t.x_mouse, mouse_t.y_mouse, ALIGN_LEFT, mouse_buffer);
 
-						mouse_to_video(mouse_buffer, video_memory);
 						espaco = 0;
 						tentativas = 0;
 						tries = 0;
@@ -380,7 +385,7 @@ int main(int argc, char **argv) {
 							a[2] = byte3;
 							fill_struct(a);
 
-							if (0 == menu_handler(bitmaps, numbers)) {
+							if (0 == menu_handler(bitmaps, numbers, key_scancode)) {
 								return 0;
 							}
 

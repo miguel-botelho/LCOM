@@ -89,22 +89,19 @@ void createBitmap()
 
 	char * screen_buffer = getScreenBuffer();
 
-	bmp = bmp_create(1025 - 126, 717 - 186,16);
-
-
 	int red, green, blue;
 
-	////canvas: x = 120 a 1020; y = 187 a 717
+	////canvas: x = 120 a 1020; y = 186 a 718
 
 	int i, j;
 
-	bmp = bmp_create(1025 - 126, 717 - 186,16);
+	bmp = bmp_create(1020 - 120, 718 - 186,16);
 
-	for(i = 126; i < 1025; i++)
+	for(i = 120; i < 1020; i++)
 
 	{
 
-		for (j = 187; j < 717; j++)
+		for (j = 186; j < 718; j++)
 
 		{
 
@@ -114,7 +111,7 @@ void createBitmap()
 
 			//printf("*(uint16_t *)screen_buffer: 0x%X R: %d G: %d B: %d\n", *(uint16_t *)screen_buffer, red, green, blue);
 
-			bmp_set_pixel(bmp,(uint32_t)(i - 126),(uint32_t)(j - 187),pixel);
+			bmp_set_pixel(bmp,(uint32_t)(i - 120),(uint32_t)(j - 186),pixel);
 
 		}
 

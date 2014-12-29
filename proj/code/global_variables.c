@@ -26,6 +26,7 @@ int length = 0;
 int length_word = 0;
 int contador_high = 0;
 int tentativas = 0;
+int ai_or_pvp = 0; // 0 = ai; 1 = pvp
 
 /*
  * NAO ESTA FEITO!! O SCORE NAO TEM O CASO QUE ACERTA (TEM QUE SER FEITO NO FINAL)

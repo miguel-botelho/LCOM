@@ -22,6 +22,7 @@ extern int colour;
 extern scores_t top_highscores;
 extern int espaco;
 extern int tentativas;
+extern int ai_or_pvp;
 
 void getrgb(int *red, int *green, int *blue);
 
@@ -69,7 +70,7 @@ void erase_letter();
 //given the position (*m) and the screen (*option), this function calls the respective menu
 //this function has a switch statement and after finding the screen (meaning, the option)
 //it will see where is the mouse over and call the respective function
-int menu_handler (bitmap_struct bitmaps, Bitmap ** numbers);
+int menu_handler (bitmap_struct bitmaps, Bitmap ** numbers, Bitmap ** key_scancode);
 
 ////////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////
@@ -107,7 +108,7 @@ void bitmaps_load(bitmap_struct *t);
  *
  * @return 0 if the user pressed any option in the menu, 1 otherwise
  */
-char position_menu(bitmap_struct bitmaps, Bitmap ** numbers);
+char position_menu(bitmap_struct bitmaps, Bitmap ** numbers, Bitmap ** key_scancode);
 
 /**
  * @brief exits the main menu
@@ -116,7 +117,7 @@ char position_menu(bitmap_struct bitmaps, Bitmap ** numbers);
  *
  * @return 0 if menu successfully exited, 1 if otherwise
  */
-int exit_menu(bitmap_struct bitmaps);
+int exit_menu(bitmap_struct bitmaps, Bitmap ** numbers, Bitmap ** key_scancode);
 
 /**
  * @brief change the color of a certain part of the menu

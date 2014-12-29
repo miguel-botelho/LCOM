@@ -11,11 +11,25 @@ void bitmaps_load(bitmap_struct *t)
 	t->win = loadBitmap("home/lcom/proj/code/images/Win.bmp");
 }
 
-int exit_menu(bitmap_struct bitmaps)
+int exit_menu(bitmap_struct bitmaps, Bitmap ** numbers, Bitmap ** key_scancode)
 {
 	deleteBitmap(bitmaps.background);
 	deleteBitmap(bitmaps.mouse);
 	deleteBitmap(bitmaps.frame);
+	deleteBitmap(bitmaps.highscores);
+	deleteBitmap(bitmaps.pre_head_to_head);
+	deleteBitmap(bitmaps.lost);
+	deleteBitmap(bitmaps.win);
+	int i = 0;
+	for(; i < 10; i++)
+	{
+		deleteBitmap(numbers[i]);
+	}
+	i = 16;
+	for(; i < 50; i++)
+	{
+		deleteBitmap(key_scancode[i]);
+	}
 	vg_exit();
 
 	//estas duas opearacoes sao feitas para assegurar o normal funcionamento do rato quando acabar a funcao
@@ -31,7 +45,7 @@ int exit_menu(bitmap_struct bitmaps)
 	exit(0);
 }
 
-char position_menu(bitmap_struct bitmaps, Bitmap ** numbers)
+char position_menu(bitmap_struct bitmaps, Bitmap ** numbers, Bitmap ** key_scancode)
 {
 	char bool = 1;
 
@@ -43,7 +57,7 @@ char position_menu(bitmap_struct bitmaps, Bitmap ** numbers)
 			if (mouse_t.LB == 1)
 			{
 				OPTION = EXIT_OPT;
-				menu_handler(bitmaps, numbers);
+				menu_handler(bitmaps, numbers, key_scancode);
 				return 0;
 			}
 			else
@@ -101,6 +115,7 @@ char position_menu(bitmap_struct bitmaps, Bitmap ** numbers)
 			{
 				OPTION = GET_NAME;
 				drawBitmap(bitmaps.pre_head_to_head, 0, 0, ALIGN_LEFT, getScreenBuffer());
+				ai_or_pvp = 1;
 			}
 			else
 			{
@@ -117,6 +132,7 @@ char position_menu(bitmap_struct bitmaps, Bitmap ** numbers)
 			if (mouse_t.LB == 1)
 			{
 				OPTION = GET_NAME;
+				ai_or_pvp = 0;
 				drawBitmap(bitmaps.pre_head_to_head, 0, 0, ALIGN_LEFT, getScreenBuffer());
 			}
 			else
@@ -218,7 +234,6 @@ int Head_to_Head(bitmap_struct bitmaps, Bitmap ** numbers)
 		drawMouse(numbers[tries], 162,8, ALIGN_LEFT, getScreenBuffer());
 		if (tentativas != tries)
 		{
-			printf("tentativas: %d\n", tentativas);
 			int a = 0;
 			int l = 0;
 
@@ -293,13 +308,13 @@ int Head_to_Head(bitmap_struct bitmaps, Bitmap ** numbers)
 	return 0;
 }
 
-int menu_handler (bitmap_struct bitmaps, Bitmap ** numbers)
+int menu_handler (bitmap_struct bitmaps, Bitmap ** numbers, Bitmap ** key_scancode)
 {
 	switch (OPTION)
 	{
 	case MAIN_MENU:
 	{
-		position_menu(bitmaps, numbers);
+		position_menu(bitmaps, numbers, key_scancode);
 		break;
 	}
 	case HUMAN_VS_MACHINE:
@@ -324,7 +339,7 @@ int menu_handler (bitmap_struct bitmaps, Bitmap ** numbers)
 	}
 	case EXIT_OPT:
 	{
-		exit_menu(bitmaps);
+		exit_menu(bitmaps, numbers, key_scancode);
 		return 0;
 		break;
 	}
