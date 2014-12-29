@@ -298,6 +298,7 @@ int main(int argc, char **argv) {
 						{
 							int score_conta;
 							score_conta = score(contador_high);
+							createBitmap();
 							drawBitmap(bitmaps.win, 0,0, ALIGN_LEFT, getScreenBuffer());
 							OPTION = MAIN_MENU;
 							tries = 0;

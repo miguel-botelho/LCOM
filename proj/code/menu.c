@@ -68,7 +68,7 @@ char position_menu(bitmap_struct bitmaps, Bitmap ** numbers)
 			}
 			else
 			{
-				change_color(305, 718, 555, 644, rgb(99,93,8), RED, getScreenBuffer());
+				change_color(305, 718, 555, 644, BLACK, RED, getScreenBuffer());
 			}
 		}
 	}
@@ -87,7 +87,7 @@ char position_menu(bitmap_struct bitmaps, Bitmap ** numbers)
 			}
 			else
 			{
-				change_color(341, 633, 484, 550, rgb(33,109,16), RED, getScreenBuffer());
+				change_color(341, 633, 484, 550, BLACK, RED, getScreenBuffer());
 			}
 		}
 	}
@@ -104,7 +104,7 @@ char position_menu(bitmap_struct bitmaps, Bitmap ** numbers)
 			}
 			else
 			{
-				change_color(248, 787, 412, 466, rgb(16,69,58), RED, getScreenBuffer());
+				change_color(248, 787, 412, 466, BLACK, RED, getScreenBuffer());
 			}
 		}
 	}
@@ -121,7 +121,7 @@ char position_menu(bitmap_struct bitmaps, Bitmap ** numbers)
 			}
 			else
 			{
-				change_color(129, 871, 328, 396, rgb(99,16,148), RED, getScreenBuffer());
+				change_color(149, 871, 328, 396, BLACK, RED, getScreenBuffer());
 			}
 		}
 	}

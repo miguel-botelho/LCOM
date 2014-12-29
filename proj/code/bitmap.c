@@ -89,23 +89,8 @@ void createBitmap()
 
 	char * screen_buffer = getScreenBuffer();
 
-	size_t ax, ay;
+	bmp = bmp_create(1025 - 126, 717 - 186,16);
 
-	for (ax = 500; ax < 1024; ++ax)
-
-	{
-
-		for (ay = 500; ay < 768; ++ay)
-
-		{
-
-			printf("pixel: 0x%X\n", *((uint16_t *)screen_buffer + ax + ay * 768));
-
-		}
-
-	}
-
-	screen_buffer += ((1024 * 768) - 1) * 2;
 
 	int red, green, blue;
 
@@ -139,7 +124,7 @@ void createBitmap()
 
 	//printf("adssad\n");
 
-	drawBitmap(loadBitmap("home/lcom/proj/code/images/teste.bmp"), 0, 0 , ALIGN_LEFT, getScreenBuffer());
+	/*drawBitmap(loadBitmap("home/lcom/proj/code/images/teste.bmp"), 0, 0 , ALIGN_LEFT, getScreenBuffer());
 
 	screen_to_mouse(getScreenBuffer(), getMouseBuffer());
 
@@ -147,7 +132,9 @@ void createBitmap()
 
 	//printf("1111\n");
 
-	//*((char *)NULL) = 0; // e suposto encravar por causa desta linha (para ver o bmp)
+	((char *)NULL) = 0; // e suposto encravar por causa desta linha (para ver o bmp)
+
+	 */
 
 	bmp_destroy(bmp);
 

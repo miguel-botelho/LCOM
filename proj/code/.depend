@@ -250,8 +250,6 @@ device_interrupts.o:	device_interrupts.h
 device_interrupts.o:	lib.h
 device_interrupts.o:	rtc.h
 device_interrupts.o:	rtc_macros.h
-device_interrupts.o:	serial_port.h
-device_interrupts.o:	serial_port_macros.h
 device_interrupts.o:	subscribe_macros.h
 
 frame.o:	/usr/include/errno.h
@@ -458,8 +456,6 @@ menu.o:	menu_macros.h
 menu.o:	mouse_struct.h
 menu.o:	rtc.h
 menu.o:	rtc_macros.h
-menu.o:	serial_port.h
-menu.o:	serial_port_macros.h
 menu.o:	struct_bmp.h
 menu.o:	struct_scores.h
 menu.o:	subscribe_macros.h
@@ -599,7 +595,6 @@ proj.o:	proj.c
 proj.o:	read_write.h
 proj.o:	rtc.h
 proj.o:	rtc_macros.h
-proj.o:	serial_port.h
 proj.o:	serial_port_macros.h
 proj.o:	struct_bmp.h
 proj.o:	struct_scores.h
