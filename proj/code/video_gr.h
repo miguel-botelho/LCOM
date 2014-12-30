@@ -45,8 +45,25 @@ int vg_exit(void);
  */
 int test_square(unsigned short x, unsigned short y, unsigned short size, unsigned long color);
 
+/**
+ * @brief returns the mouse buffer
+ *
+ * @return mouse_buffer;
+ */
 char * getMouseBuffer();
+
+/**
+ * @brief returns the screen buffer
+ *
+ * @return screen_buffer;
+ */
 char * getScreenBuffer();
+
+/**
+ * @brief returns an additional buffer, for copying purposes
+ *
+ * @return human_machine_screen;
+ */
 char * getHumanMachine();
 
 /**
