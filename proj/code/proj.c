@@ -25,6 +25,7 @@
 extern int RTC_COUNTER;
 extern char name[11];
 extern char word[11];
+extern char guess_ai[11];
 extern scores_t top_highscores;
 extern int espaco;
 extern int length;
@@ -173,184 +174,25 @@ int main(int argc, char **argv) {
 					kbd_scan_c(&key);
 
 					if (OPTION == GET_NAME) {
-
-						if (length == 10)
-						{
-							if (key == KEY_ENTER || key == KEY_NUM_ENTER)
-							{
-								length++;
-								name[length] = '\0';
-								OPTION = MAIN_MENU;
-							}
-						}
-						else if ((key == KEY_ENTER || key == KEY_NUM_ENTER) && (length > 0))
-						{
-							length++;
-							name[length] = '\0';
-							drawBitmap(bitmaps.frame, 0,0, ALIGN_LEFT, getScreenBuffer());
-							WriteArrayFrame(name, length, key_scancode, bitmaps);
-							if (ai_or_pvp == 1)
-								OPTION = HEAD_TO_HEAD;
-							else
-							{
-								OPTION = HUMAN_VS_MACHINE;
-								screen_to_mouse(screen_buffer, mouse_buffer);
-								drawMouse(bitmaps.mouse, mouse_t.x_mouse, mouse_t.y_mouse, ALIGN_LEFT, mouse_buffer);
-
-								mouse_to_video(mouse_buffer, video_memory);
-								drawBitmap(randImage(), 120,186, ALIGN_LEFT, getScreenBuffer());
-								drawBitmapDelay(randImage(), 120,186, ALIGN_LEFT, getVideoMem());
-							}
-						}
-						else {
-
-							if (get_char(key) >= 'A' && get_char(key) <= 'Z')
-							{
-								name[length] = get_char(key);
-								WriteArray(name, length, key_scancode, bitmaps);
-								length++;
-							}
-							if (key == KEY_BACKSPACE)
-							{
-								unsigned int l = 0;
-								unsigned int a = 0;
-								char * human_machine = getHumanMachine();
-								char * screen_buffer = getScreenBuffer();
-								drawBitmap(bitmaps.pre_head_to_head, 0, 0, ALIGN_LEFT, human_machine);
-								human_machine = human_machine + 251 * 2 + 1024 * 481 * 2;
-								screen_buffer = screen_buffer + 251 * 2 + 1024 * 481 * 2;
-								for(; a < (581 - 481); a++)
-								{
-									for (; l < (719 - 251);l++)
-									{
-										*(uint16_t *)screen_buffer = *(uint16_t *)human_machine;
-										screen_buffer+=2;
-										human_machine+=2;
-									}
-									l = 0;
-									screen_buffer += 1024 * 2 - (719 - 251) * 2;
-									human_machine += 1024 * 2 - (719 - 251) * 2;
-								}
-								int i = 0;
-								for (; i < length; i++)
-								{
-									name[i] = '0';
-								}
-								length = 0;
-							}
-
-						}
-						continue;
+						printName(bitmaps, key_scancode, key);
 					}
 					if (OPTION == HEAD_TO_HEAD)
 					{
-						unsigned int l = 0;
-						unsigned int a = 0;
-						char * human_machine = getHumanMachine();
-						char * screen_buffer = getScreenBuffer();
-						int j = 0;
-						if (key == KEY_BACKSPACE)
-						{
-							drawBitmap(bitmaps.frame, 0, 0, ALIGN_LEFT, human_machine);
-							human_machine = human_machine + 116 * 2 + 1024 * 127 * 2;
-							screen_buffer = screen_buffer + 116 * 2 + 1024 * 127 * 2;
-							for(; a < (183 - 127); a++)
-							{
-								for (; l < (470 - 116);l++)
-								{
-									*(uint16_t *)screen_buffer = *(uint16_t *)human_machine;
-									screen_buffer+=2;
-									human_machine+=2;
-								}
-								l = 0;
-								screen_buffer += 1024 * 2 - (470 - 116) * 2;
-								human_machine += 1024 * 2 - (470 - 116) * 2;
-							}
-							l = 0;
-							a = 0;
-
-							for (; j < length_word; j++)
-							{
-								word[j] = '0';
-							}
-							j = 0;
-							length_word = 0;
-						}
-						if (key == KEY_SPACE)
-						{
-							tries++;
-							human_machine = getHumanMachine();
-							screen_buffer = getScreenBuffer();
-							drawBitmap(bitmaps.frame, 0, 0, ALIGN_LEFT, human_machine);
-							human_machine = human_machine + 116 * 2 + 1024 * 127 * 2;
-							screen_buffer = screen_buffer + 116 * 2 + 1024 * 127 * 2;
-							for(; a < (183 - 127); a++)
-							{
-								for (; l < (470 - 116);l++)
-								{
-									*(uint16_t *)screen_buffer = *(uint16_t *)human_machine;
-									screen_buffer+=2;
-									human_machine+=2;
-								}
-								l = 0;
-								screen_buffer += 1024 * 2 - (470 - 116) * 2;
-								human_machine += 1024 * 2 - (470 - 116) * 2;
-							}
-							a = 0;
-							l = 0;
-
-							for (; j < length_word; j++)
-							{
-								word[j] = '0';
-							}
-							length_word = 0;
-							j = 0;
-						}
-
-						if (get_char(key) >= 'A' && get_char(key) <= 'Z')
-						{
-							word[length_word] = get_char(key);
-							WriteArrayFrame2(word, length_word, key_scancode, bitmaps);
-							length_word++;
-						}
-
-						if (key == KEY_ENTER)
-						{
-							int score_conta;
-							score_conta = score(contador_high);
-							createBitmap();
-							drawBitmap(bitmaps.win, 0,0, ALIGN_LEFT, getScreenBuffer());
-							OPTION = STATIC;
-							tries = 0;
-							int k = 0;
-							for (; k < length; k++)
-							{
-								name[k] = '0';
-							}
-							k = 0;
-							for (; k < length_word; k++)
-							{
-								word[k] = '0';
-							}
-							RTC_COUNTER = 60;
-							tries = 0;
-							tentativas = 0;
-						}
+						printHead(bitmaps, key_scancode, key);
 					}
 
 					if (OPTION == HUMAN_VS_MACHINE)
 					{
-						//olhar para cima (variar)
+						printMachine(bitmaps, key_scancode, key);
 					}
-
 					if (key == KEY_ESC) {
 						if (OPTION == GET_NAME) {
 							name[0] = 'U';
 							name[1] = 'P';
 							name[2] = 'S';
 							name[3] = '\0';
+							OPTION = MAIN_MENU;
 						}
-						//createBitmap();
 						OPTION = MAIN_MENU;
 						drawBitmap(bitmaps.background, 0, 0, ALIGN_LEFT, screen_buffer);
 
@@ -358,16 +200,9 @@ int main(int argc, char **argv) {
 						tentativas = 0;
 						tries = 0;
 						RTC_COUNTER = 60;
-						int k = 0;
-						for (; k < length; k++)
-						{
-							name[k] = '0';
-						}
-						k = 0;
-						for (; k < length_word; k++)
-						{
-							word[k] = '0';
-						}
+						cleanName();
+						cleanWord();
+						cleanGuess();
 					}
 				}
 
