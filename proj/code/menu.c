@@ -200,11 +200,40 @@ int online_menu(bitmap_struct bitmaps)
 	return 0;
 }
 
-int HumanMachine(bitmap_struct bitmaps)
+int HumanMachine(bitmap_struct bitmaps, Bitmap ** numbers)
 {
-	if (OPTION == HUMAN_VS_MACHINE)
+	drawMouse(numbers[tries], 162,8, ALIGN_LEFT, getScreenBuffer());
+	if (tentativas != tries)
 	{
+		int a = 0;
+		int l = 0;
 
+		char* human_machine = getHumanMachine();
+		char* screen_buffer = getScreenBuffer();
+		drawBitmap(bitmaps.frame, 0, 0, ALIGN_LEFT, human_machine);
+		human_machine = human_machine + 162 * 2 + 1024 * 8 * 2;
+		screen_buffer = screen_buffer + 162 * 2 + 1024 * 8 * 2;
+		for(; a < 50; a++)
+		{
+			for (; l < 40;l++)
+			{
+				*(uint16_t *)screen_buffer = *(uint16_t *)human_machine;
+				screen_buffer+=2;
+				human_machine+=2;
+			}
+			l = 0;
+			screen_buffer += 1024 * 2 - 40 * 2;
+			human_machine += 1024 * 2 - 40 * 2;
+		}
+		tentativas++;
+	}
+	if ((RTC_COUNTER <= 0) || (tries > 3) )
+	{
+		tries = 0;
+		OPTION = STATIC;
+		drawBitmap(bitmaps.lost, 0,0,ALIGN_LEFT, getScreenBuffer());
+		tentativas = 0;
+		RTC_COUNTER = 60;
 	}
 
 
@@ -276,11 +305,13 @@ int Head_to_Head(bitmap_struct bitmaps, Bitmap ** numbers)
 			}
 		}
 
-		if ((RTC_COUNTER <= 0) || (tries > 4) )
+		if ((RTC_COUNTER <= 0) || (tries > 3) )
 		{
 			tries = 0;
 			OPTION = STATIC;
+			drawBitmap(bitmaps.lost, 0,0,ALIGN_LEFT, getScreenBuffer());
 			tentativas = 0;
+			RTC_COUNTER = 60;
 		}
 	}
 
@@ -297,12 +328,16 @@ int menu_handler (bitmap_struct bitmaps, Bitmap ** numbers, Bitmap ** key_scanco
 	{
 	case MAIN_MENU:
 	{
+		tries = 0;
+		tentativas = 0;
 		position_menu(bitmaps, numbers, key_scancode);
 		break;
 	}
 	case HUMAN_VS_MACHINE:
 	{
-		HumanMachine(bitmaps);
+		tries = 0;
+		tentativas = 0;
+		HumanMachine(bitmaps, numbers);
 		break;
 	}
 	case HEAD_TO_HEAD:
@@ -1450,58 +1485,424 @@ void WriteArrayFrame2(char * name, int length, Bitmap ** key_scancode, bitmap_st
 Bitmap* randImage()
 {
 	int random = rand() % 10;
-	random = 0;
 	int i;
 
 	switch(random)
 	{
 	case 0:
 	{
-		return loadBitmap("home/lcom/proj/code/images/0.bmp");
 		i = 3;
-		word[0] = 'D';
-		word[1] = 'O';
-		word[2] = 'G';
-		for (; i < length_word; i++)
+		guess_ai[0] = 'D';
+		guess_ai[1] = 'O';
+		guess_ai[2] = 'G';
+		for (; i < 10; i++)
 		{
-			word[i] = '0';
+			guess_ai[i] = '0';
 		}
+		return loadBitmap("home/lcom/proj/code/images/0.bmp");
 	}
 	case 1:
 	{
+		i = 5;
+		guess_ai[0] = 'P';
+		guess_ai[1] = 'U';
+		guess_ai[2] = 'S';
+		guess_ai[3] = 'S';
+		guess_ai[4] = 'Y';
+		for (; i < 10; i++)
+		{
+			guess_ai[i] = '0';
+		}
 		return loadBitmap("home/lcom/proj/code/images/1.bmp");
 	}
 	case 2:
 	{
+		i = 6;
+		guess_ai[0] = 'C';
+		guess_ai[1] = 'I';
+		guess_ai[2] = 'G';
+		guess_ai[3] = 'A';
+		guess_ai[4] = 'N';
+		guess_ai[5] = 'O';
+		for (; i < 10; i++)
+		{
+			guess_ai[i] = '0';
+		}
 		return loadBitmap("home/lcom/proj/code/images/2.bmp");
 	}
 	case 3:
 	{
+		i = 5;
+		guess_ai[0] = 'F';
+		guess_ai[1] = 'I';
+		guess_ai[2] = 'O';
+		guess_ai[3] = 'R';
+		guess_ai[4] = 'A';
+		for (; i < 10; i++)
+		{
+			guess_ai[i] = '0';
+		}
 		return loadBitmap("home/lcom/proj/code/images/3.bmp");
 	}
 	case 4:
 	{
+		i = 4;
+		guess_ai[0] = 'M';
+		guess_ai[1] = 'I';
+		guess_ai[2] = 'C';
+		guess_ai[3] = 'O';
+		for (; i < 10; i++)
+		{
+			guess_ai[i] = '0';
+		}
 		return loadBitmap("home/lcom/proj/code/images/4.bmp");
 	}
 	case 5:
 	{
+		i = 3;
+		guess_ai[0] = 'S';
+		guess_ai[1] = 'A';
+		guess_ai[2] = 'M';
+		for (; i < 10; i++)
+		{
+			guess_ai[i] = '0';
+		}
 		return loadBitmap("home/lcom/proj/code/images/5.bmp");
 	}
 	case 6:
 	{
+		i = 6;
+		guess_ai[0] = 'T';
+		guess_ai[1] = 'A';
+		guess_ai[2] = 'Y';
+		guess_ai[3] = 'L';
+		guess_ai[4] = 'O';
+		guess_ai[5] = 'R';
+		for (; i < 10; i++)
+		{
+			guess_ai[i] = '0';
+		}
 		return loadBitmap("home/lcom/proj/code/images/6.bmp");
 	}
 	case 7:
 	{
+		i = 4;
+		guess_ai[0] = 'C';
+		guess_ai[1] = 'A';
+		guess_ai[2] = 'G';
+		guess_ai[3] = 'E';
+		for (; i < 10; i++)
+		{
+			guess_ai[i] = '0';
+		}
 		return loadBitmap("home/lcom/proj/code/images/7.bmp");
 	}
 	case 8:
 	{
+		i = 8;
+		guess_ai[0] = 'L';
+		guess_ai[1] = 'E';
+		guess_ai[2] = 'N';
+		guess_ai[3] = 'H';
+		guess_ai[4] = 'A';
+		guess_ai[5] = 'D';
+		guess_ai[6] = 'O';
+		guess_ai[7] = 'R';
+		for (; i < 10; i++)
+		{
+			guess_ai[i] = '0';
+		}
 		return loadBitmap("home/lcom/proj/code/images/8.bmp");
 	}
 	case 9:
 	{
+		i = 3;
+		guess_ai[0] = 'K';
+		guess_ai[1] = 'I';
+		guess_ai[2] = 'M';
+		for (; i < 10; i++)
+		{
+			guess_ai[i] = '0';
+		}
 		return loadBitmap("home/lcom/proj/code/images/8.bmp");
 	}
 	}
+}
+
+void cleanWord()
+{
+	int k = 0;
+	for (; k < 10; k++)
+	{
+		word[k] = '1';
+	}
+	length_word = 0;
+}
+
+void cleanGuess()
+{
+	int k = 0;
+	for (; k < 10; k++)
+	{
+		guess_ai[k] = '1';
+	}
+}
+
+void cleanName()
+{
+	int k = 0;
+	for (; k < 10; k++)
+	{
+		name[k] = '1';
+	}
+	length = 0;
+}
+
+void printName(bitmap_struct bitmaps, Bitmap ** key_scancode, int key)
+{
+	char * screen_buffer = getScreenBuffer();
+	char * mouse_buffer = getMouseBuffer();
+	char * video_memory = getVideoMem();
+	if (length == 10)
+	{
+		if (key == KEY_ENTER || key == KEY_NUM_ENTER)
+		{
+			length++;
+			name[length] = '\0';
+			OPTION = MAIN_MENU;
+		}
+	}
+	else if ((key == KEY_ENTER || key == KEY_NUM_ENTER) && (length > 0))
+	{
+		length++;
+		name[length] = '\0';
+		drawBitmap(bitmaps.frame, 0,0, ALIGN_LEFT, screen_buffer);
+		WriteArrayFrame(name, length, key_scancode, bitmaps);
+		if (ai_or_pvp == 1)
+			OPTION = HEAD_TO_HEAD;
+		else
+		{
+			OPTION = HUMAN_VS_MACHINE;
+			screen_to_mouse(screen_buffer, mouse_buffer);
+			drawMouse(bitmaps.mouse, mouse_t.x_mouse, mouse_t.y_mouse, ALIGN_LEFT, mouse_buffer);
+
+			mouse_to_video(mouse_buffer, video_memory);
+			Bitmap * random = randImage();
+			drawBitmap(random, 120,186, ALIGN_LEFT, screen_buffer);
+			drawBitmapDelay(random, 120,186, ALIGN_LEFT, video_memory);
+		}
+	}
+	else {
+
+		if (get_char(key) >= 'A' && get_char(key) <= 'Z')
+		{
+			name[length] = get_char(key);
+			WriteArray(name, length, key_scancode, bitmaps);
+			length++;
+		}
+		if (key == KEY_BACKSPACE)
+		{
+			unsigned int l = 0;
+			unsigned int a = 0;
+			char * human_machine = getHumanMachine();
+			drawBitmap(bitmaps.pre_head_to_head, 0, 0, ALIGN_LEFT, human_machine);
+			human_machine = human_machine + 251 * 2 + 1024 * 481 * 2;
+			screen_buffer = screen_buffer + 251 * 2 + 1024 * 481 * 2;
+			for(; a < (581 - 481); a++)
+			{
+				for (; l < (719 - 251);l++)
+				{
+					*(uint16_t *)screen_buffer = *(uint16_t *)human_machine;
+					screen_buffer+=2;
+					human_machine+=2;
+				}
+				l = 0;
+				screen_buffer += 1024 * 2 - (719 - 251) * 2;
+				human_machine += 1024 * 2 - (719 - 251) * 2;
+			}
+			cleanName();
+		}
+	}
+}
+
+void printHead(bitmap_struct bitmaps, Bitmap ** key_scancode, int key)
+{
+	char * screen_buffer = getScreenBuffer();
+	char * mouse_buffer = getMouseBuffer();
+	char * video_memory = getVideoMem();
+	unsigned int l = 0;
+	unsigned int a = 0;
+	char * human_machine = getHumanMachine();
+	int j = 0;
+	if (key == KEY_BACKSPACE)
+	{
+		drawBitmap(bitmaps.frame, 0, 0, ALIGN_LEFT, human_machine);
+		human_machine = human_machine + 116 * 2 + 1024 * 127 * 2;
+		screen_buffer = screen_buffer + 116 * 2 + 1024 * 127 * 2;
+		for(; a < (183 - 127); a++)
+		{
+			for (; l < (470 - 116);l++)
+			{
+				*(uint16_t *)screen_buffer = *(uint16_t *)human_machine;
+				screen_buffer+=2;
+				human_machine+=2;
+			}
+			l = 0;
+			screen_buffer += 1024 * 2 - (470 - 116) * 2;
+			human_machine += 1024 * 2 - (470 - 116) * 2;
+		}
+		l = 0;
+		a = 0;
+
+		cleanWord();
+	}
+	if (key == KEY_SPACE)
+	{
+		tries++;
+		drawBitmap(bitmaps.frame, 0, 0, ALIGN_LEFT, human_machine);
+		human_machine = human_machine + 116 * 2 + 1024 * 127 * 2;
+		screen_buffer = screen_buffer + 116 * 2 + 1024 * 127 * 2;
+		for(; a < (183 - 127); a++)
+		{
+			for (; l < (470 - 116);l++)
+			{
+				*(uint16_t *)screen_buffer = *(uint16_t *)human_machine;
+				screen_buffer+=2;
+				human_machine+=2;
+			}
+			l = 0;
+			screen_buffer += 1024 * 2 - (470 - 116) * 2;
+			human_machine += 1024 * 2 - (470 - 116) * 2;
+		}
+		a = 0;
+		l = 0;
+
+		cleanWord();
+	}
+
+	if (get_char(key) >= 'A' && get_char(key) <= 'Z')
+	{
+		word[length_word] = get_char(key);
+		WriteArrayFrame2(word, length_word, key_scancode, bitmaps);
+		length_word++;
+	}
+
+	if (key == KEY_TAB)
+	{
+		int score_conta;
+		score_conta = score(contador_high);
+		createBitmap();
+		drawBitmap(bitmaps.win, 0,0, ALIGN_LEFT, getScreenBuffer());
+		OPTION = STATIC;
+		tries = 0;
+		cleanName();
+		cleanWord();
+		RTC_COUNTER = 60;
+		tries = 0;
+		tentativas = 0;
+	}
+}
+
+void printMachine(bitmap_struct bitmaps, Bitmap ** key_scancode, int key)
+{
+	unsigned int l = 0;
+	unsigned int a = 0;
+	char * human_machine = getHumanMachine();
+	char * screen_buffer = getScreenBuffer();
+	int j = 0;
+	int bool = 1; //0 acertou, 1 falhou
+	if (key == KEY_BACKSPACE)
+	{
+		drawBitmap(bitmaps.frame, 0, 0, ALIGN_LEFT, human_machine);
+		human_machine = human_machine + 116 * 2 + 1024 * 127 * 2;
+		screen_buffer = screen_buffer + 116 * 2 + 1024 * 127 * 2;
+		for(; a < (183 - 127); a++)
+		{
+			for (; l < (470 - 116);l++)
+			{
+				*(uint16_t *)screen_buffer = *(uint16_t *)human_machine;
+				screen_buffer+=2;
+				human_machine+=2;
+			}
+			l = 0;
+			screen_buffer += 1024 * 2 - (470 - 116) * 2;
+			human_machine += 1024 * 2 - (470 - 116) * 2;
+		}
+		l = 0;
+		a = 0;
+
+		cleanWord();
+	}
+	if (key == KEY_ENTER)
+	{
+		word[length_word] = '0';
+		j = 0;
+		for (; j < 11; j++)
+		{
+			if ((guess_ai[j] == '0') && (word[j] == '0'))
+			{
+				bool = 0;
+				break;
+			}
+			if (word[j] != guess_ai[j])
+			{
+				bool = 1;
+				break;
+			}
+			if (guess_ai[j] == '0')
+			{
+				bool = 1;
+				break;
+			}
+		}
+		if (bool == 1)
+		{
+			//falhou
+			tries++;
+			human_machine = getHumanMachine();
+			screen_buffer = getScreenBuffer();
+			drawBitmap(bitmaps.frame, 0, 0, ALIGN_LEFT, human_machine);
+			human_machine = human_machine + 116 * 2 + 1024 * 127 * 2;
+			screen_buffer = screen_buffer + 116 * 2 + 1024 * 127 * 2;
+			for(; a < (183 - 127); a++)
+			{
+				for (; l < (470 - 116);l++)
+				{
+					*(uint16_t *)screen_buffer = *(uint16_t *)human_machine;
+					screen_buffer+=2;
+					human_machine+=2;
+				}
+				l = 0;
+				screen_buffer += 1024 * 2 - (470 - 116) * 2;
+				human_machine += 1024 * 2 - (470 - 116) * 2;
+			}
+			a = 0;
+			l = 0;
+			cleanWord();
+		}
+		else
+		{
+			int score_conta;
+			score_conta = score(contador_high);
+			drawBitmap(bitmaps.win, 0,0, ALIGN_LEFT, getScreenBuffer());
+			OPTION = STATIC;
+			tries = 0;
+			int k = 0;
+			cleanName();
+			cleanGuess();
+			cleanWord();
+			RTC_COUNTER = 60;
+			tries = 0;
+			tentativas = 0;
+			//acertou
+		}
+	}
+
+	if (get_char(key) >= 'A' && get_char(key) <= 'Z')
+	{
+		word[length_word] = get_char(key);
+		WriteArrayFrame2(word, length_word, key_scancode, bitmaps);
+		length_word++;
+	}
+
 }

@@ -14,6 +14,7 @@ char name[11];
 
 char word[11]; //nao tenho a certeza se isto ja nao e o mesmo que name[11], se for nao esquecer de mudar int score()
 
+char guess_ai[11];
 
 int tries = 0; //começa a 0 ||| MAX = 4 (incluindo)
 

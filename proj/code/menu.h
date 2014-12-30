@@ -19,12 +19,16 @@ extern int tries;
 extern int radius;
 extern char tool;
 extern char word[11];
+extern char guess_ai[11];
+extern char name[11];
+extern int length;
 extern int length_word;
 extern int colour;
 extern scores_t top_highscores;
 extern int espaco;
 extern int tentativas;
 extern int ai_or_pvp;
+extern int contador_high;
 
 /**
  * @brief Receives three colors, red, green and blue, and changes their values according to the selected colour
@@ -137,7 +141,7 @@ int Online_menu(bitmap_struct bitmaps);
  *
  * @return 0 if sucessfully, 1 otherwise
  */
-int HumanMachine(bitmap_struct bitmaps);
+int HumanMachine(bitmap_struct bitmaps, Bitmap ** numbers);
 
 /**
  * @brief the PVP option
@@ -227,4 +231,34 @@ void WriteArrayFrame2(char * name, int length, Bitmap ** key_scancode, bitmap_st
  * @return random bitmap
  */
 Bitmap* randImage();
+
+/**
+ * @brief cleans the word
+ */
+void cleanWord();
+
+/**
+ * @brief cleans the guess
+ */
+void cleanGuess();
+
+/**
+ * @brief cleans the name
+ */
+void cleanName();
+
+/**
+ * @brief reads the name of the user and prints it on the screen
+ */
+void printName(bitmap_struct bitmaps, Bitmap ** key_scancode, int key);
+
+/**
+ * @brief prints the Head to Head
+ */
+void printHead(bitmap_struct bitmaps, Bitmap ** key_scancode, int key);
+
+/**
+ * @brief prints the Human Vs Machine
+ */
+void printMachine(bitmap_struct bitmaps, Bitmap ** key_scancode, int key);
 #endif
