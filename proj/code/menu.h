@@ -1,3 +1,9 @@
+/**
+ * @file menu.h
+ * @author Miguel Botelho and Antonio Ramadas
+ * @brief The file contains most of the handling of the menu
+ */
+
 #ifndef __MENU_H
 #define __MENU_H
 

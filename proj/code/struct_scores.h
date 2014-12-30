@@ -1,3 +1,9 @@
+/**
+ * @file struct_scores.h
+ * @author Miguel Botelho and Antonio Ramadas
+ * @brief The stucts for the highscores of the users
+ */
+
 #ifndef __STRUCT_SCORES_H
 #define __STRUCT_SCORES_H
 

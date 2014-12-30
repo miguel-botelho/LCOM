@@ -1,3 +1,9 @@
+/**
+ * @file timer_macros.h
+ * @author Miguel Botelho and Antonio Ramadas
+ * @brief The file containing the macros for the timer
+ */
+
 #ifndef __TIMER_MACROS_H
 #define __TIMER_MACROS_H
 

@@ -1,3 +1,9 @@
+/**
+ * @file rtc.h
+ * @author Miguel Botelho and Antonio Ramadas
+ * @brief The file containing the functions for handling the rtc
+ */
+
 #ifndef __RTC_H
 #define __RTC_H
 

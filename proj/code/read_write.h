@@ -1,3 +1,9 @@
+/**
+ * @file video_gr_macros.h
+ * @author Miguel Botelho and Antonio Ramadas
+ * @brief The file containing the functions that allow reading and writing in txts
+ */
+
 #ifndef __READ_WRITE_H
 #define __READ_WRITE_H
 

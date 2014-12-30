@@ -1,3 +1,9 @@
+/**
+ * @file keyboard_mouse_macros.h
+ * @author Miguel Botelho and Antonio Ramadas
+ * @brief The file containing the macros for the mouse and keyboard
+ */
+
 #ifndef __KEYBOARD_MOUSE_MACROS_H
 #define __KEYBOARD_MOUSE_MACROS_H
 

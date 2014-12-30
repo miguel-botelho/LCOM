@@ -1,3 +1,9 @@
+/**
+ * @file struct_bmp.h
+ * @author Miguel Botelho and Antonio Ramadas
+ * @brief The file containing the images for the screen
+ */
+
 #ifndef __STRUCT_BMP_H
 #define __STRUCT_BMP_H
 

@@ -1,3 +1,9 @@
+/**
+ * @file serial_port_macros.h
+ * @author Miguel Botelho and Antonio Ramadas
+ * @brief The file containing the macros for the serial port
+ */
+
 #ifndef __SERIAL_PORT_MACROS_H
 #define __SERIAL_PORT_MACROS_H
 

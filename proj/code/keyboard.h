@@ -1,3 +1,9 @@
+/**
+ * @file keyboard.h
+ * @author Miguel Botelho and Antonio Ramadas
+ * @brief The file containing the functions that allow the handling of the keyboard
+ */
+
 #ifndef __KEYBOARD_H
 #define __KEYBOARD_H
 

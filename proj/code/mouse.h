@@ -1,3 +1,9 @@
+/**
+ * @file mouse.h
+ * @author Miguel Botelho and Antonio Ramadas
+ * @brief The file containing the functions that handle the mouse
+ */
+
 #ifndef __MOUSE_H
 #define __MOUSE_H
 

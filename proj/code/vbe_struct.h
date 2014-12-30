@@ -1,3 +1,9 @@
+/**
+ * @file vbe_struct.h
+ * @author Miguel Botelho and Antonio Ramadas
+ * @brief Contains the struct for obtaining the graphic mode
+ */
+
 #ifndef __VBE_STRUCT_H
 #define __VBE_STRUCT_H
 
