@@ -1,3 +1,9 @@
+/**
+ * @file array_keyboard.h
+ * @author Miguel Botelho and Antonio Ramadas
+ * @brief The file containing the functions for filling the arrays of bitmaps
+ */
+
 #ifndef __ARRAY_KEYBOARD_H
 #define __ARRAY_KEYBOARD_H
 

@@ -1,3 +1,9 @@
+/**
+ * @file lib.h
+ * @author Miguel Botelho and Antonio Ramadas
+ * @brief The file containing the c libraries and minix
+ */
+
 #ifndef __LIB_H
 #define __LIB_H
 

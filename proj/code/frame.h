@@ -1,3 +1,9 @@
+/**
+ * @file frame.h
+ * @author Miguel Botelho and Antonio Ramadas
+ * @brief The file contains the functions that handle the drawing part of the project
+ */
+
 #ifndef __FRAME_H
 #define __FRAME_H
 

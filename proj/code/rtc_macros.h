@@ -1,3 +1,9 @@
+/**
+ * @file rtc_macros.h
+ * @author Miguel Botelho and Antonio Ramadas
+ * @brief The file containing the macros for the rtc
+ */
+
 #ifndef __RTC_MACROS_H
 #define __RTC_MACROS_H
 

@@ -1,3 +1,9 @@
+/**
+ * @file global_variables.h
+ * @author Miguel Botelho and Antonio Ramadas
+ * @brief The file containing the global variables
+ */
+
 #ifndef __GLOBAL_VARIABLES_H
 #define __GLOBAL_VARIABLES_H
 

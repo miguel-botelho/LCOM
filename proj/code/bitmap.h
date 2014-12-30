@@ -1,11 +1,13 @@
+/**
+ * @file bitmap.h
+ * @author Miguel Botelho and Antonio Ramadas
+ * @brief The file containing the functions that handle the bitmaps
+ *
+ * @see http://difusal.blogspot.pt/2014/09/minixtutorial-8-loading-bmp-images.html
+ */
+
 #ifndef __BITMAP_H
 #define __BITMAP_H
-
-
-/*
- * Codigo de Henrique Ferrolho (not all of it though)
- * http://difusal.blogspot.pt/2014/09/minixtutorial-8-loading-bmp-images.html
- */
 
 #include "lib.h"
 #include "bitmap_macros.h"
@@ -56,9 +58,6 @@ typedef struct {
     unsigned char* bitmapData;
 } Bitmap;
 
-
-//void createBitmap(int option);
-
 /**
  * @brief receives the color, and changes the red, green and blue argument
  *
@@ -66,6 +65,7 @@ typedef struct {
  * @param green
  * @param blue
  * @param colour
+ *
  */
 void getrgbBitmap(int *red, int *green, int *blue, int rgbaaaa);
 
@@ -89,6 +89,7 @@ void createDBitmap();
  *
  * @param filename Path of the image to load
  * @return Non NULL pointer to the image buffer
+ * @see http://difusal.blogspot.pt/2014/09/minixtutorial-8-loading-bmp-images.html
  */
 Bitmap* loadBitmap(const char* filename);
 
@@ -100,6 +101,7 @@ Bitmap* loadBitmap(const char* filename);
  * @param y destiny y coord
  * @param alignment image alignment
  * @param char buffer
+ * @see http://difusal.blogspot.pt/2014/09/minixtutorial-8-loading-bmp-images.html
  */
 void drawBitmap(Bitmap* bmp, int x, int y, Alignment alignment, char * buffer);
 
@@ -118,6 +120,7 @@ void drawMouse(Bitmap* bmp, int x, int y, Alignment alignment, char * buffer);
  * @brief Destroys the given bitmap, freeing all resources used by it. (made by Henrique Ferrolho)
  *
  * @param bitmap bitmap to be destroyed
+ * @see http://difusal.blogspot.pt/2014/09/minixtutorial-8-loading-bmp-images.html
  */
 void deleteBitmap(Bitmap* bmp);
 

@@ -1,3 +1,9 @@
+/**
+ * @file device_interrupts.h
+ * @author Miguel Botelho and Antonio Ramadas
+ * @brief The file containing the interrupt functions
+ */
+
 #ifndef __DEVICE_INTERRUPTS_H
 #define __DEVICE_INTERRUPTS_H
 

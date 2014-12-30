@@ -1,3 +1,9 @@
+/**
+ * @file serial_port.h
+ * @author Miguel Botelho and Antonio Ramadas
+ * @brief The file containing the functions needed to operate the serial port
+ */
+
 #ifndef __SERIAL_PORT_H
 #define __SERIAL_PORT_H
 

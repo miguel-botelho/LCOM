@@ -1,3 +1,9 @@
+/**
+ * @file menu_macros.h
+ * @author Miguel Botelho and Antonio Ramadas
+ * @brief The file containing the macros for the menu (mostly state machines)
+ */
+
 #ifndef __MENU_MACROS_H
 #define __MENU_MACROS_H
 

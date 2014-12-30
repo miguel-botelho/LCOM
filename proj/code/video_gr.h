@@ -1,3 +1,9 @@
+/**
+ * @file video_gr.h
+ * @author Miguel Botelho and Antonio Ramadas
+ * @brief The file containing all the functions that change the graphics
+ */
+
 #ifndef __VIDEO_GR_H
 #define __VIDEO_GR_H
 
@@ -149,6 +155,7 @@ int get_vbe_info(vbe_info_block *vib_p);
  * @param b blue color
  *
  * @return color
+ * @see http://difusal.blogspot.pt/2014/09/minixtutorial-8-loading-bmp-images.html
  */
 int rgb(unsigned char r, unsigned char g, unsigned char b);
 #endif /* __VIDEO_GR_H */

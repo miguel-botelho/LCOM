@@ -1,3 +1,9 @@
+/**
+ * @file timer.h
+ * @author Miguel Botelho and Antonio Ramadas
+ * @brief File for the timer functions
+ */
+
 #ifndef __TIMER_H
 #define __TIMER_H
 

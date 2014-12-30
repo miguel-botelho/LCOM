@@ -1,3 +1,9 @@
+/**
+ * @file video_gr_macros.h
+ * @author Miguel Botelho and Antonio Ramadas
+ * @brief The file containing the macros for the graphics part of the project
+ */
+
 #ifndef __VIDEO_GR_MACROS_H
 #define __VIDEO_GR_MACROS_H
 

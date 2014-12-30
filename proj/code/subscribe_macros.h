@@ -1,3 +1,9 @@
+/**
+ * @file subscribe_macros.h
+ * @author Miguel Botelho and Antonio Ramadas
+ * @brief The file containing the macros for the subscriptions of the peripherics
+ */
+
 #ifndef __SUBSCRIBE_MACROS_H
 #define __SUBSCRIBE_MACROS_H
 

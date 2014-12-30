@@ -116,6 +116,9 @@ char position_menu(bitmap_struct bitmaps, Bitmap ** numbers, Bitmap ** key_scanc
 				OPTION = GET_NAME;
 				drawBitmap(bitmaps.pre_head_to_head, 0, 0, ALIGN_LEFT, getScreenBuffer());
 				ai_or_pvp = 1;
+				tentativas = 0;
+				tries = 0;
+				RTC_COUNTER = 60;
 			}
 			else
 			{
@@ -131,6 +134,9 @@ char position_menu(bitmap_struct bitmaps, Bitmap ** numbers, Bitmap ** key_scanc
 			bool = 0;
 			if (mouse_t.LB == 1)
 			{
+				tentativas = 0;
+				tries = 0;
+				RTC_COUNTER = 60;
 				OPTION = GET_NAME;
 				ai_or_pvp = 0;
 				drawBitmap(bitmaps.pre_head_to_head, 0, 0, ALIGN_LEFT, getScreenBuffer());
@@ -202,45 +208,43 @@ int online_menu(bitmap_struct bitmaps)
 
 int HumanMachine(bitmap_struct bitmaps, Bitmap ** numbers)
 {
-	drawMouse(numbers[tries], 162,8, ALIGN_LEFT, getScreenBuffer());
-	if (tentativas != tries)
+	if (OPTION == HUMAN_VS_MACHINE)
 	{
-		int a = 0;
-		int l = 0;
-
-		char* human_machine = getHumanMachine();
-		char* screen_buffer = getScreenBuffer();
-		drawBitmap(bitmaps.frame, 0, 0, ALIGN_LEFT, human_machine);
-		human_machine = human_machine + 162 * 2 + 1024 * 8 * 2;
-		screen_buffer = screen_buffer + 162 * 2 + 1024 * 8 * 2;
-		for(; a < 50; a++)
+		drawMouse(numbers[tries], 162,8, ALIGN_LEFT, getScreenBuffer());
+		if (tentativas != tries)
 		{
-			for (; l < 40;l++)
+			int a = 0;
+			int l = 0;
+
+			char* human_machine = getHumanMachine();
+			char* screen_buffer = getScreenBuffer();
+			drawBitmap(bitmaps.frame, 0, 0, ALIGN_LEFT, human_machine);
+			human_machine = human_machine + 162 * 2 + 1024 * 8 * 2;
+			screen_buffer = screen_buffer + 162 * 2 + 1024 * 8 * 2;
+			for(; a < 50; a++)
 			{
-				*(uint16_t *)screen_buffer = *(uint16_t *)human_machine;
-				screen_buffer+=2;
-				human_machine+=2;
+				for (; l < 40;l++)
+				{
+					*(uint16_t *)screen_buffer = *(uint16_t *)human_machine;
+					screen_buffer+=2;
+					human_machine+=2;
+				}
+				l = 0;
+				screen_buffer += 1024 * 2 - 40 * 2;
+				human_machine += 1024 * 2 - 40 * 2;
 			}
-			l = 0;
-			screen_buffer += 1024 * 2 - 40 * 2;
-			human_machine += 1024 * 2 - 40 * 2;
+			tentativas++;
 		}
-		tentativas++;
+		if ((RTC_COUNTER <= 0) || (tries > 3) )
+		{
+			tries = 0;
+			OPTION = STATIC;
+			drawBitmap(bitmaps.lost, 0,0,ALIGN_LEFT, getScreenBuffer());
+			tentativas = 0;
+			RTC_COUNTER = 60;
+		}
+		return 0;
 	}
-	if ((RTC_COUNTER <= 0) || (tries > 3) )
-	{
-		tries = 0;
-		OPTION = STATIC;
-		drawBitmap(bitmaps.lost, 0,0,ALIGN_LEFT, getScreenBuffer());
-		tentativas = 0;
-		RTC_COUNTER = 60;
-	}
-
-
-	//se ele acertar, ou acabar o timer, chamar is highscore
-	//pedir nome
-
-	return 0;
 }
 
 int Head_to_Head(bitmap_struct bitmaps, Bitmap ** numbers)
@@ -335,8 +339,6 @@ int menu_handler (bitmap_struct bitmaps, Bitmap ** numbers, Bitmap ** key_scanco
 	}
 	case HUMAN_VS_MACHINE:
 	{
-		tries = 0;
-		tentativas = 0;
 		HumanMachine(bitmaps, numbers);
 		break;
 	}
@@ -876,9 +878,11 @@ int displayTimer10(int contador, Bitmap ** numbers, bitmap_struct bitmaps)
 	screen_buffer = getScreenBuffer();
 	drawMouse(numbers[nr1], 1024 - 60, 30, ALIGN_LEFT, screen_buffer);
 	drawMouse(numbers[nr2], 1024 - 30, 30, ALIGN_LEFT, screen_buffer);
+	/*
 	screen_to_mouse(screen_buffer, getMouseBuffer());
 	drawMouse(bitmaps.mouse, mouse_t.x_mouse, mouse_t.y_mouse, ALIGN_LEFT, getMouseBuffer());
 	mouse_to_video(getMouseBuffer(), getVideoMem());
+	*/
 
 }
 
@@ -1806,6 +1810,7 @@ void printHead(bitmap_struct bitmaps, Bitmap ** key_scancode, int key)
 void printMachine(bitmap_struct bitmaps, Bitmap ** key_scancode, int key)
 {
 	unsigned int l = 0;
+	static int temp = 0;
 	unsigned int a = 0;
 	char * human_machine = getHumanMachine();
 	char * screen_buffer = getScreenBuffer();
@@ -1835,6 +1840,11 @@ void printMachine(bitmap_struct bitmaps, Bitmap ** key_scancode, int key)
 	}
 	if (key == KEY_ENTER)
 	{
+		if (temp == 0)
+		{
+			temp++;
+			tries--;
+		}
 		word[length_word] = '0';
 		j = 0;
 		for (; j < 11; j++)
@@ -1857,7 +1867,6 @@ void printMachine(bitmap_struct bitmaps, Bitmap ** key_scancode, int key)
 		}
 		if (bool == 1)
 		{
-			//falhou
 			tries++;
 			human_machine = getHumanMachine();
 			screen_buffer = getScreenBuffer();

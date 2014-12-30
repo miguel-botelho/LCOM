@@ -1,3 +1,9 @@
+/**
+ * @file mouse_struct.h
+ * @author Miguel Botelho and Antonio Ramadas
+ * @brief The file containing the mouse struct
+ */
+
 #ifndef __MOUSE_STRUCT_H
 #define __MOUSE_STRUCT_H
 

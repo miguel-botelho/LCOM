@@ -1,3 +1,9 @@
+/**
+ * @file bitmap_macros.h
+ * @author Miguel Botelho and Antonio Ramadas
+ * @brief The file containing the macros for the bitmaps
+ */
+
 #ifndef __BITMAP_MACROS_H
 #define __BITMAP_MACROS_H
 
