@@ -12,6 +12,7 @@
 #include "video_gr.h"
 #include "bmpfile.h"
 #include "global_variables.h"
+#include "timer.h"
 
 extern int screen_abs;
 extern int screen_current;
@@ -119,6 +120,17 @@ void drawMouse(Bitmap* bmp, int x, int y, Alignment alignment, char * buffer);
  * @param bitmap bitmap to be destroyed
  */
 void deleteBitmap(Bitmap* bmp);
+
+/**
+ * @brief Draws an unscaled, unrotated bitmap at the given position, with a time delay (made by Henrique Ferrolho, slightly changed by us)
+ *
+ * @param bmp bitmap to be drawn
+ * @param x destiny x coord
+ * @param y destiny y coord
+ * @param alignment image alignment
+ * @param char buffer
+ */
+void drawBitmapDelay(Bitmap* bmp, int x, int y, Alignment alignment, char * buffer);
 
 /**@}*/
 

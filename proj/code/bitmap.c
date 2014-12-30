@@ -430,3 +430,52 @@ void deleteBitmap(Bitmap* bmp) {
 	free(bmp->bitmapData);
 	free(bmp);
 }
+
+void drawBitmapDelay(Bitmap* bmp, int x, int y, Alignment alignment, char * buffer)
+{
+	if (bmp == NULL)
+		return;
+
+	int width = bmp->bitmapInfoHeader.width;
+	int drawWidth = width;
+	int height = bmp->bitmapInfoHeader.height;
+
+	if (alignment == ALIGN_CENTER)
+		x -= width / 2;
+	else if (alignment == ALIGN_RIGHT)
+		x -= width;
+
+	if (x + width < 0 || x > H_RES || y + height < 0
+			|| y > V_RES)
+		return;
+
+	int xCorrection = 0;
+	if (x < 0) {
+		xCorrection = -x;
+		drawWidth -= xCorrection;
+		x = 0;
+
+		if (drawWidth > H_RES)
+			drawWidth = H_RES;
+	} else if (x + drawWidth >= H_RES) {
+		drawWidth = H_RES - x;
+	}
+
+	char* bufferStartPos;
+	char* imgStartPos;
+
+	int i;
+	for (i = 0; i < height; i++) {
+		int pos = y + height - 1 - i;
+
+		if (pos < 0 || pos >= V_RES)
+			continue;
+
+		bufferStartPos = buffer;
+		bufferStartPos += x * 2 + pos * H_RES * 2;
+
+		imgStartPos = bmp->bitmapData + xCorrection * 2 + i * width * 2;
+		tickdelay(micros_to_ticks(1));
+		memcpy(bufferStartPos, imgStartPos, drawWidth * 2);
+	}
+}

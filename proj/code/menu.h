@@ -18,6 +18,8 @@ extern int RTC_COUNTER;
 extern int tries;
 extern int radius;
 extern char tool;
+extern char word[11];
+extern int length_word;
 extern int colour;
 extern scores_t top_highscores;
 extern int espaco;
@@ -218,4 +220,11 @@ void WriteArrayFrame(char * name, int length, Bitmap ** key_scancode, bitmap_str
  * @return 0 if sucessfully, 1 otherwise
  */
 void WriteArrayFrame2(char * name, int length, Bitmap ** key_scancode, bitmap_struct bitmaps);
+
+/**
+ * @brief loads a random image
+ *
+ * @return random bitmap
+ */
+Bitmap* randImage();
 #endif

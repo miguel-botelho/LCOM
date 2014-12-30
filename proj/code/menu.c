@@ -148,7 +148,8 @@ char position_menu(bitmap_struct bitmaps, Bitmap ** numbers, Bitmap ** key_scanc
 	}
 	else
 	{
-		drawBitmap(bitmaps.background, 0,0, ALIGN_LEFT, getScreenBuffer());
+		if (OPTION == MAIN_MENU)
+			drawBitmap(bitmaps.background, 0,0, ALIGN_LEFT, getScreenBuffer());
 	}
 	return 1;
 }
@@ -183,11 +184,6 @@ int HighScores_menu(bitmap_struct bitmaps)
 
 	}
 
-	screen_to_mouse(getScreenBuffer(), getMouseBuffer());
-	drawMouse(bitmaps.mouse, mouse_t.x_mouse, mouse_t.y_mouse, ALIGN_LEFT, getMouseBuffer());
-
-	mouse_to_video(getMouseBuffer(), getVideoMem());
-
 	return 0;
 }
 
@@ -197,11 +193,6 @@ int online_menu(bitmap_struct bitmaps)
 	{
 
 	}
-
-	screen_to_mouse(getScreenBuffer(), getMouseBuffer());
-	drawMouse(bitmaps.mouse, mouse_t.x_mouse, mouse_t.y_mouse, ALIGN_LEFT, getMouseBuffer());
-
-	mouse_to_video(getMouseBuffer(), getVideoMem());
 
 	//se ele acertar, ou acabar o timer, chamar is highscore
 	//pedir nome
@@ -216,10 +207,6 @@ int HumanMachine(bitmap_struct bitmaps)
 
 	}
 
-	screen_to_mouse(getScreenBuffer(), getMouseBuffer());
-	drawMouse(bitmaps.mouse, mouse_t.x_mouse, mouse_t.y_mouse, ALIGN_LEFT, getMouseBuffer());
-
-	mouse_to_video(getMouseBuffer(), getVideoMem());
 
 	//se ele acertar, ou acabar o timer, chamar is highscore
 	//pedir nome
@@ -291,12 +278,8 @@ int Head_to_Head(bitmap_struct bitmaps, Bitmap ** numbers)
 
 		if ((RTC_COUNTER <= 0) || (tries > 4) )
 		{
-			drawBitmap(bitmaps.lost,0,0,ALIGN_LEFT, getScreenBuffer());
-			screen_to_mouse(getScreenBuffer(), getMouseBuffer());
-			drawMouse(bitmaps.mouse,mouse_t.x_mouse,mouse_t.y_mouse, ALIGN_LEFT, getMouseBuffer());
-			mouse_to_video(getMouseBuffer(), getVideoMem());
 			tries = 0;
-			OPTION = MAIN_MENU;
+			OPTION = STATIC;
 			tentativas = 0;
 		}
 	}
@@ -344,6 +327,10 @@ int menu_handler (bitmap_struct bitmaps, Bitmap ** numbers, Bitmap ** key_scanco
 		break;
 	}
 	case GET_NAME:
+	{
+		break;
+	}
+	case STATIC:
 	{
 		break;
 	}
@@ -1458,5 +1445,63 @@ void WriteArrayFrame2(char * name, int length, Bitmap ** key_scancode, bitmap_st
 		}
 		}
 	}
+}
 
+Bitmap* randImage()
+{
+	int random = rand() % 10;
+	random = 0;
+	int i;
+
+	switch(random)
+	{
+	case 0:
+	{
+		return loadBitmap("home/lcom/proj/code/images/0.bmp");
+		i = 3;
+		word[0] = 'D';
+		word[1] = 'O';
+		word[2] = 'G';
+		for (; i < length_word; i++)
+		{
+			word[i] = '0';
+		}
+	}
+	case 1:
+	{
+		return loadBitmap("home/lcom/proj/code/images/1.bmp");
+	}
+	case 2:
+	{
+		return loadBitmap("home/lcom/proj/code/images/2.bmp");
+	}
+	case 3:
+	{
+		return loadBitmap("home/lcom/proj/code/images/3.bmp");
+	}
+	case 4:
+	{
+		return loadBitmap("home/lcom/proj/code/images/4.bmp");
+	}
+	case 5:
+	{
+		return loadBitmap("home/lcom/proj/code/images/5.bmp");
+	}
+	case 6:
+	{
+		return loadBitmap("home/lcom/proj/code/images/6.bmp");
+	}
+	case 7:
+	{
+		return loadBitmap("home/lcom/proj/code/images/7.bmp");
+	}
+	case 8:
+	{
+		return loadBitmap("home/lcom/proj/code/images/8.bmp");
+	}
+	case 9:
+	{
+		return loadBitmap("home/lcom/proj/code/images/8.bmp");
+	}
+	}
 }
