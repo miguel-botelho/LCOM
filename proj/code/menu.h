@@ -24,22 +24,31 @@ extern int espaco;
 extern int tentativas;
 extern int ai_or_pvp;
 
+/**
+ * @brief Receives three colors, red, green and blue, and the buffer, and changes their values
+ *
+ * @param int red the red color
+ * @param int green the green color
+ * @param int blue the blue color
+ */
 void getrgb(int *red, int *green, int *blue);
 
-//in case of highscore it changes OPTION to GET_NAME
-//return -1 if not highscore or the position otherwise
+/**
+ * @brief Checks if the new score is an highscore, and stores it
+ *
+ * @param draw the draw that the user made
+ *
+ * @return the place of the user (1,2,3,4 or 5)
+ */
 int is_highscore(position_t *draw);
 
-////////////////////////////////////////////////////////////////////////////////////////////////
-////////////////////////////////////////////////////////////////////////////////////////////////
-/////////////// NEEDS TO BE MADE ///////////////////////////////////////////////////////////////
-////////////////////////////////////////////////////////////////////////////////////////////////
-////////////////////////////////////////////////////////////////////////////////////////////////
-// score = -135 * t + 10000, 0 <= t <= 60 (in seconds)
-// 4 tries | discount of 100 per wrong
-// number of letter * 150 | plus if right
-// max number = 11500
-// min number = 1900 - 4 * 100
+/**
+ * @brief Calculates the score of the user
+ *
+ * @param tick the seconds that have passed
+ *
+ * @return score
+ */
 int score(int tick);
 
 ////////////////////////////////////////////////////////////////////////////////////////////////
@@ -63,13 +72,15 @@ void print_letter();
 void erase_letter();
 
 ////////////////////////////////////////////////////////////////////////////////////////////////
-////////////////////////////////////////////////////////////////////////////////////////////////
-/////////////// NEEDS TO BE MADE ///////////////////////////////////////////////////////////////
-////////////////////////////////////////////////////////////////////////////////////////////////
-////////////////////////////////////////////////////////////////////////////////////////////////
-//given the position (*m) and the screen (*option), this function calls the respective menu
-//this function has a switch statement and after finding the screen (meaning, the option)
-//it will see where is the mouse over and call the respective function
+/**
+ * @brief handles the menu options
+ *
+ * @param bitmaps the different screens
+ * @param numbers the different bitmap numbers
+ * @param key_scancode the different bitmap letters
+ *
+ * @return -1 if the option doesn't exist
+ */
 int menu_handler (bitmap_struct bitmaps, Bitmap ** numbers, Bitmap ** key_scancode);
 
 ////////////////////////////////////////////////////////////////////////////////////////////////
@@ -101,21 +112,24 @@ void menu_handle_h_vs_m(mouse_st *m);
 void bitmaps_load(bitmap_struct *t);
 
 /**
- * @brief calculates the position in the menu, knowing if the user pressed one of the squares that allows you to go to another menu
+ * @brief sees if anything was pressed in the menu and changes the state machine
  *
- * @param bitmaps (needed to delete)
- * @param video_copy (needed to change the color in the menu)
+ * @param bitmaps the different screens
+ * @param numbers the different bitmap numbers
+ * @param key_scancode the different bitmap letters
  *
- * @return 0 if the user pressed any option in the menu, 1 otherwise
+ * @return 0 if anything was pressed, 1 if not
  */
 char position_menu(bitmap_struct bitmaps, Bitmap ** numbers, Bitmap ** key_scancode);
 
 /**
- * @brief exits the main menu
+ * @brief exits the menu
  *
- * @param bitmaps (needed to delete)
+ * @param bitmaps the different screens (delete)
+ * @param numbers the different bitmap numbers (delete)
+ * @param key_scancode the different bitmap letters (delete)
  *
- * @return 0 if menu successfully exited, 1 if otherwise
+ * @return 0 if sucessfully exited, 1 otherwise
  */
 int exit_menu(bitmap_struct bitmaps, Bitmap ** numbers, Bitmap ** key_scancode);
 
@@ -137,39 +151,112 @@ int change_color(unsigned xi, unsigned xf, unsigned yi, unsigned yf, int color_i
 /**
  * @brief displays the high scores
  *
+ * @param bitmaps needed to change the screen
+ *
+ * @return 0 if sucessfully, 1 otherwise
  */
 int HighScores_menu(bitmap_struct bitmaps);
 
 /**
- * @brief the online option (serial port)
+ * @brief the serial port game option
  *
+ * @param bitmaps needed to change the screen
+ *
+ * @return 0 if sucessfully, 1 otherwise
  */
 int Online_menu(bitmap_struct bitmaps);
 
 /**
- * @brief Player vs Player option (on the same pc)
+ * @brief the AI option
  *
+ * @param bitmaps needed to change the screen
+ * @param numbers needed to display the tries
+ *
+ * @return 0 if sucessfully, 1 otherwise
  */
 int HumanMachine(bitmap_struct bitmaps);
 
 /**
- * @brief Player vs Computer
+ * @brief the PVP option
  *
+ * @param bitmaps needed to change the screen
+ * @param numbers needed to display the tries
+ *
+ * @return 0 if sucessfully, 1 otherwise
  */
 int Head_to_Head(bitmap_struct bitmaps, Bitmap ** numbers);
 
+/**
+ * @brief Selects the tool from the frame
+ *
+ */
 void selectDraw();
 
+/**
+ * @brief Selects the colour from the frame
+ *
+ */
 void selectColour();
 
+/**
+ * @brief Handler for the drawings
+ *
+ * @return -1 if tool is not available
+ */
 int toolHandler();
 
+/**
+ * @brief displays the Timer for numbers < 10
+ *
+ * @param contador the number to be displayed
+ * @param numbers the bitmaps that have the numbers
+ * @param bitmaps needed to change the screen
+ *
+ * @return 0 if sucessfully, 1 otherwise
+ */
 int displayTimer(int contador, Bitmap ** numbers, bitmap_struct bitmaps);
+
+/**
+ * @brief displays the Timer for numbers >= 10
+ *
+ * @param contador the number to be displayed
+ * @param numbers the bitmaps that have the numbers
+ * @param bitmaps needed to change the screen
+ *
+ * @return 0 if sucessfully, 1 otherwise
+ */
 int displayTimer10(int contador, Bitmap ** numbers, bitmap_struct bitmaps);
 
+/**
+ * @brief writes the name of the player in pre head to head
+ *
+ * @param name name of the player
+ * @param key_scancode bitmaps that have all the letters
+ * @param bitmaps needed to change the screen
+ *
+ * @return 0 if sucessfully, 1 otherwise
+ */
 void WriteArray(char * name, int length, Bitmap ** key_scancode, bitmap_struct bitmaps);
 
+/**
+ * @brief writes the name of the player in frame option
+ *
+ * @param name name of the player
+ * @param key_scancode bitmaps that have all the letters
+ * @param bitmaps needed to change the screen
+ *
+ * @return 0 if sucessfully, 1 otherwise
+ */
 void WriteArrayFrame(char * name, int length, Bitmap ** key_scancode, bitmap_struct bitmaps);
 
+/**
+ * @brief writes the guess of the player
+ *
+ * @param name name of the player
+ * @param key_scancode bitmaps that have all the letters
+ * @param bitmaps needed to change the screen
+ *
+ * @return 0 if sucessfully, 1 otherwise
+ */
 void WriteArrayFrame2(char * name, int length, Bitmap ** key_scancode, bitmap_struct bitmaps);
 #endif

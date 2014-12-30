@@ -3,7 +3,7 @@
 
 
 /*
- * Codigo de Henrique Ferrolho
+ * Codigo de Henrique Ferrolho (not all of it though)
  * http://difusal.blogspot.pt/2014/09/minixtutorial-8-loading-bmp-images.html
  */
 
@@ -58,12 +58,29 @@ typedef struct {
 
 //void createBitmap(int option);
 
+/**
+ * @brief receives the color, and changes the red, green and blue argument
+ *
+ * @param red
+ * @param green
+ * @param blue
+ * @param colour
+ */
 void getrgbBitmap(int *red, int *green, int *blue, int rgbaaaa);
 
+/**
+ * @brief creates the bitmap for the right guess
+ */
 void createBitmap();
 
+/**
+ * @brief creates the bitmaps for the undo and redo functions
+ */
 void createBitmapsUndoRedo();
 
+/**
+ * @brief creates the bitmap for the current draw bitmap
+ */
 void createDBitmap();
 
 /**
