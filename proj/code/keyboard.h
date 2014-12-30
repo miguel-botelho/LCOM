@@ -6,6 +6,12 @@
 #include "lib.h"
 #include "keyboard_mouse_macros.h"
 
+/**
+ * @brief receives a scancode and returns the right letter
+ *
+ * @param key the scancode
+ * @return letter
+ */
 char get_char(int key);
 
 /**

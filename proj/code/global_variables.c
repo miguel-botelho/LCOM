@@ -6,7 +6,7 @@ int radius = 10;
 
 char tool = PENCIL;
 
-int colour = 22;
+int colour = 0x001F;
 
 int RTC_COUNTER = 60; //começa a 60
 
