@@ -22,5 +22,6 @@
 #include <string.h>
 #include <stdint.h>
 #include <math.h>
+#include <time.h>
 
 #endif /* __LIB_H */

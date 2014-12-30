@@ -41,6 +41,9 @@ int main(int argc, char **argv) {
 	// Enable IO-sensitive operations for ourselves
 	sys_enable_iop(SELF);
 
+	// Enables the random number
+	srand(time(NULL));
+
 	if (subscribe_all() == -1) {
 		printf("Failure to subscribe!! \n\n");
 		return -1;
@@ -188,7 +191,16 @@ int main(int argc, char **argv) {
 							WriteArrayFrame(name, length, key_scancode, bitmaps);
 							if (ai_or_pvp == 1)
 								OPTION = HEAD_TO_HEAD;
-							else OPTION = HUMAN_VS_MACHINE;
+							else
+							{
+								OPTION = HUMAN_VS_MACHINE;
+								screen_to_mouse(screen_buffer, mouse_buffer);
+								drawMouse(bitmaps.mouse, mouse_t.x_mouse, mouse_t.y_mouse, ALIGN_LEFT, mouse_buffer);
+
+								mouse_to_video(mouse_buffer, video_memory);
+								drawBitmap(randImage(), 120,186, ALIGN_LEFT, getScreenBuffer());
+								drawBitmapDelay(randImage(), 120,186, ALIGN_LEFT, getVideoMem());
+							}
 						}
 						else {
 
@@ -308,7 +320,7 @@ int main(int argc, char **argv) {
 							score_conta = score(contador_high);
 							createBitmap();
 							drawBitmap(bitmaps.win, 0,0, ALIGN_LEFT, getScreenBuffer());
-							OPTION = MAIN_MENU;
+							OPTION = STATIC;
 							tries = 0;
 							int k = 0;
 							for (; k < length; k++)
@@ -321,10 +333,14 @@ int main(int argc, char **argv) {
 								word[k] = '0';
 							}
 							RTC_COUNTER = 60;
-							OPTION = MAIN_MENU;
 							tries = 0;
 							tentativas = 0;
 						}
+					}
+
+					if (OPTION == HUMAN_VS_MACHINE)
+					{
+						//olhar para cima (variar)
 					}
 
 					if (key == KEY_ESC) {
