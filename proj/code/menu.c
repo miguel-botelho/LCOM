@@ -2,13 +2,13 @@
 
 void bitmaps_load(bitmap_struct *t)
 {
-	t->background = loadBitmap("home/lcom/proj/code/images/Fundo.bmp");
-	t->highscores = loadBitmap("home/lcom/proj/code/images/Highscores.bmp");
-	t->mouse = loadBitmap("home/lcom/proj/code/images/Mouse.bmp");
-	t->frame = loadBitmap("home/lcom/proj/code/images/Frame.bmp");
-	t->pre_head_to_head = loadBitmap("home/lcom/proj/code/images/Pre-Head_to_Head.bmp");
-	t->lost = loadBitmap("home/lcom/proj/code/images/Lost.bmp");
-	t->win = loadBitmap("home/lcom/proj/code/images/Win.bmp");
+	t->background = loadBitmap(IMAGES_PATH"Fundo.bmp");
+	t->highscores = loadBitmap(IMAGES_PATH"Highscores.bmp");
+	t->mouse = loadBitmap(IMAGES_PATH"Mouse.bmp");
+	t->frame = loadBitmap(IMAGES_PATH"Frame.bmp");
+	t->pre_head_to_head = loadBitmap(IMAGES_PATH"Pre-Head_to_Head.bmp");
+	t->lost = loadBitmap(IMAGES_PATH"Lost.bmp");
+	t->win = loadBitmap(IMAGES_PATH"Win.bmp");
 }
 
 int exit_menu(bitmap_struct bitmaps, Bitmap ** numbers, Bitmap ** key_scancode)
@@ -49,9 +49,9 @@ char position_menu(bitmap_struct bitmaps, Bitmap ** numbers, Bitmap ** key_scanc
 {
 	char bool = 1;
 
-	if ((mouse_t.x_mouse >= 438) && (mouse_t.x_mouse <= 591))
+	if ((mouse_t.x_mouse >= EXIT_X_I) && (mouse_t.x_mouse <= EXIT_X_F))
 	{
-		if ((mouse_t.y_mouse >= 650) && (mouse_t.y_mouse <= 716))
+		if ((mouse_t.y_mouse >= EXIT_Y_I) && (mouse_t.y_mouse <= EXIT_Y_F))
 		{
 			bool = 0;
 			if (mouse_t.LB == 1)
@@ -62,88 +62,88 @@ char position_menu(bitmap_struct bitmaps, Bitmap ** numbers, Bitmap ** key_scanc
 			}
 			else
 			{
-				change_color(438, 591, 650, 716, BLACK, RED, getScreenBuffer());
+				change_color(EXIT_X_I, EXIT_X_F, EXIT_Y_I, EXIT_Y_F, BLACK, RED, getScreenBuffer());
 			}
 
 		}
 	}
 
-	if ((mouse_t.x_mouse >= 305) && (mouse_t.x_mouse <= 718))
+	if ((mouse_t.x_mouse >= HIGH_X_I) && (mouse_t.x_mouse <= HIGH_X_F))
 	{
-		if ((mouse_t.y_mouse >= 555) && (mouse_t.y_mouse <= 644))
+		if ((mouse_t.y_mouse >= HIGH_Y_I) && (mouse_t.y_mouse <= HIGH_Y_F))
 		{
 			bool = 0;
 			if (mouse_t.LB == 1)
 			{
 				OPTION = HIGHSCORES;
-				drawBitmap(bitmaps.highscores, 0, 0, ALIGN_LEFT, getScreenBuffer());
+				drawBitmap(bitmaps.highscores, INITIAL, INITIAL, ALIGN_LEFT, getScreenBuffer());
 				//exit_menu(bitmaps);
 				//funcao HighScores
 			}
 			else
 			{
-				change_color(305, 718, 555, 644, BLACK, RED, getScreenBuffer());
+				change_color(HIGH_X_I, HIGH_X_F, HIGH_Y_I, HIGH_Y_F, BLACK, RED, getScreenBuffer());
 			}
 		}
 	}
 
-	if ((mouse_t.x_mouse >= 341) && (mouse_t.x_mouse <= 633))
+	if ((mouse_t.x_mouse >= ONLINE_X_I) && (mouse_t.x_mouse <= ONLINE_X_F))
 	{
-		if ((mouse_t.y_mouse >= 484) && (mouse_t.y_mouse <= 550))
+		if ((mouse_t.y_mouse >= ONLINE_Y_I) && (mouse_t.y_mouse <= ONLINE_Y_F))
 		{
 			bool = 0;
 			if (mouse_t.LB == 1)
 			{
 				OPTION = ONLINE;
-				drawBitmap(bitmaps.frame, 0, 0, ALIGN_LEFT, getScreenBuffer());
+				drawBitmap(bitmaps.frame, INITIAL, INITIAL, ALIGN_LEFT, getScreenBuffer());
 				//exit_menu(bitmaps);
 				//funcao online
 			}
 			else
 			{
-				change_color(341, 633, 484, 550, BLACK, RED, getScreenBuffer());
+				change_color(ONLINE_X_I, ONLINE_X_F, ONLINE_Y_I, ONLINE_Y_F, BLACK, RED, getScreenBuffer());
 			}
 		}
 	}
 
-	if ((mouse_t.x_mouse >= 248) && (mouse_t.x_mouse <= 787))
+	if ((mouse_t.x_mouse >= HEAD_X_I) && (mouse_t.x_mouse <= HEAD_X_F))
 	{
-		if ((mouse_t.y_mouse >= 412) && (mouse_t.y_mouse <= 466))
+		if ((mouse_t.y_mouse >= HEAD_Y_I) && (mouse_t.y_mouse <= HEAD_Y_F))
 		{
 			bool = 0;
 			if (mouse_t.LB == 1)
 			{
 				OPTION = GET_NAME;
-				drawBitmap(bitmaps.pre_head_to_head, 0, 0, ALIGN_LEFT, getScreenBuffer());
+				drawBitmap(bitmaps.pre_head_to_head, INITIAL, INITIAL, ALIGN_LEFT, getScreenBuffer());
 				ai_or_pvp = 1;
 				tentativas = 0;
 				tries = 0;
-				RTC_COUNTER = 60;
+				RTC_COUNTER = START_RTC_COUNTER;
 			}
 			else
 			{
-				change_color(248, 787, 412, 466, BLACK, RED, getScreenBuffer());
+				change_color(HEAD_X_I, HEAD_X_F, HEAD_Y_I, HEAD_Y_F, BLACK, RED, getScreenBuffer());
 			}
 		}
 	}
 
-	if ((mouse_t.x_mouse >= 149) && (mouse_t.x_mouse <= 871))
+	if ((mouse_t.x_mouse >= HUMAN_X_I) && (mouse_t.x_mouse <= HUMAN_X_F))
 	{
-		if ((mouse_t.y_mouse >= 328) && (mouse_t.y_mouse <= 396))
+		if ((mouse_t.y_mouse >= HUMAN_Y_I) && (mouse_t.y_mouse <= HUMAN_Y_F))
 		{
 			bool = 0;
 			if (mouse_t.LB == 1)
 			{
 				tentativas = 0;
 				tries = 0;
-				RTC_COUNTER = 60;
+				RTC_COUNTER = START_RTC_COUNTER;
 				OPTION = GET_NAME;
 				ai_or_pvp = 0;
-				drawBitmap(bitmaps.pre_head_to_head, 0, 0, ALIGN_LEFT, getScreenBuffer());
+				drawBitmap(bitmaps.pre_head_to_head, INITIAL, INITIAL, ALIGN_LEFT, getScreenBuffer());
 			}
 			else
 			{
-				change_color(149, 871, 328, 396, BLACK, RED, getScreenBuffer());
+				change_color(HUMAN_X_I, HUMAN_X_F, HUMAN_Y_I, HUMAN_Y_F, BLACK, RED, getScreenBuffer());
 			}
 		}
 	}
@@ -155,14 +155,14 @@ char position_menu(bitmap_struct bitmaps, Bitmap ** numbers, Bitmap ** key_scanc
 	else
 	{
 		if (OPTION == MAIN_MENU)
-			drawBitmap(bitmaps.background, 0,0, ALIGN_LEFT, getScreenBuffer());
+			drawBitmap(bitmaps.background, INITIAL,INITIAL, ALIGN_LEFT, getScreenBuffer());
 	}
 	return 1;
 }
 
 int change_color(unsigned xi, unsigned xf, unsigned yi, unsigned yf, int color_init, int color_final, char * video_copy)
 {
-	video_copy = video_copy + xi * 2 + (1024 * yi) * 2;
+	video_copy = video_copy + xi * 2 + (getHRes() * yi) * 2;
 	unsigned int i;
 	unsigned int j;
 	char bool = 1;
@@ -178,7 +178,7 @@ int change_color(unsigned xi, unsigned xf, unsigned yi, unsigned yf, int color_i
 			video_copy+=2;
 		}
 		i = 0;
-		video_copy = video_copy + 1024 * 2 - (xf - xi) * 2;
+		video_copy = video_copy + getHRes() * 2 - (xf - xi) * 2;
 	}
 	return bool;
 }
@@ -210,7 +210,7 @@ int HumanMachine(bitmap_struct bitmaps, Bitmap ** numbers)
 {
 	if (OPTION == HUMAN_VS_MACHINE)
 	{
-		drawMouse(numbers[tries], 162,8, ALIGN_LEFT, getScreenBuffer());
+		drawMouse(numbers[tries], TRIES_X,TRIES_Y, ALIGN_LEFT, getScreenBuffer());
 		if (tentativas != tries)
 		{
 			int a = 0;
@@ -218,30 +218,33 @@ int HumanMachine(bitmap_struct bitmaps, Bitmap ** numbers)
 
 			char* human_machine = getHumanMachine();
 			char* screen_buffer = getScreenBuffer();
-			drawBitmap(bitmaps.frame, 0, 0, ALIGN_LEFT, human_machine);
-			human_machine = human_machine + 162 * 2 + 1024 * 8 * 2;
-			screen_buffer = screen_buffer + 162 * 2 + 1024 * 8 * 2;
-			for(; a < 50; a++)
+			drawBitmap(bitmaps.frame, INITIAL, INITIAL, ALIGN_LEFT, human_machine);
+			human_machine = human_machine + TRIES_X * 2 + getHRes() * TRIES_Y * 2;
+			screen_buffer = screen_buffer + TRIES_X * 2 + getHRes() * TRIES_Y * 2;
+			for(; a < CLEAN_TRIES_X; a++)
 			{
-				for (; l < 40;l++)
+				for (; l < CLEAN_TRIES_Y;l++)
 				{
 					*(uint16_t *)screen_buffer = *(uint16_t *)human_machine;
 					screen_buffer+=2;
 					human_machine+=2;
 				}
 				l = 0;
-				screen_buffer += 1024 * 2 - 40 * 2;
-				human_machine += 1024 * 2 - 40 * 2;
+				screen_buffer += getHRes() * 2 - CLEAN_TRIES_Y * 2;
+				human_machine += getHRes() * 2 - CLEAN_TRIES_Y * 2;
 			}
 			tentativas++;
 		}
-		if ((RTC_COUNTER <= 0) || (tries > 3) )
+		if ((RTC_COUNTER <= 0) || (tries > MAX_TRIES) )
 		{
 			tries = 0;
 			OPTION = STATIC;
-			drawBitmap(bitmaps.lost, 0,0,ALIGN_LEFT, getScreenBuffer());
+			drawBitmap(bitmaps.lost, INITIAL,INITIAL,ALIGN_LEFT, getScreenBuffer());
 			tentativas = 0;
-			RTC_COUNTER = 60;
+			RTC_COUNTER = START_RTC_COUNTER;
+			contador_c = CANVAS_Y_F;
+			cleanName();
+			verdadeiro = 1;
 		}
 		return 0;
 	}
@@ -251,7 +254,7 @@ int Head_to_Head(bitmap_struct bitmaps, Bitmap ** numbers)
 {
 	if (OPTION == HEAD_TO_HEAD)
 	{
-		drawMouse(numbers[tries], 162,8, ALIGN_LEFT, getScreenBuffer());
+		drawMouse(numbers[tries], TRIES_X,TRIES_Y, ALIGN_LEFT, getScreenBuffer());
 		if (tentativas != tries)
 		{
 			int a = 0;
@@ -259,20 +262,20 @@ int Head_to_Head(bitmap_struct bitmaps, Bitmap ** numbers)
 
 			char* human_machine = getHumanMachine();
 			char* screen_buffer = getScreenBuffer();
-			drawBitmap(bitmaps.frame, 0, 0, ALIGN_LEFT, human_machine);
-			human_machine = human_machine + 162 * 2 + 1024 * 8 * 2;
-			screen_buffer = screen_buffer + 162 * 2 + 1024 * 8 * 2;
-			for(; a < 50; a++)
+			drawBitmap(bitmaps.frame, INITIAL, INITIAL, ALIGN_LEFT, human_machine);
+			human_machine = human_machine + TRIES_X * 2 + getHRes() * TRIES_Y * 2;
+			screen_buffer = screen_buffer + TRIES_X * 2 + getHRes() * TRIES_Y * 2;
+			for(; a < CLEAN_TRIES_X; a++)
 			{
-				for (; l < 40;l++)
+				for (; l < CLEAN_TRIES_Y;l++)
 				{
 					*(uint16_t *)screen_buffer = *(uint16_t *)human_machine;
 					screen_buffer+=2;
 					human_machine+=2;
 				}
 				l = 0;
-				screen_buffer += 1024 * 2 - 40 * 2;
-				human_machine += 1024 * 2 - 40 * 2;
+				screen_buffer += getHRes() * 2 - CLEAN_TRIES_Y * 2;
+				human_machine += getHRes() * 2 - CLEAN_TRIES_Y * 2;
 			}
 			tentativas++;
 		}
@@ -282,9 +285,9 @@ int Head_to_Head(bitmap_struct bitmaps, Bitmap ** numbers)
 
 		selectColour();
 
-		if ((mouse_t.x_mouse >= 120) && (mouse_t.x_mouse <= 1020))
+		if ((mouse_t.x_mouse >= TOOL_HANDLER_X_I) && (mouse_t.x_mouse <= TOOL_HANDLER_X_F))
 		{
-			if ((mouse_t.y_mouse >= 183) && (mouse_t.y_mouse <= 717))
+			if ((mouse_t.y_mouse >= TOOL_HANDLER_Y_I) && (mouse_t.y_mouse <= TOOL_HANDLER_Y_F))
 			{
 				if (mouse_t.LB == 1)
 				{
@@ -309,13 +312,14 @@ int Head_to_Head(bitmap_struct bitmaps, Bitmap ** numbers)
 			}
 		}
 
-		if ((RTC_COUNTER <= 0) || (tries > 3) )
+		if ((RTC_COUNTER <= 0) || (tries > MAX_TRIES) )
 		{
 			tries = 0;
 			OPTION = STATIC;
-			drawBitmap(bitmaps.lost, 0,0,ALIGN_LEFT, getScreenBuffer());
+			drawBitmap(bitmaps.lost, INITIAL,INITIAL,ALIGN_LEFT, getScreenBuffer());
 			tentativas = 0;
-			RTC_COUNTER = 60;
+			RTC_COUNTER = START_RTC_COUNTER;
+			cleanName();
 		}
 	}
 
@@ -463,6 +467,7 @@ int toolHandler()
 
 int is_highscore(position_t *draw)
 {
+	/*
 	int place = -1;
 	char discard1, discard2;
 
@@ -475,12 +480,12 @@ int is_highscore(position_t *draw)
 		top_highscores.second = top_highscores.first;
 		top_highscores.first = (*draw);
 
-		remove("home/lcom/proj/code/files/5.bmp");
-		rename("home/lcom/proj/code/files/4.bmp", "home/lcom/proj/code/files/5.bmp");
-		rename("home/lcom/proj/code/files/3.bmp", "home/lcom/proj/code/files/4.bmp");
-		rename("home/lcom/proj/code/files/2.bmp", "home/lcom/proj/code/files/3.bmp");
-		rename("home/lcom/proj/code/files/1.bmp", "home/lcom/proj/code/files/2.bmp");
-		rename("home/lcom/proj/code/files/current_draw.bmp", "home/lcom/proj/code/files/1.bmp");
+		remove(FILES_PATH"5.bmp");
+		rename(FILES_PATH"4.bmp", FILES_PATH"5.bmp");
+		rename(FILES_PATH"3.bmp", FILES_PATH"4.bmp");
+		rename(FILES_PATH"2.bmp", FILES_PATH"3.bmp");
+		rename(FILES_PATH"1.bmp", FILES_PATH"2.bmp");
+		rename(FILES_PATH"current_draw.bmp", FILES_PATH"1.bmp");
 
 		place = 1;
 		OPTION = GET_NAME;
@@ -494,11 +499,11 @@ int is_highscore(position_t *draw)
 		top_highscores.third = top_highscores. second;
 		top_highscores.second = (*draw);
 
-		remove("home/lcom/proj/code/files/5.bmp");
-		rename("home/lcom/proj/code/files/4.bmp", "home/lcom/proj/code/files/5.bmp");
-		rename("home/lcom/proj/code/files/3.bmp", "home/lcom/proj/code/files/4.bmp");
-		rename("home/lcom/proj/code/files/2.bmp", "home/lcom/proj/code/files/3.bmp");
-		rename("home/lcom/proj/code/files/current_draw.bmp", "home/lcom/proj/code/files/2.bmp");
+		remove(FILES_PATH"5.bmp");
+		rename(FILES_PATH"4.bmp", FILES_PATH"5.bmp");
+		rename(FILES_PATH"3.bmp", FILES_PATH"4.bmp");
+		rename(FILES_PATH"2.bmp", FILES_PATH"3.bmp");
+		rename(FILES_PATH"current_draw.bmp", FILES_PATH"2.bmp");
 
 		place = 2;
 		OPTION = GET_NAME;
@@ -511,10 +516,10 @@ int is_highscore(position_t *draw)
 		top_highscores.fourth = top_highscores.third;
 		top_highscores.third = (*draw);
 
-		remove("home/lcom/proj/code/files/5.bmp");
-		rename("home/lcom/proj/code/files/4.bmp", "home/lcom/proj/code/files/5.bmp");
-		rename("home/lcom/proj/code/files/3.bmp", "home/lcom/proj/code/files/4.bmp");
-		rename("home/lcom/proj/code/files/current_draw.bmp", "home/lcom/proj/code/files/3.bmp");
+		remove(FILES_PATH"5.bmp");
+		rename(FILES_PATH"4.bmp", FILES_PATH"5.bmp");
+		rename(FILES_PATH"3.bmp", FILES_PATH"4.bmp");
+		rename(FILES_PATH"current_draw.bmp", FILES_PATH"3.bmp");
 
 		place = 3;
 		OPTION = GET_NAME;
@@ -526,9 +531,9 @@ int is_highscore(position_t *draw)
 		top_highscores.fifth = top_highscores.fourth;
 		top_highscores.fourth = (*draw);
 
-		remove("home/lcom/proj/code/files/5.bmp");
-		rename("home/lcom/proj/code/files/4.bmp", "home/lcom/proj/code/files/5.bmp");
-		rename("home/lcom/proj/code/files/current_draw.bmp", "home/lcom/proj/code/files/4.bmp");
+		remove(FILES_PATH"5.bmp");
+		rename(FILES_PATH"4.bmp", FILES_PATH"5.bmp");
+		rename(FILES_PATH"current_draw.bmp", FILES_PATH"4.bmp");
 
 
 		place = 4;
@@ -540,8 +545,8 @@ int is_highscore(position_t *draw)
 		read_time(&(draw->year), &(draw->month), &(draw->day), &discard1, &(draw->hour), &(draw->minutes), &discard2);
 		top_highscores.fifth = (*draw);
 
-		remove("home/lcom/proj/code/files/5.bmp");
-		rename("home/lcom/proj/code/files/current_draw.bmp", "home/lcom/proj/code/files/5.bmp");
+		remove(FILES_PATH"5.bmp");
+		rename(FILES_PATH"current_draw.bmp", FILES_PATH"5.bmp");
 
 		place = 5;
 		OPTION = GET_NAME;
@@ -549,6 +554,7 @@ int is_highscore(position_t *draw)
 	}
 
 	return place;
+	 */
 }
 
 int score(int tick)
@@ -562,9 +568,9 @@ int score(int tick)
 
 void selectDraw()
 {
-	if ( (mouse_t.x_mouse >= 25) && (mouse_t.x_mouse <= 84) )
+	if ( (mouse_t.x_mouse >= TOOL_X_I) && (mouse_t.x_mouse <= TOOL_X_F) )
 	{
-		if ( (mouse_t.y_mouse >= 241) && (mouse_t.y_mouse <= 289))
+		if ( (mouse_t.y_mouse >= MINUS_Y_I) && (mouse_t.y_mouse <= MINUS_Y_F))
 		{
 			if (mouse_t.LB == 1)
 			{
@@ -573,9 +579,9 @@ void selectDraw()
 		}
 	}
 
-	if ( (mouse_t.x_mouse >= 25) && (mouse_t.x_mouse <= 84) )
+	if ( (mouse_t.x_mouse >= TOOL_X_I) && (mouse_t.x_mouse <= TOOL_X_F) )
 	{
-		if ( (mouse_t.y_mouse >= 289) && (mouse_t.y_mouse <= 337))
+		if ( (mouse_t.y_mouse >= PLUS_Y_I) && (mouse_t.y_mouse <= PLUS_Y_F))
 		{
 			if (mouse_t.LB == 1)
 			{
@@ -584,87 +590,87 @@ void selectDraw()
 		}
 	}
 
-	if ( (mouse_t.x_mouse >= 25) && (mouse_t.x_mouse <= 84) )
+	if ( (mouse_t.x_mouse >= TOOL_X_I) && (mouse_t.x_mouse <= TOOL_X_F) )
 	{
-		if ( (mouse_t.y_mouse >= 337) && (mouse_t.y_mouse <= 385))
+		if ( (mouse_t.y_mouse >= BUCKET_Y_I) && (mouse_t.y_mouse <= BUCKET_Y_F))
 		{
 			if (mouse_t.LB == 1)
 			{
-				change_color(25,84,337,625,RED,BLACK, getScreenBuffer());
-				change_color(25, 84, 337, 385, BLACK, RED, getScreenBuffer());
+				change_color(TOOL_X_I,TOOL_X_F,BUCKET_Y_I,SQUARE_Y_F,RED,BLACK, getScreenBuffer());
+				change_color(TOOL_X_I, TOOL_X_F, BUCKET_Y_I, BUCKET_Y_F, BLACK, RED, getScreenBuffer());
 				tool = BUCKET;
 			}
 		}
 	}
 
-	if ( (mouse_t.x_mouse >= 25) && (mouse_t.x_mouse <= 84) )
+	if ( (mouse_t.x_mouse >= TOOL_X_I) && (mouse_t.x_mouse <= TOOL_X_F) )
 	{
-		if ( (mouse_t.y_mouse >= 385) && (mouse_t.y_mouse <= 433))
+		if ( (mouse_t.y_mouse >= BRUSH_Y_I) && (mouse_t.y_mouse <= BRUSH_Y_F))
 		{
 			if (mouse_t.LB == 1)
 			{
-				change_color(25,84,337,625,RED,BLACK, getScreenBuffer());
-				change_color(25, 84, 385, 433, BLACK, RED, getScreenBuffer());
+				change_color(TOOL_X_I,TOOL_X_F,BUCKET_Y_I,SQUARE_Y_F,RED,BLACK, getScreenBuffer());
+				change_color(TOOL_X_I, TOOL_X_F, BRUSH_Y_I, BRUSH_Y_F, BLACK, RED, getScreenBuffer());
 				tool = BRUSH;
 			}
 		}
 	}
 
-	if ( (mouse_t.x_mouse >= 25) && (mouse_t.x_mouse <= 84) )
+	if ( (mouse_t.x_mouse >= TOOL_X_I) && (mouse_t.x_mouse <= TOOL_X_F) )
 	{
-		if ( (mouse_t.y_mouse >= 433) && (mouse_t.y_mouse <= 481))
+		if ( (mouse_t.y_mouse >= PENCIL_Y_I) && (mouse_t.y_mouse <= PENCIL_Y_F))
 		{
 			if (mouse_t.LB == 1)
 			{
-				change_color(25,84,337,625,RED,BLACK, getScreenBuffer());
-				change_color(25, 84, 433, 481, BLACK, RED, getScreenBuffer());
+				change_color(TOOL_X_I,TOOL_X_F,BUCKET_Y_I,SQUARE_Y_F,RED,BLACK, getScreenBuffer());
+				change_color(TOOL_X_I, TOOL_X_F, PENCIL_Y_I, PENCIL_Y_F, BLACK, RED, getScreenBuffer());
 				tool = PENCIL;
 			}
 		}
 	}
 
-	if ( (mouse_t.x_mouse >= 25) && (mouse_t.x_mouse <= 84) )
+	if ( (mouse_t.x_mouse >= TOOL_X_I) && (mouse_t.x_mouse <= TOOL_X_F) )
 	{
-		if ( (mouse_t.y_mouse >= 481) && (mouse_t.y_mouse <= 529))
+		if ( (mouse_t.y_mouse >= LINE_Y_I) && (mouse_t.y_mouse <= LINE_Y_F))
 		{
 			if (mouse_t.LB == 1)
 			{
-				change_color(25,84,337,625,RED,BLACK, getScreenBuffer());
-				change_color(25, 84, 481, 529, BLACK, RED, getScreenBuffer());
+				change_color(TOOL_X_I,TOOL_X_F,BUCKET_Y_I,SQUARE_Y_F,RED,BLACK, getScreenBuffer());
+				change_color(TOOL_X_I, TOOL_X_F, LINE_Y_I, LINE_Y_F, BLACK, RED, getScreenBuffer());
 				tool = LINE;
 			}
 		}
 	}
 
-	if ( (mouse_t.x_mouse >= 25) && (mouse_t.x_mouse <= 84) )
+	if ( (mouse_t.x_mouse >= TOOL_X_I) && (mouse_t.x_mouse <= TOOL_X_F) )
 	{
-		if ( (mouse_t.y_mouse >= 529) && (mouse_t.y_mouse <= 577))
+		if ( (mouse_t.y_mouse >= CIRCLE_Y_I) && (mouse_t.y_mouse <= CIRCLE_Y_F))
 		{
 			if (mouse_t.LB == 1)
 			{
-				change_color(25,84,337,625,RED,BLACK, getScreenBuffer());
-				change_color(25, 84, 529, 577, BLACK, RED, getScreenBuffer());
+				change_color(TOOL_X_I,TOOL_X_F,BUCKET_Y_I,SQUARE_Y_F,RED,BLACK, getScreenBuffer());
+				change_color(TOOL_X_I, TOOL_X_F, CIRCLE_Y_I, CIRCLE_Y_F, BLACK, RED, getScreenBuffer());
 				tool = CIRCLE;
 			}
 		}
 	}
 
-	if ( (mouse_t.x_mouse >= 25) && (mouse_t.x_mouse <= 84) )
+	if ( (mouse_t.x_mouse >= TOOL_X_I) && (mouse_t.x_mouse <= TOOL_X_F) )
 	{
-		if ( (mouse_t.y_mouse >= 577) && (mouse_t.y_mouse <= 625))
+		if ( (mouse_t.y_mouse >= SQUARE_Y_I) && (mouse_t.y_mouse <= SQUARE_Y_F))
 		{
 			if (mouse_t.LB == 1)
 			{
-				change_color(25,84,337,625,RED,BLACK, getScreenBuffer());
-				change_color(25, 84, 577, 625, BLACK, RED, getScreenBuffer());
+				change_color(TOOL_X_I,TOOL_X_F,BUCKET_Y_I,SQUARE_Y_F,RED,BLACK, getScreenBuffer());
+				change_color(TOOL_X_I, TOOL_X_F, SQUARE_Y_I, SQUARE_Y_F, BLACK, RED, getScreenBuffer());
 				tool = SQUARE;
 			}
 		}
 	}
 
-	if ( (mouse_t.x_mouse >= 25) && (mouse_t.x_mouse <= 84) )
+	if ( (mouse_t.x_mouse >= TOOL_X_I) && (mouse_t.x_mouse <= TOOL_X_F) )
 	{
-		if ( (mouse_t.y_mouse >= 625) && (mouse_t.y_mouse <= 673))
+		if ( (mouse_t.y_mouse >= UNDO_Y_I) && (mouse_t.y_mouse <= UNDO_Y_F))
 		{
 			if (mouse_t.LB == 1)
 			{
@@ -673,9 +679,9 @@ void selectDraw()
 		}
 	}
 
-	if ( (mouse_t.x_mouse >= 25) && (mouse_t.x_mouse <= 84) )
+	if ( (mouse_t.x_mouse >= TOOL_X_I) && (mouse_t.x_mouse <= TOOL_X_F) )
 	{
-		if ( (mouse_t.y_mouse >= 673) && (mouse_t.y_mouse <= 721))
+		if ( (mouse_t.y_mouse >= UNDO_Y_I) && (mouse_t.y_mouse <= UNDO_Y_F))
 		{
 			if (mouse_t.LB == 1)
 			{
@@ -687,9 +693,9 @@ void selectDraw()
 
 void selectColour()
 {
-	if ( (mouse_t.x_mouse >= 489) && (mouse_t.x_mouse <= 534) )
+	if ( (mouse_t.x_mouse >= BLACK_X_I) && (mouse_t.x_mouse <= BLACK_X_F) )
 	{
-		if ( (mouse_t.y_mouse >= 720) && (mouse_t.y_mouse <= 768))
+		if ( (mouse_t.y_mouse >= COLOR_MAX) && (mouse_t.y_mouse <= getVRes()))
 		{
 			if (mouse_t.LB == 1)
 			{
@@ -698,9 +704,9 @@ void selectColour()
 		}
 	}
 
-	if ( (mouse_t.x_mouse >= 534) && (mouse_t.x_mouse <= 582) )
+	if ( (mouse_t.x_mouse >= GRAY_X_I) && (mouse_t.x_mouse <= GRAY_X_F) )
 	{
-		if ( (mouse_t.y_mouse >= 720) && (mouse_t.y_mouse <= 768))
+		if ( (mouse_t.y_mouse >= COLOR_MAX) && (mouse_t.y_mouse <= getVRes()))
 		{
 			if (mouse_t.LB == 1)
 			{
@@ -710,9 +716,9 @@ void selectColour()
 		}
 	}
 
-	if ( (mouse_t.x_mouse >= 582) && (mouse_t.x_mouse <= 631) )
+	if ( (mouse_t.x_mouse >= RED_X_I) && (mouse_t.x_mouse <= RED_X_F) )
 	{
-		if ( (mouse_t.y_mouse >= 720) && (mouse_t.y_mouse <= 768))
+		if ( (mouse_t.y_mouse >= COLOR_MAX) && (mouse_t.y_mouse <= getVRes()))
 		{
 			if (mouse_t.LB == 1)
 			{
@@ -722,9 +728,9 @@ void selectColour()
 		}
 	}
 
-	if ( (mouse_t.x_mouse >= 631) && (mouse_t.x_mouse <= 681) )
+	if ( (mouse_t.x_mouse >= ORANGE_X_I) && (mouse_t.x_mouse <= ORANGE_X_F) )
 	{
-		if ( (mouse_t.y_mouse >= 720) && (mouse_t.y_mouse <= 768))
+		if ( (mouse_t.y_mouse >= COLOR_MAX) && (mouse_t.y_mouse <= getVRes()))
 		{
 			if (mouse_t.LB == 1)
 			{
@@ -734,9 +740,9 @@ void selectColour()
 		}
 	}
 
-	if ( (mouse_t.x_mouse >= 681) && (mouse_t.x_mouse <= 730) )
+	if ( (mouse_t.x_mouse >= BLUE_X_I) && (mouse_t.x_mouse <= BLUE_X_F) )
 	{
-		if ( (mouse_t.y_mouse >= 720) && (mouse_t.y_mouse <= 768))
+		if ( (mouse_t.y_mouse >= COLOR_MAX) && (mouse_t.y_mouse <= getVRes()))
 		{
 			if (mouse_t.LB == 1)
 			{
@@ -745,9 +751,9 @@ void selectColour()
 			}
 		}
 	}
-	if ( (mouse_t.x_mouse >= 730) && (mouse_t.x_mouse <= 778) )
+	if ( (mouse_t.x_mouse >= GREEN_X_I) && (mouse_t.x_mouse <= GREEN_X_F) )
 	{
-		if ( (mouse_t.y_mouse >= 720) && (mouse_t.y_mouse <= 768))
+		if ( (mouse_t.y_mouse >= COLOR_MAX) && (mouse_t.y_mouse <= getVRes()))
 		{
 			if (mouse_t.LB == 1)
 			{
@@ -757,9 +763,9 @@ void selectColour()
 		}
 	}
 
-	if ( (mouse_t.x_mouse >= 778) && (mouse_t.x_mouse <= 826) )
+	if ( (mouse_t.x_mouse >= YELLOW_X_I) && (mouse_t.x_mouse <= YELLOW_X_F) )
 	{
-		if ( (mouse_t.y_mouse >= 720) && (mouse_t.y_mouse <= 768))
+		if ( (mouse_t.y_mouse >= COLOR_MAX) && (mouse_t.y_mouse <= getVRes()))
 		{
 			if (mouse_t.LB == 1)
 			{
@@ -769,9 +775,9 @@ void selectColour()
 		}
 	}
 
-	if ( (mouse_t.x_mouse >= 826) && (mouse_t.x_mouse <= 876) )
+	if ( (mouse_t.x_mouse >= PURPLE_X_I) && (mouse_t.x_mouse <= PURPLE_X_F) )
 	{
-		if ( (mouse_t.y_mouse >= 720) && (mouse_t.y_mouse <= 768))
+		if ( (mouse_t.y_mouse >= COLOR_MAX) && (mouse_t.y_mouse <= getVRes()))
 		{
 			if (mouse_t.LB == 1)
 			{
@@ -781,9 +787,9 @@ void selectColour()
 		}
 	}
 
-	if ( (mouse_t.x_mouse >= 876) && (mouse_t.x_mouse <= 925) )
+	if ( (mouse_t.x_mouse >= PINK_X_I) && (mouse_t.x_mouse <= PINK_X_F) )
 	{
-		if ( (mouse_t.y_mouse >= 720) && (mouse_t.y_mouse <= 768))
+		if ( (mouse_t.y_mouse >= COLOR_MAX) && (mouse_t.y_mouse <= getVRes()))
 		{
 			if (mouse_t.LB == 1)
 			{
@@ -793,9 +799,9 @@ void selectColour()
 		}
 	}
 
-	if ( (mouse_t.x_mouse >= 925) && (mouse_t.x_mouse <= 973) )
+	if ( (mouse_t.x_mouse >= BROWN_X_I) && (mouse_t.x_mouse <= BROWN_X_F) )
 	{
-		if ( (mouse_t.y_mouse >= 720) && (mouse_t.y_mouse <= 768))
+		if ( (mouse_t.y_mouse >= COLOR_MAX) && (mouse_t.y_mouse <= getVRes()))
 		{
 			if (mouse_t.LB == 1)
 			{
@@ -805,9 +811,9 @@ void selectColour()
 		}
 	}
 
-	if ( (mouse_t.x_mouse >= 973) && (mouse_t.x_mouse <= 1024) )
+	if ( (mouse_t.x_mouse >= WHITE_X_I) && (mouse_t.x_mouse <= WHITE_X_F) )
 	{
-		if ( (mouse_t.y_mouse >= 720) && (mouse_t.y_mouse <= 768))
+		if ( (mouse_t.y_mouse >= COLOR_MAX) && (mouse_t.y_mouse <= getVRes()))
 		{
 			if (mouse_t.LB == 1)
 			{
@@ -825,26 +831,26 @@ int displayTimer(int contador, Bitmap ** numbers, bitmap_struct bitmaps)
 	unsigned int a = 0;
 	char * human_machine = getHumanMachine();
 	char * screen_buffer = getScreenBuffer();
-	drawBitmap(bitmaps.frame, 0, 0, ALIGN_LEFT, human_machine);
-	human_machine = human_machine + (1024 - 100) * 2;
-	screen_buffer = screen_buffer + (1024 - 100) * 2;
+	drawBitmap(bitmaps.frame, INITIAL, INITIAL, ALIGN_LEFT, human_machine);
+	human_machine = human_machine + (getHRes() - CLEAN_TIMER) * 2;
+	screen_buffer = screen_buffer + (getHRes() - CLEAN_TIMER) * 2;
 
-	for(; a < 100; a++)
+	for(; a < CLEAN_TIMER; a++)
 	{
-		for (; l < 100;l++)
+		for (; l < CLEAN_TIMER;l++)
 		{
 			*(uint16_t *)screen_buffer = *(uint16_t *)human_machine;
 			screen_buffer+=2;
 			human_machine+=2;
 		}
 		l = 0;
-		screen_buffer += 1024 * 2 - 100 * 2;
-		human_machine += 1024 * 2 - 100 * 2;
+		screen_buffer += getHRes() * 2 - CLEAN_TIMER * 2;
+		human_machine += getHRes() * 2 - CLEAN_TIMER * 2;
 	}
 
 	screen_buffer = getScreenBuffer();
 
-	drawMouse(numbers[contador], 1024 - 60, 30, ALIGN_LEFT, screen_buffer);
+	drawMouse(numbers[contador], getHRes() - 60, 30, ALIGN_LEFT, screen_buffer);
 
 	screen_to_mouse(screen_buffer, getMouseBuffer());
 	drawMouse(bitmaps.mouse, mouse_t.x_mouse, mouse_t.y_mouse, ALIGN_LEFT, getMouseBuffer());
@@ -860,29 +866,29 @@ int displayTimer10(int contador, Bitmap ** numbers, bitmap_struct bitmaps)
 	unsigned int a = 0;
 	char * human_machine = getHumanMachine();
 	char * screen_buffer = getScreenBuffer();
-	drawBitmap(bitmaps.frame, 0, 0, ALIGN_LEFT, human_machine);
-	human_machine = human_machine + (1024 - 100) * 2;
-	screen_buffer = screen_buffer + (1024 - 100) * 2;
-	for(; a < 100; a++)
+	drawBitmap(bitmaps.frame, INITIAL, INITIAL, ALIGN_LEFT, human_machine);
+	human_machine = human_machine + (getHRes() - CLEAN_TIMER) * 2;
+	screen_buffer = screen_buffer + (getHRes() - CLEAN_TIMER) * 2;
+	for(; a < CLEAN_TIMER; a++)
 	{
-		for (; l < 100;l++)
+		for (; l < CLEAN_TIMER;l++)
 		{
 			*(uint16_t *)screen_buffer = *(uint16_t *)human_machine;
 			screen_buffer+=2;
 			human_machine+=2;
 		}
 		l = 0;
-		screen_buffer += 1024 * 2 - 100 * 2;
-		human_machine += 1024 * 2 - 100 * 2;
+		screen_buffer += getHRes() * 2 - CLEAN_TIMER * 2;
+		human_machine += getHRes() * 2 - CLEAN_TIMER * 2;
 	}
 	screen_buffer = getScreenBuffer();
-	drawMouse(numbers[nr1], 1024 - 60, 30, ALIGN_LEFT, screen_buffer);
-	drawMouse(numbers[nr2], 1024 - 30, 30, ALIGN_LEFT, screen_buffer);
+	drawMouse(numbers[nr1], getHRes() - 60, 30, ALIGN_LEFT, screen_buffer);
+	drawMouse(numbers[nr2], getHRes() - 30, 30, ALIGN_LEFT, screen_buffer);
 	/*
 	screen_to_mouse(screen_buffer, getMouseBuffer());
 	drawMouse(bitmaps.mouse, mouse_t.x_mouse, mouse_t.y_mouse, ALIGN_LEFT, getMouseBuffer());
 	mouse_to_video(getMouseBuffer(), getVideoMem());
-	*/
+	 */
 
 }
 
@@ -897,158 +903,158 @@ void WriteArray(char * name, int length, Bitmap ** key_scancode, bitmap_struct b
 		{
 		case 'Q':
 		{
-			drawMouse(key_scancode[KEY_Q], 258 + espaco, 492, ALIGN_LEFT, screen_buffer);
-			espaco = espaco + 35;
+			drawMouse(key_scancode[KEY_Q], START_ARRAY_X + espaco, START_ARRAY_Y, ALIGN_LEFT, screen_buffer);
+			espaco = espaco + SPACE_KEYS;
 			break;
 		}
 		case 'W':
 		{
-			drawMouse(key_scancode[KEY_W], 258 + espaco, 492, ALIGN_LEFT, screen_buffer);
-			espaco = espaco + 35;
+			drawMouse(key_scancode[KEY_W], START_ARRAY_X + espaco, START_ARRAY_Y, ALIGN_LEFT, screen_buffer);
+			espaco = espaco + SPACE_KEYS;
 			break;
 		}
 		case 'E':
 		{
-			drawMouse(key_scancode[KEY_E], 258 + espaco, 492, ALIGN_LEFT, screen_buffer);
-			espaco = espaco + 35;
+			drawMouse(key_scancode[KEY_E], START_ARRAY_X + espaco, START_ARRAY_Y, ALIGN_LEFT, screen_buffer);
+			espaco = espaco + SPACE_KEYS;
 			break;
 		}
 		case 'R':
 		{
-			drawMouse(key_scancode[KEY_R], 258 + espaco, 492, ALIGN_LEFT, screen_buffer);
-			espaco = espaco + 35;
+			drawMouse(key_scancode[KEY_R], START_ARRAY_X + espaco, START_ARRAY_Y, ALIGN_LEFT, screen_buffer);
+			espaco = espaco + SPACE_KEYS;
 			break;
 		}
 		case 'T':
 		{
-			drawMouse(key_scancode[KEY_T], 258 + espaco, 492, ALIGN_LEFT, screen_buffer);
-			espaco = espaco + 35;
+			drawMouse(key_scancode[KEY_T], START_ARRAY_X + espaco, START_ARRAY_Y, ALIGN_LEFT, screen_buffer);
+			espaco = espaco + SPACE_KEYS;
 			break;
 		}
 		case 'Y':
 		{
-			drawMouse(key_scancode[KEY_Y], 258 + espaco, 492, ALIGN_LEFT, screen_buffer);
-			espaco = espaco + 35;
+			drawMouse(key_scancode[KEY_Y], START_ARRAY_X + espaco, START_ARRAY_Y, ALIGN_LEFT, screen_buffer);
+			espaco = espaco + SPACE_KEYS;
 			break;
 		}
 		case 'U':
 		{
-			drawMouse(key_scancode[KEY_U], 258 + espaco, 492, ALIGN_LEFT, screen_buffer);
-			espaco = espaco + 35;
+			drawMouse(key_scancode[KEY_U], START_ARRAY_X + espaco, START_ARRAY_Y, ALIGN_LEFT, screen_buffer);
+			espaco = espaco + SPACE_KEYS;
 			break;
 		}
 		case 'I':
 		{
-			drawMouse(key_scancode[KEY_I], 258 + espaco, 492, ALIGN_LEFT, screen_buffer);
-			espaco = espaco + 35;
+			drawMouse(key_scancode[KEY_I], START_ARRAY_X + espaco, START_ARRAY_Y, ALIGN_LEFT, screen_buffer);
+			espaco = espaco + SPACE_KEYS;
 			break;
 		}
 		case 'O':
 		{
-			drawMouse(key_scancode[KEY_O], 258 + espaco, 492, ALIGN_LEFT, screen_buffer);
-			espaco = espaco + 35;
+			drawMouse(key_scancode[KEY_O], START_ARRAY_X + espaco, START_ARRAY_Y, ALIGN_LEFT, screen_buffer);
+			espaco = espaco + SPACE_KEYS;
 			break;
 		}
 		case 'P':
 		{
-			drawMouse(key_scancode[KEY_P], 258 + espaco, 492, ALIGN_LEFT, screen_buffer);
-			espaco = espaco + 35;
+			drawMouse(key_scancode[KEY_P], START_ARRAY_X + espaco, START_ARRAY_Y, ALIGN_LEFT, screen_buffer);
+			espaco = espaco + SPACE_KEYS;
 			break;
 		}
 		case 'A':
 		{
-			drawMouse(key_scancode[KEY_A], 258 + espaco, 492, ALIGN_LEFT, screen_buffer);
-			espaco = espaco + 35;
+			drawMouse(key_scancode[KEY_A], START_ARRAY_X + espaco, START_ARRAY_Y, ALIGN_LEFT, screen_buffer);
+			espaco = espaco + SPACE_KEYS;
 			break;
 		}
 		case 'S':
 		{
-			drawMouse(key_scancode[KEY_S], 258 + espaco, 492, ALIGN_LEFT, screen_buffer);
-			espaco = espaco + 35;
+			drawMouse(key_scancode[KEY_S], START_ARRAY_X + espaco, START_ARRAY_Y, ALIGN_LEFT, screen_buffer);
+			espaco = espaco + SPACE_KEYS;
 			break;
 		}
 		case 'D':
 		{
-			drawMouse(key_scancode[KEY_D], 258 + espaco, 492, ALIGN_LEFT, screen_buffer);
-			espaco = espaco + 35;
+			drawMouse(key_scancode[KEY_D], START_ARRAY_X + espaco, START_ARRAY_Y, ALIGN_LEFT, screen_buffer);
+			espaco = espaco + SPACE_KEYS;
 			break;
 		}
 		case 'F':
 		{
-			drawMouse(key_scancode[KEY_F], 258 + espaco, 492, ALIGN_LEFT, screen_buffer);
-			espaco = espaco + 35;
+			drawMouse(key_scancode[KEY_F], START_ARRAY_X + espaco, START_ARRAY_Y, ALIGN_LEFT, screen_buffer);
+			espaco = espaco + SPACE_KEYS;
 			break;
 		}
 		case 'G':
 		{
-			drawMouse(key_scancode[KEY_G], 258 + espaco, 492, ALIGN_LEFT, screen_buffer);
-			espaco = espaco + 35;
+			drawMouse(key_scancode[KEY_G], START_ARRAY_X + espaco, START_ARRAY_Y, ALIGN_LEFT, screen_buffer);
+			espaco = espaco + SPACE_KEYS;
 			break;
 		}
 		case 'H':
 		{
-			drawMouse(key_scancode[KEY_H], 258 + espaco, 492, ALIGN_LEFT, screen_buffer);
-			espaco = espaco + 35;
+			drawMouse(key_scancode[KEY_H], START_ARRAY_X + espaco, START_ARRAY_Y, ALIGN_LEFT, screen_buffer);
+			espaco = espaco + SPACE_KEYS;
 			break;
 		}
 		case 'J':
 		{
-			drawMouse(key_scancode[KEY_J], 258 + espaco, 492, ALIGN_LEFT, screen_buffer);
-			espaco = espaco + 35;
+			drawMouse(key_scancode[KEY_J], START_ARRAY_X + espaco, START_ARRAY_Y, ALIGN_LEFT, screen_buffer);
+			espaco = espaco + SPACE_KEYS;
 			break;
 		}
 		case 'K':
 		{
-			drawMouse(key_scancode[KEY_K], 258 + espaco, 492, ALIGN_LEFT, screen_buffer);
-			espaco = espaco + 35;
+			drawMouse(key_scancode[KEY_K], START_ARRAY_X + espaco, START_ARRAY_Y, ALIGN_LEFT, screen_buffer);
+			espaco = espaco + SPACE_KEYS;
 			break;
 		}
 		case 'L':
 		{
-			drawMouse(key_scancode[KEY_L], 258 + espaco, 492, ALIGN_LEFT, screen_buffer);
-			espaco = espaco + 35;
+			drawMouse(key_scancode[KEY_L], START_ARRAY_X + espaco, START_ARRAY_Y, ALIGN_LEFT, screen_buffer);
+			espaco = espaco + SPACE_KEYS;
 			break;
 		}
 		case 'Z':
 		{
-			drawMouse(key_scancode[KEY_Z], 258 + espaco, 492, ALIGN_LEFT, screen_buffer);
-			espaco = espaco + 35;
+			drawMouse(key_scancode[KEY_Z], START_ARRAY_X + espaco, START_ARRAY_Y, ALIGN_LEFT, screen_buffer);
+			espaco = espaco + SPACE_KEYS;
 			break;
 		}
 		case 'X':
 		{
-			drawMouse(key_scancode[KEY_X], 258 + espaco, 492, ALIGN_LEFT, screen_buffer);
-			espaco = espaco + 35;
+			drawMouse(key_scancode[KEY_X], START_ARRAY_X + espaco, START_ARRAY_Y, ALIGN_LEFT, screen_buffer);
+			espaco = espaco + SPACE_KEYS;
 			break;
 		}
 		case 'C':
 		{
-			drawMouse(key_scancode[KEY_C], 258 + espaco, 492, ALIGN_LEFT, screen_buffer);
-			espaco = espaco + 35;
+			drawMouse(key_scancode[KEY_C], START_ARRAY_X + espaco, START_ARRAY_Y, ALIGN_LEFT, screen_buffer);
+			espaco = espaco + SPACE_KEYS;
 			break;
 		}
 		case 'V':
 		{
-			drawMouse(key_scancode[KEY_V], 258 + espaco, 492, ALIGN_LEFT, screen_buffer);
-			espaco = espaco + 35;
+			drawMouse(key_scancode[KEY_V], START_ARRAY_X + espaco, START_ARRAY_Y, ALIGN_LEFT, screen_buffer);
+			espaco = espaco + SPACE_KEYS;
 			break;
 		}
 		case 'B':
 		{
-			drawMouse(key_scancode[KEY_B], 258 + espaco, 492, ALIGN_LEFT, screen_buffer);
-			espaco = espaco + 35;
+			drawMouse(key_scancode[KEY_B], START_ARRAY_X + espaco, START_ARRAY_Y, ALIGN_LEFT, screen_buffer);
+			espaco = espaco + SPACE_KEYS;
 			break;
 		}
 		case 'N':
 		{
-			drawMouse(key_scancode[KEY_N], 258 + espaco, 492, ALIGN_LEFT, screen_buffer);
-			espaco = espaco + 35;
+			drawMouse(key_scancode[KEY_N], START_ARRAY_X + espaco, START_ARRAY_Y, ALIGN_LEFT, screen_buffer);
+			espaco = espaco + SPACE_KEYS;
 			break;
 		}
 		case 'M':
 		{
-			drawMouse(key_scancode[KEY_M], 258 + espaco, 492, ALIGN_LEFT, screen_buffer);
-			espaco = espaco + 35;
+			drawMouse(key_scancode[KEY_M], START_ARRAY_X + espaco, START_ARRAY_Y, ALIGN_LEFT, screen_buffer);
+			espaco = espaco + SPACE_KEYS;
 			break;
 		}
 		}
@@ -1066,7 +1072,7 @@ void getrgb(int *red, int *green, int *blue)
 	}
 	else if (colour == YELLOW){
 		*red = 255;
-		*green = 251;
+		*green = ERASE_NAME_X;
 		*blue = 0;
 	}
 	else if (colour == BLUE){
@@ -1131,7 +1137,7 @@ void getrgb(int *red, int *green, int *blue)
 	}
 	else if (colour == BROWN){
 		*red = 132;
-		*green = 61;
+		*green = START_NAME_Y;
 		*blue = 8;
 	}
 	else if (colour == DARK_GRAY){
@@ -1158,158 +1164,158 @@ void WriteArrayFrame(char * name, int length, Bitmap ** key_scancode, bitmap_str
 		{
 		case 'Q':
 		{
-			drawMouse(key_scancode[KEY_Q], 117 + espaco, 61, ALIGN_LEFT, screen_buffer);
-			espaco = espaco + 35;
+			drawMouse(key_scancode[KEY_Q], START_NAME_X + espaco, START_NAME_Y, ALIGN_LEFT, screen_buffer);
+			espaco = espaco + SPACE_KEYS;
 			break;
 		}
 		case 'W':
 		{
-			drawMouse(key_scancode[KEY_W], 117 + espaco, 61, ALIGN_LEFT, screen_buffer);
-			espaco = espaco + 35;
+			drawMouse(key_scancode[KEY_W], START_NAME_X + espaco, START_NAME_Y, ALIGN_LEFT, screen_buffer);
+			espaco = espaco + SPACE_KEYS;
 			break;
 		}
 		case 'E':
 		{
-			drawMouse(key_scancode[KEY_E], 117 + espaco, 61, ALIGN_LEFT, screen_buffer);
-			espaco = espaco + 35;
+			drawMouse(key_scancode[KEY_E], START_NAME_X + espaco, START_NAME_Y, ALIGN_LEFT, screen_buffer);
+			espaco = espaco + SPACE_KEYS;
 			break;
 		}
 		case 'R':
 		{
-			drawMouse(key_scancode[KEY_R], 117 + espaco, 61, ALIGN_LEFT, screen_buffer);
-			espaco = espaco + 35;
+			drawMouse(key_scancode[KEY_R], START_NAME_X + espaco, START_NAME_Y, ALIGN_LEFT, screen_buffer);
+			espaco = espaco + SPACE_KEYS;
 			break;
 		}
 		case 'T':
 		{
-			drawMouse(key_scancode[KEY_T], 117 + espaco, 61, ALIGN_LEFT, screen_buffer);
-			espaco = espaco + 35;
+			drawMouse(key_scancode[KEY_T], START_NAME_X + espaco, START_NAME_Y, ALIGN_LEFT, screen_buffer);
+			espaco = espaco + SPACE_KEYS;
 			break;
 		}
 		case 'Y':
 		{
-			drawMouse(key_scancode[KEY_Y], 117 + espaco, 61, ALIGN_LEFT, screen_buffer);
-			espaco = espaco + 35;
+			drawMouse(key_scancode[KEY_Y], START_NAME_X + espaco, START_NAME_Y, ALIGN_LEFT, screen_buffer);
+			espaco = espaco + SPACE_KEYS;
 			break;
 		}
 		case 'U':
 		{
-			drawMouse(key_scancode[KEY_U], 117 + espaco, 61, ALIGN_LEFT, screen_buffer);
-			espaco = espaco + 35;
+			drawMouse(key_scancode[KEY_U], START_NAME_X + espaco, START_NAME_Y, ALIGN_LEFT, screen_buffer);
+			espaco = espaco + SPACE_KEYS;
 			break;
 		}
 		case 'I':
 		{
-			drawMouse(key_scancode[KEY_I], 117 + espaco, 61, ALIGN_LEFT, screen_buffer);
-			espaco = espaco + 35;
+			drawMouse(key_scancode[KEY_I], START_NAME_X + espaco, START_NAME_Y, ALIGN_LEFT, screen_buffer);
+			espaco = espaco + SPACE_KEYS;
 			break;
 		}
 		case 'O':
 		{
-			drawMouse(key_scancode[KEY_O], 117 + espaco, 61, ALIGN_LEFT, screen_buffer);
-			espaco = espaco + 35;
+			drawMouse(key_scancode[KEY_O], START_NAME_X + espaco, START_NAME_Y, ALIGN_LEFT, screen_buffer);
+			espaco = espaco + SPACE_KEYS;
 			break;
 		}
 		case 'P':
 		{
-			drawMouse(key_scancode[KEY_P], 117 + espaco, 61, ALIGN_LEFT, screen_buffer);
-			espaco = espaco + 35;
+			drawMouse(key_scancode[KEY_P], START_NAME_X + espaco, START_NAME_Y, ALIGN_LEFT, screen_buffer);
+			espaco = espaco + SPACE_KEYS;
 			break;
 		}
 		case 'A':
 		{
-			drawMouse(key_scancode[KEY_A], 117 + espaco, 61, ALIGN_LEFT, screen_buffer);
-			espaco = espaco + 35;
+			drawMouse(key_scancode[KEY_A], START_NAME_X + espaco, START_NAME_Y, ALIGN_LEFT, screen_buffer);
+			espaco = espaco + SPACE_KEYS;
 			break;
 		}
 		case 'S':
 		{
-			drawMouse(key_scancode[KEY_S], 117 + espaco, 61, ALIGN_LEFT, screen_buffer);
-			espaco = espaco + 35;
+			drawMouse(key_scancode[KEY_S], START_NAME_X + espaco, START_NAME_Y, ALIGN_LEFT, screen_buffer);
+			espaco = espaco + SPACE_KEYS;
 			break;
 		}
 		case 'D':
 		{
-			drawMouse(key_scancode[KEY_D], 117 + espaco, 61, ALIGN_LEFT, screen_buffer);
-			espaco = espaco + 35;
+			drawMouse(key_scancode[KEY_D], START_NAME_X + espaco, START_NAME_Y, ALIGN_LEFT, screen_buffer);
+			espaco = espaco + SPACE_KEYS;
 			break;
 		}
 		case 'F':
 		{
-			drawMouse(key_scancode[KEY_F], 117 + espaco, 61, ALIGN_LEFT, screen_buffer);
-			espaco = espaco + 35;
+			drawMouse(key_scancode[KEY_F], START_NAME_X + espaco, START_NAME_Y, ALIGN_LEFT, screen_buffer);
+			espaco = espaco + SPACE_KEYS;
 			break;
 		}
 		case 'G':
 		{
-			drawMouse(key_scancode[KEY_G], 117 + espaco, 61, ALIGN_LEFT, screen_buffer);
-			espaco = espaco + 35;
+			drawMouse(key_scancode[KEY_G], START_NAME_X + espaco, START_NAME_Y, ALIGN_LEFT, screen_buffer);
+			espaco = espaco + SPACE_KEYS;
 			break;
 		}
 		case 'H':
 		{
-			drawMouse(key_scancode[KEY_H], 117 + espaco, 61, ALIGN_LEFT, screen_buffer);
-			espaco = espaco + 35;
+			drawMouse(key_scancode[KEY_H], START_NAME_X + espaco, START_NAME_Y, ALIGN_LEFT, screen_buffer);
+			espaco = espaco + SPACE_KEYS;
 			break;
 		}
 		case 'J':
 		{
-			drawMouse(key_scancode[KEY_J], 117 + espaco, 61, ALIGN_LEFT, screen_buffer);
-			espaco = espaco + 35;
+			drawMouse(key_scancode[KEY_J], START_NAME_X + espaco, START_NAME_Y, ALIGN_LEFT, screen_buffer);
+			espaco = espaco + SPACE_KEYS;
 			break;
 		}
 		case 'K':
 		{
-			drawMouse(key_scancode[KEY_K], 117 + espaco, 61, ALIGN_LEFT, screen_buffer);
-			espaco = espaco + 35;
+			drawMouse(key_scancode[KEY_K], START_NAME_X + espaco, START_NAME_Y, ALIGN_LEFT, screen_buffer);
+			espaco = espaco + SPACE_KEYS;
 			break;
 		}
 		case 'L':
 		{
-			drawMouse(key_scancode[KEY_L], 117 + espaco, 61, ALIGN_LEFT, screen_buffer);
-			espaco = espaco + 35;
+			drawMouse(key_scancode[KEY_L], START_NAME_X + espaco, START_NAME_Y, ALIGN_LEFT, screen_buffer);
+			espaco = espaco + SPACE_KEYS;
 			break;
 		}
 		case 'Z':
 		{
-			drawMouse(key_scancode[KEY_Z], 117 + espaco, 61, ALIGN_LEFT, screen_buffer);
-			espaco = espaco + 35;
+			drawMouse(key_scancode[KEY_Z], START_NAME_X + espaco, START_NAME_Y, ALIGN_LEFT, screen_buffer);
+			espaco = espaco + SPACE_KEYS;
 			break;
 		}
 		case 'X':
 		{
-			drawMouse(key_scancode[KEY_X], 117 + espaco, 61, ALIGN_LEFT, screen_buffer);
-			espaco = espaco + 35;
+			drawMouse(key_scancode[KEY_X], START_NAME_X + espaco, START_NAME_Y, ALIGN_LEFT, screen_buffer);
+			espaco = espaco + SPACE_KEYS;
 			break;
 		}
 		case 'C':
 		{
-			drawMouse(key_scancode[KEY_C], 117 + espaco, 61, ALIGN_LEFT, screen_buffer);
-			espaco = espaco + 35;
+			drawMouse(key_scancode[KEY_C], START_NAME_X + espaco, START_NAME_Y, ALIGN_LEFT, screen_buffer);
+			espaco = espaco + SPACE_KEYS;
 			break;
 		}
 		case 'V':
 		{
-			drawMouse(key_scancode[KEY_V], 117 + espaco, 61, ALIGN_LEFT, screen_buffer);
-			espaco = espaco + 35;
+			drawMouse(key_scancode[KEY_V], START_NAME_X + espaco, START_NAME_Y, ALIGN_LEFT, screen_buffer);
+			espaco = espaco + SPACE_KEYS;
 			break;
 		}
 		case 'B':
 		{
-			drawMouse(key_scancode[KEY_B], 117 + espaco, 61, ALIGN_LEFT, screen_buffer);
-			espaco = espaco + 35;
+			drawMouse(key_scancode[KEY_B], START_NAME_X + espaco, START_NAME_Y, ALIGN_LEFT, screen_buffer);
+			espaco = espaco + SPACE_KEYS;
 			break;
 		}
 		case 'N':
 		{
-			drawMouse(key_scancode[KEY_N], 117 + espaco, 61, ALIGN_LEFT, screen_buffer);
-			espaco = espaco + 35;
+			drawMouse(key_scancode[KEY_N], START_NAME_X + espaco, START_NAME_Y, ALIGN_LEFT, screen_buffer);
+			espaco = espaco + SPACE_KEYS;
 			break;
 		}
 		case 'M':
 		{
-			drawMouse(key_scancode[KEY_M], 117 + espaco, 61, ALIGN_LEFT, screen_buffer);
-			espaco = espaco + 35;
+			drawMouse(key_scancode[KEY_M], START_NAME_X + espaco, START_NAME_Y, ALIGN_LEFT, screen_buffer);
+			espaco = espaco + SPACE_KEYS;
 			break;
 		}
 		}
@@ -1328,158 +1334,158 @@ void WriteArrayFrame2(char * name, int length, Bitmap ** key_scancode, bitmap_st
 		{
 		case 'Q':
 		{
-			drawMouse(key_scancode[KEY_Q], 117 + espaco, 134, ALIGN_LEFT, screen_buffer);
-			espaco = espaco + 35;
+			drawMouse(key_scancode[KEY_Q], START_GUESS_X + espaco, START_GUESS_Y, ALIGN_LEFT, screen_buffer);
+			espaco = espaco + SPACE_KEYS;
 			break;
 		}
 		case 'W':
 		{
-			drawMouse(key_scancode[KEY_W], 117 + espaco, 134, ALIGN_LEFT, screen_buffer);
-			espaco = espaco + 35;
+			drawMouse(key_scancode[KEY_W], START_GUESS_X + espaco, START_GUESS_Y, ALIGN_LEFT, screen_buffer);
+			espaco = espaco + SPACE_KEYS;
 			break;
 		}
 		case 'E':
 		{
-			drawMouse(key_scancode[KEY_E], 117 + espaco, 134, ALIGN_LEFT, screen_buffer);
-			espaco = espaco + 35;
+			drawMouse(key_scancode[KEY_E], START_GUESS_X + espaco, START_GUESS_Y, ALIGN_LEFT, screen_buffer);
+			espaco = espaco + SPACE_KEYS;
 			break;
 		}
 		case 'R':
 		{
-			drawMouse(key_scancode[KEY_R], 117 + espaco, 134, ALIGN_LEFT, screen_buffer);
-			espaco = espaco + 35;
+			drawMouse(key_scancode[KEY_R], START_GUESS_X + espaco, START_GUESS_Y, ALIGN_LEFT, screen_buffer);
+			espaco = espaco + SPACE_KEYS;
 			break;
 		}
 		case 'T':
 		{
-			drawMouse(key_scancode[KEY_T], 117 + espaco, 134, ALIGN_LEFT, screen_buffer);
-			espaco = espaco + 35;
+			drawMouse(key_scancode[KEY_T], START_GUESS_X + espaco, START_GUESS_Y, ALIGN_LEFT, screen_buffer);
+			espaco = espaco + SPACE_KEYS;
 			break;
 		}
 		case 'Y':
 		{
-			drawMouse(key_scancode[KEY_Y], 117 + espaco, 134, ALIGN_LEFT, screen_buffer);
-			espaco = espaco + 35;
+			drawMouse(key_scancode[KEY_Y], START_GUESS_X + espaco, START_GUESS_Y, ALIGN_LEFT, screen_buffer);
+			espaco = espaco + SPACE_KEYS;
 			break;
 		}
 		case 'U':
 		{
-			drawMouse(key_scancode[KEY_U], 117 + espaco, 134, ALIGN_LEFT, screen_buffer);
-			espaco = espaco + 35;
+			drawMouse(key_scancode[KEY_U], START_GUESS_X + espaco, START_GUESS_Y, ALIGN_LEFT, screen_buffer);
+			espaco = espaco + SPACE_KEYS;
 			break;
 		}
 		case 'I':
 		{
-			drawMouse(key_scancode[KEY_I], 117 + espaco, 134, ALIGN_LEFT, screen_buffer);
-			espaco = espaco + 35;
+			drawMouse(key_scancode[KEY_I], START_GUESS_X + espaco, START_GUESS_Y, ALIGN_LEFT, screen_buffer);
+			espaco = espaco + SPACE_KEYS;
 			break;
 		}
 		case 'O':
 		{
-			drawMouse(key_scancode[KEY_O], 117 + espaco, 134, ALIGN_LEFT, screen_buffer);
-			espaco = espaco + 35;
+			drawMouse(key_scancode[KEY_O], START_GUESS_X + espaco, START_GUESS_Y, ALIGN_LEFT, screen_buffer);
+			espaco = espaco + SPACE_KEYS;
 			break;
 		}
 		case 'P':
 		{
-			drawMouse(key_scancode[KEY_P], 117 + espaco, 134, ALIGN_LEFT, screen_buffer);
-			espaco = espaco + 35;
+			drawMouse(key_scancode[KEY_P], START_GUESS_X + espaco, START_GUESS_Y, ALIGN_LEFT, screen_buffer);
+			espaco = espaco + SPACE_KEYS;
 			break;
 		}
 		case 'A':
 		{
-			drawMouse(key_scancode[KEY_A], 117 + espaco, 134, ALIGN_LEFT, screen_buffer);
-			espaco = espaco + 35;
+			drawMouse(key_scancode[KEY_A], START_GUESS_X + espaco, START_GUESS_Y, ALIGN_LEFT, screen_buffer);
+			espaco = espaco + SPACE_KEYS;
 			break;
 		}
 		case 'S':
 		{
-			drawMouse(key_scancode[KEY_S], 117 + espaco, 134, ALIGN_LEFT, screen_buffer);
-			espaco = espaco + 35;
+			drawMouse(key_scancode[KEY_S], START_GUESS_X + espaco, START_GUESS_Y, ALIGN_LEFT, screen_buffer);
+			espaco = espaco + SPACE_KEYS;
 			break;
 		}
 		case 'D':
 		{
-			drawMouse(key_scancode[KEY_D], 117 + espaco, 134, ALIGN_LEFT, screen_buffer);
-			espaco = espaco + 35;
+			drawMouse(key_scancode[KEY_D], START_GUESS_X + espaco, START_GUESS_Y, ALIGN_LEFT, screen_buffer);
+			espaco = espaco + SPACE_KEYS;
 			break;
 		}
 		case 'F':
 		{
-			drawMouse(key_scancode[KEY_F], 117 + espaco, 134, ALIGN_LEFT, screen_buffer);
-			espaco = espaco + 35;
+			drawMouse(key_scancode[KEY_F], START_GUESS_X + espaco, START_GUESS_Y, ALIGN_LEFT, screen_buffer);
+			espaco = espaco + SPACE_KEYS;
 			break;
 		}
 		case 'G':
 		{
-			drawMouse(key_scancode[KEY_G], 117 + espaco, 134, ALIGN_LEFT, screen_buffer);
-			espaco = espaco + 35;
+			drawMouse(key_scancode[KEY_G], START_GUESS_X + espaco, START_GUESS_Y, ALIGN_LEFT, screen_buffer);
+			espaco = espaco + SPACE_KEYS;
 			break;
 		}
 		case 'H':
 		{
-			drawMouse(key_scancode[KEY_H], 117 + espaco, 134, ALIGN_LEFT, screen_buffer);
-			espaco = espaco + 35;
+			drawMouse(key_scancode[KEY_H], START_GUESS_X + espaco, START_GUESS_Y, ALIGN_LEFT, screen_buffer);
+			espaco = espaco + SPACE_KEYS;
 			break;
 		}
 		case 'J':
 		{
-			drawMouse(key_scancode[KEY_J], 117 + espaco, 134, ALIGN_LEFT, screen_buffer);
-			espaco = espaco + 35;
+			drawMouse(key_scancode[KEY_J], START_GUESS_X + espaco, START_GUESS_Y, ALIGN_LEFT, screen_buffer);
+			espaco = espaco + SPACE_KEYS;
 			break;
 		}
 		case 'K':
 		{
-			drawMouse(key_scancode[KEY_K], 117 + espaco, 134, ALIGN_LEFT, screen_buffer);
-			espaco = espaco + 35;
+			drawMouse(key_scancode[KEY_K], START_GUESS_X + espaco, START_GUESS_Y, ALIGN_LEFT, screen_buffer);
+			espaco = espaco + SPACE_KEYS;
 			break;
 		}
 		case 'L':
 		{
-			drawMouse(key_scancode[KEY_L], 117 + espaco, 134, ALIGN_LEFT, screen_buffer);
-			espaco = espaco + 35;
+			drawMouse(key_scancode[KEY_L], START_GUESS_X + espaco, START_GUESS_Y, ALIGN_LEFT, screen_buffer);
+			espaco = espaco + SPACE_KEYS;
 			break;
 		}
 		case 'Z':
 		{
-			drawMouse(key_scancode[KEY_Z], 117 + espaco, 134, ALIGN_LEFT, screen_buffer);
-			espaco = espaco + 35;
+			drawMouse(key_scancode[KEY_Z], START_GUESS_X + espaco, START_GUESS_Y, ALIGN_LEFT, screen_buffer);
+			espaco = espaco + SPACE_KEYS;
 			break;
 		}
 		case 'X':
 		{
-			drawMouse(key_scancode[KEY_X], 117 + espaco, 134, ALIGN_LEFT, screen_buffer);
-			espaco = espaco + 35;
+			drawMouse(key_scancode[KEY_X], START_GUESS_X + espaco, START_GUESS_Y, ALIGN_LEFT, screen_buffer);
+			espaco = espaco + SPACE_KEYS;
 			break;
 		}
 		case 'C':
 		{
-			drawMouse(key_scancode[KEY_C], 117 + espaco, 134, ALIGN_LEFT, screen_buffer);
-			espaco = espaco + 35;
+			drawMouse(key_scancode[KEY_C], START_GUESS_X + espaco, START_GUESS_Y, ALIGN_LEFT, screen_buffer);
+			espaco = espaco + SPACE_KEYS;
 			break;
 		}
 		case 'V':
 		{
-			drawMouse(key_scancode[KEY_V], 117 + espaco, 134, ALIGN_LEFT, screen_buffer);
-			espaco = espaco + 35;
+			drawMouse(key_scancode[KEY_V], START_GUESS_X + espaco, START_GUESS_Y, ALIGN_LEFT, screen_buffer);
+			espaco = espaco + SPACE_KEYS;
 			break;
 		}
 		case 'B':
 		{
-			drawMouse(key_scancode[KEY_B], 117 + espaco, 134, ALIGN_LEFT, screen_buffer);
-			espaco = espaco + 35;
+			drawMouse(key_scancode[KEY_B], START_GUESS_X + espaco, START_GUESS_Y, ALIGN_LEFT, screen_buffer);
+			espaco = espaco + SPACE_KEYS;
 			break;
 		}
 		case 'N':
 		{
-			drawMouse(key_scancode[KEY_N], 117 + espaco, 134, ALIGN_LEFT, screen_buffer);
-			espaco = espaco + 35;
+			drawMouse(key_scancode[KEY_N], START_GUESS_X + espaco, START_GUESS_Y, ALIGN_LEFT, screen_buffer);
+			espaco = espaco + SPACE_KEYS;
 			break;
 		}
 		case 'M':
 		{
-			drawMouse(key_scancode[KEY_M], 117 + espaco, 134, ALIGN_LEFT, screen_buffer);
-			espaco = espaco + 35;
+			drawMouse(key_scancode[KEY_M], START_GUESS_X + espaco, START_GUESS_Y, ALIGN_LEFT, screen_buffer);
+			espaco = espaco + SPACE_KEYS;
 			break;
 		}
 		}
@@ -1488,122 +1494,130 @@ void WriteArrayFrame2(char * name, int length, Bitmap ** key_scancode, bitmap_st
 
 Bitmap* randImage()
 {
-	int random = rand() % 10;
+	int random = rand() % NUMBER_IMAGES;
 	int i;
 
 	switch(random)
 	{
 	case 0:
 	{
-		i = 3;
+		i = 4;
 		guess_ai[0] = 'D';
 		guess_ai[1] = 'O';
 		guess_ai[2] = 'G';
+		guess_ai[3] = '0';
 		for (; i < 10; i++)
 		{
 			guess_ai[i] = '0';
 		}
-		return loadBitmap("home/lcom/proj/code/images/0.bmp");
+		return loadBitmap(IMAGES_PATH"0.bmp");
 	}
 	case 1:
 	{
-		i = 5;
+		i = 6;
 		guess_ai[0] = 'P';
 		guess_ai[1] = 'U';
 		guess_ai[2] = 'S';
 		guess_ai[3] = 'S';
 		guess_ai[4] = 'Y';
+		guess_ai[5] = '0';
 		for (; i < 10; i++)
 		{
 			guess_ai[i] = '0';
 		}
-		return loadBitmap("home/lcom/proj/code/images/1.bmp");
+		return loadBitmap(IMAGES_PATH"1.bmp");
 	}
 	case 2:
 	{
-		i = 6;
+		i = 7;
 		guess_ai[0] = 'C';
 		guess_ai[1] = 'I';
 		guess_ai[2] = 'G';
 		guess_ai[3] = 'A';
 		guess_ai[4] = 'N';
 		guess_ai[5] = 'O';
+		guess_ai[6] = '0';
 		for (; i < 10; i++)
 		{
 			guess_ai[i] = '0';
 		}
-		return loadBitmap("home/lcom/proj/code/images/2.bmp");
+		return loadBitmap(IMAGES_PATH"2.bmp");
 	}
 	case 3:
 	{
-		i = 5;
+		i = 6;
 		guess_ai[0] = 'F';
 		guess_ai[1] = 'I';
 		guess_ai[2] = 'O';
 		guess_ai[3] = 'R';
 		guess_ai[4] = 'A';
+		guess_ai[5] = '0';
 		for (; i < 10; i++)
 		{
 			guess_ai[i] = '0';
 		}
-		return loadBitmap("home/lcom/proj/code/images/3.bmp");
+		return loadBitmap(IMAGES_PATH"3.bmp");
 	}
 	case 4:
 	{
-		i = 4;
+		i = 5;
 		guess_ai[0] = 'M';
 		guess_ai[1] = 'I';
 		guess_ai[2] = 'C';
 		guess_ai[3] = 'O';
+		guess_ai[4] = '0';
 		for (; i < 10; i++)
 		{
 			guess_ai[i] = '0';
 		}
-		return loadBitmap("home/lcom/proj/code/images/4.bmp");
+		return loadBitmap(IMAGES_PATH"4.bmp");
 	}
 	case 5:
 	{
-		i = 3;
+		i = 4;
 		guess_ai[0] = 'S';
 		guess_ai[1] = 'A';
 		guess_ai[2] = 'M';
+		guess_ai[3] = '0';
 		for (; i < 10; i++)
 		{
 			guess_ai[i] = '0';
 		}
-		return loadBitmap("home/lcom/proj/code/images/5.bmp");
+		return loadBitmap(IMAGES_PATH"5.bmp");
 	}
 	case 6:
 	{
-		i = 6;
+		i = 7;
 		guess_ai[0] = 'T';
 		guess_ai[1] = 'A';
 		guess_ai[2] = 'Y';
 		guess_ai[3] = 'L';
 		guess_ai[4] = 'O';
 		guess_ai[5] = 'R';
+		guess_ai[6] = '0';
 		for (; i < 10; i++)
 		{
 			guess_ai[i] = '0';
 		}
-		return loadBitmap("home/lcom/proj/code/images/6.bmp");
+		return loadBitmap(IMAGES_PATH"6.bmp");
 	}
 	case 7:
 	{
-		i = 4;
+		i = 5;
 		guess_ai[0] = 'C';
 		guess_ai[1] = 'A';
 		guess_ai[2] = 'G';
 		guess_ai[3] = 'E';
+		guess_ai[4] = '0';
 		for (; i < 10; i++)
 		{
 			guess_ai[i] = '0';
 		}
-		return loadBitmap("home/lcom/proj/code/images/7.bmp");
+		return loadBitmap(IMAGES_PATH"7.bmp");
 	}
 	case 8:
 	{
-		i = 8;
+		i = 9;
 		guess_ai[0] = 'L';
 		guess_ai[1] = 'E';
 		guess_ai[2] = 'N';
@@ -1612,23 +1626,25 @@ Bitmap* randImage()
 		guess_ai[5] = 'D';
 		guess_ai[6] = 'O';
 		guess_ai[7] = 'R';
+		guess_ai[8] = '0';
 		for (; i < 10; i++)
 		{
 			guess_ai[i] = '0';
 		}
-		return loadBitmap("home/lcom/proj/code/images/8.bmp");
+		return loadBitmap(IMAGES_PATH"8.bmp");
 	}
 	case 9:
 	{
-		i = 3;
+		i = 4;
 		guess_ai[0] = 'K';
 		guess_ai[1] = 'I';
 		guess_ai[2] = 'M';
+		guess_ai[3] = '0';
 		for (; i < 10; i++)
 		{
 			guess_ai[i] = '0';
 		}
-		return loadBitmap("home/lcom/proj/code/images/8.bmp");
+		return loadBitmap(IMAGES_PATH"9.bmp");
 	}
 	}
 }
@@ -1680,7 +1696,7 @@ void printName(bitmap_struct bitmaps, Bitmap ** key_scancode, int key)
 	{
 		length++;
 		name[length] = '\0';
-		drawBitmap(bitmaps.frame, 0,0, ALIGN_LEFT, screen_buffer);
+		drawBitmap(bitmaps.frame, INITIAL,INITIAL, ALIGN_LEFT, screen_buffer);
 		WriteArrayFrame(name, length, key_scancode, bitmaps);
 		if (ai_or_pvp == 1)
 			OPTION = HEAD_TO_HEAD;
@@ -1691,9 +1707,6 @@ void printName(bitmap_struct bitmaps, Bitmap ** key_scancode, int key)
 			drawMouse(bitmaps.mouse, mouse_t.x_mouse, mouse_t.y_mouse, ALIGN_LEFT, mouse_buffer);
 
 			mouse_to_video(mouse_buffer, video_memory);
-			Bitmap * random = randImage();
-			drawBitmap(random, 120,186, ALIGN_LEFT, screen_buffer);
-			drawBitmapDelay(random, 120,186, ALIGN_LEFT, video_memory);
 		}
 	}
 	else {
@@ -1709,20 +1722,20 @@ void printName(bitmap_struct bitmaps, Bitmap ** key_scancode, int key)
 			unsigned int l = 0;
 			unsigned int a = 0;
 			char * human_machine = getHumanMachine();
-			drawBitmap(bitmaps.pre_head_to_head, 0, 0, ALIGN_LEFT, human_machine);
-			human_machine = human_machine + 251 * 2 + 1024 * 481 * 2;
-			screen_buffer = screen_buffer + 251 * 2 + 1024 * 481 * 2;
-			for(; a < (581 - 481); a++)
+			drawBitmap(bitmaps.pre_head_to_head, INITIAL, INITIAL, ALIGN_LEFT, human_machine);
+			human_machine = human_machine + ERASE_NAME_X * 2 + getHRes() * ERASE_NAME_Y * 2;
+			screen_buffer = screen_buffer + ERASE_NAME_X * 2 + getHRes() * ERASE_NAME_Y * 2;
+			for(; a < (581 - ERASE_NAME_Y); a++)
 			{
-				for (; l < (719 - 251);l++)
+				for (; l < (719 - ERASE_NAME_X);l++)
 				{
 					*(uint16_t *)screen_buffer = *(uint16_t *)human_machine;
 					screen_buffer+=2;
 					human_machine+=2;
 				}
 				l = 0;
-				screen_buffer += 1024 * 2 - (719 - 251) * 2;
-				human_machine += 1024 * 2 - (719 - 251) * 2;
+				screen_buffer += getHRes() * 2 - (719 - ERASE_NAME_X) * 2;
+				human_machine += getHRes() * 2 - (719 - ERASE_NAME_X) * 2;
 			}
 			cleanName();
 		}
@@ -1740,43 +1753,43 @@ void printHead(bitmap_struct bitmaps, Bitmap ** key_scancode, int key)
 	int j = 0;
 	if (key == KEY_BACKSPACE)
 	{
-		drawBitmap(bitmaps.frame, 0, 0, ALIGN_LEFT, human_machine);
-		human_machine = human_machine + 116 * 2 + 1024 * 127 * 2;
-		screen_buffer = screen_buffer + 116 * 2 + 1024 * 127 * 2;
-		for(; a < (183 - 127); a++)
+		drawBitmap(bitmaps.frame, INITIAL, INITIAL, ALIGN_LEFT, human_machine);
+		human_machine = human_machine + ERASE_GUESS_X * 2 + getHRes() * ERASE_GUESS_Y * 2;
+		screen_buffer = screen_buffer + ERASE_GUESS_X * 2 + getHRes() * ERASE_GUESS_Y * 2;
+		for(; a < (183 - ERASE_GUESS_Y); a++)
 		{
-			for (; l < (470 - 116);l++)
+			for (; l < (470 - ERASE_GUESS_X);l++)
 			{
 				*(uint16_t *)screen_buffer = *(uint16_t *)human_machine;
 				screen_buffer+=2;
 				human_machine+=2;
 			}
 			l = 0;
-			screen_buffer += 1024 * 2 - (470 - 116) * 2;
-			human_machine += 1024 * 2 - (470 - 116) * 2;
+			screen_buffer += getHRes() * 2 - (470 - ERASE_GUESS_X) * 2;
+			human_machine += getHRes() * 2 - (470 - ERASE_GUESS_X) * 2;
 		}
 		l = 0;
 		a = 0;
 
-		cleanWord();
+		//cleanWord();
 	}
 	if (key == KEY_SPACE)
 	{
 		tries++;
-		drawBitmap(bitmaps.frame, 0, 0, ALIGN_LEFT, human_machine);
-		human_machine = human_machine + 116 * 2 + 1024 * 127 * 2;
-		screen_buffer = screen_buffer + 116 * 2 + 1024 * 127 * 2;
-		for(; a < (183 - 127); a++)
+		drawBitmap(bitmaps.frame, INITIAL, INITIAL, ALIGN_LEFT, human_machine);
+		human_machine = human_machine + ERASE_GUESS_X * 2 + getHRes() * ERASE_GUESS_Y * 2;
+		screen_buffer = screen_buffer + ERASE_GUESS_X * 2 + getHRes() * ERASE_GUESS_Y * 2;
+		for(; a < (183 - ERASE_GUESS_Y); a++)
 		{
-			for (; l < (470 - 116);l++)
+			for (; l < (470 - ERASE_GUESS_X);l++)
 			{
 				*(uint16_t *)screen_buffer = *(uint16_t *)human_machine;
 				screen_buffer+=2;
 				human_machine+=2;
 			}
 			l = 0;
-			screen_buffer += 1024 * 2 - (470 - 116) * 2;
-			human_machine += 1024 * 2 - (470 - 116) * 2;
+			screen_buffer += getHRes() * 2 - (470 - ERASE_GUESS_X) * 2;
+			human_machine += getHRes() * 2 - (470 - ERASE_GUESS_X) * 2;
 		}
 		a = 0;
 		l = 0;
@@ -1796,122 +1809,334 @@ void printHead(bitmap_struct bitmaps, Bitmap ** key_scancode, int key)
 		int score_conta;
 		score_conta = score(contador_high);
 		createBitmap();
-		drawBitmap(bitmaps.win, 0,0, ALIGN_LEFT, getScreenBuffer());
+		drawBitmap(bitmaps.win, INITIAL,INITIAL, ALIGN_LEFT, getScreenBuffer());
 		OPTION = STATIC;
 		tries = 0;
 		cleanName();
 		cleanWord();
-		RTC_COUNTER = 60;
+		RTC_COUNTER = START_RTC_COUNTER;
 		tries = 0;
 		tentativas = 0;
 	}
 }
 
-void printMachine(bitmap_struct bitmaps, Bitmap ** key_scancode, int key)
+void printMachine(bitmap_struct bitmaps, Bitmap ** key_scancode, int key, Bitmap ** numbers)
 {
-	unsigned int l = 0;
-	static int temp = 0;
-	unsigned int a = 0;
-	char * human_machine = getHumanMachine();
-	char * screen_buffer = getScreenBuffer();
-	int j = 0;
-	int bool = 1; //0 acertou, 1 falhou
-	if (key == KEY_BACKSPACE)
+	if (OPTION == HUMAN_VS_MACHINE)
 	{
-		drawBitmap(bitmaps.frame, 0, 0, ALIGN_LEFT, human_machine);
-		human_machine = human_machine + 116 * 2 + 1024 * 127 * 2;
-		screen_buffer = screen_buffer + 116 * 2 + 1024 * 127 * 2;
-		for(; a < (183 - 127); a++)
+		/*if (verdadeiro == 1)
 		{
-			for (; l < (470 - 116);l++)
-			{
-				*(uint16_t *)screen_buffer = *(uint16_t *)human_machine;
-				screen_buffer+=2;
-				human_machine+=2;
-			}
-			l = 0;
-			screen_buffer += 1024 * 2 - (470 - 116) * 2;
-			human_machine += 1024 * 2 - (470 - 116) * 2;
+			Bitmap* temp2 = randImage();
+			printf("entrei\n");
+			return temp2;
 		}
-		l = 0;
-		a = 0;
-
-		cleanWord();
-	}
-	if (key == KEY_ENTER)
-	{
-		if (temp == 0)
+		 */
+		unsigned int l = 0;
+		static int temp = 0;
+		unsigned int a = 0;
+		char * human_machine = getHumanMachine();
+		char * screen_buffer = getScreenBuffer();
+		int j = 0;
+		int bool = 1; //0 acertou, 1 falhou
+		if (key == KEY_BACKSPACE)
 		{
-			temp++;
-			tries--;
-		}
-		word[length_word] = '0';
-		j = 0;
-		for (; j < 11; j++)
-		{
-			if ((guess_ai[j] == '0') && (word[j] == '0'))
+			drawBitmap(bitmaps.frame, INITIAL, INITIAL, ALIGN_LEFT, human_machine);
+			human_machine = human_machine + ERASE_GUESS_X * 2 + getHRes() * ERASE_GUESS_Y * 2;
+			screen_buffer = screen_buffer + ERASE_GUESS_X * 2 + getHRes() * ERASE_GUESS_Y * 2;
+			for(; a < (183 - ERASE_GUESS_Y); a++)
 			{
-				bool = 0;
-				break;
-			}
-			if (word[j] != guess_ai[j])
-			{
-				bool = 1;
-				break;
-			}
-			if (guess_ai[j] == '0')
-			{
-				bool = 1;
-				break;
-			}
-		}
-		if (bool == 1)
-		{
-			tries++;
-			human_machine = getHumanMachine();
-			screen_buffer = getScreenBuffer();
-			drawBitmap(bitmaps.frame, 0, 0, ALIGN_LEFT, human_machine);
-			human_machine = human_machine + 116 * 2 + 1024 * 127 * 2;
-			screen_buffer = screen_buffer + 116 * 2 + 1024 * 127 * 2;
-			for(; a < (183 - 127); a++)
-			{
-				for (; l < (470 - 116);l++)
+				for (; l < (470 - ERASE_GUESS_X);l++)
 				{
 					*(uint16_t *)screen_buffer = *(uint16_t *)human_machine;
 					screen_buffer+=2;
 					human_machine+=2;
 				}
 				l = 0;
-				screen_buffer += 1024 * 2 - (470 - 116) * 2;
-				human_machine += 1024 * 2 - (470 - 116) * 2;
+				screen_buffer += getHRes() * 2 - (470 - ERASE_GUESS_X) * 2;
+				human_machine += getHRes() * 2 - (470 - ERASE_GUESS_X) * 2;
 			}
-			a = 0;
 			l = 0;
+			a = 0;
+
 			cleanWord();
 		}
-		else
+		if (key == KEY_ENTER)
 		{
-			int score_conta;
-			score_conta = score(contador_high);
-			drawBitmap(bitmaps.win, 0,0, ALIGN_LEFT, getScreenBuffer());
-			OPTION = STATIC;
-			tries = 0;
-			int k = 0;
-			cleanName();
-			cleanGuess();
-			cleanWord();
-			RTC_COUNTER = 60;
-			tries = 0;
-			tentativas = 0;
-			//acertou
+			int i = 0;
+			if (temp == 0)
+			{
+				temp++;
+				tries--;
+			}
+			word[length_word] = '0';
+			j = 0;
+			for (; j < 11; j++)
+			{
+				if ((guess_ai[j] == '0') && (word[j] == '0'))
+				{
+					bool = 0;
+					break;
+				}
+				if (word[j] != guess_ai[j])
+				{
+					bool = 1;
+					break;
+				}
+				if (guess_ai[j] == '0')
+				{
+					bool = 1;
+					break;
+				}
+			}
+			if (bool == 1)
+			{
+				tries++;
+				human_machine = getHumanMachine();
+				screen_buffer = getScreenBuffer();
+				drawBitmap(bitmaps.frame, INITIAL, INITIAL, ALIGN_LEFT, human_machine);
+				human_machine = human_machine + ERASE_GUESS_X * 2 + getHRes() * ERASE_GUESS_Y * 2;
+				screen_buffer = screen_buffer + ERASE_GUESS_X * 2 + getHRes() * ERASE_GUESS_Y * 2;
+				for(; a < (183 - ERASE_GUESS_Y); a++)
+				{
+					for (; l < (470 - ERASE_GUESS_X);l++)
+					{
+						*(uint16_t *)screen_buffer = *(uint16_t *)human_machine;
+						screen_buffer+=2;
+						human_machine+=2;
+					}
+					l = 0;
+					screen_buffer += getHRes() * 2 - (470 - ERASE_GUESS_X) * 2;
+					human_machine += getHRes() * 2 - (470 - ERASE_GUESS_X) * 2;
+				}
+				a = 0;
+				l = 0;
+				cleanWord();
+			}
+			else
+			{
+				position_t jogador;
+				int score_conta;
+				score_conta = score(contador_high);
+				jogador.score = score_conta;
+				for(i; i < 10; i++)
+				{
+					jogador.name[i] = name[i];
+					jogador.word[i] = word[i];
+				}
+				jogador.day = day;
+				jogador.month = month;
+				jogador.year = year;
+				jogador.hour = hour;
+				jogador.minutes = minutes;
+
+				//chamar is highscore
+
+				drawBitmap(bitmaps.win, INITIAL,INITIAL, ALIGN_LEFT, getScreenBuffer());
+				displayScore(numbers, jogador, key_scancode);
+
+				OPTION = STATIC;
+				tries = 0;
+				cleanName();
+				cleanWord();
+				RTC_COUNTER = START_RTC_COUNTER;
+				tries = 0;
+				tentativas = 0;
+				contador_c = CANVAS_Y_F;
+				verdadeiro = 1;
+
+				//acertou
+			}
+		}
+
+		if (get_char(key) >= 'A' && get_char(key) <= 'Z')
+		{
+			word[length_word] = get_char(key);
+			WriteArrayFrame2(word, length_word, key_scancode, bitmaps);
+			length_word++;
 		}
 	}
 
-	if (get_char(key) >= 'A' && get_char(key) <= 'Z')
+}
+
+void displayScore(Bitmap ** numbers, position_t player, Bitmap ** key_scancode)
+{
+	int score = player.score;
+	int y = 800;
+	int x = getVRes() / 2;
+	int i = 0;
+	char * screen_buffer = getScreenBuffer();
+	while(score != 0)
 	{
-		word[length_word] = get_char(key);
-		WriteArrayFrame2(word, length_word, key_scancode, bitmaps);
-		length_word++;
+		int temp = score % 10;
+		score = score / 10;
+		drawMouse(numbers[temp], y, getVRes() / 2, ALIGN_LEFT, screen_buffer);
+		y = y - SPACE_KEYS;
 	}
+
+	espaco = 0;
+	for(; i <= 10; i++)
+	{
+		switch (player.name[i])
+		{
+		case 'Q':
+		{
+			drawMouse(key_scancode[KEY_Q], 100 + espaco, x, ALIGN_LEFT, screen_buffer);
+			espaco = espaco + SPACE_KEYS;
+			break;
+		}
+		case 'W':
+		{
+			drawMouse(key_scancode[KEY_W], 100 + espaco, x, ALIGN_LEFT, screen_buffer);
+			espaco = espaco + SPACE_KEYS;
+			break;
+		}
+		case 'E':
+		{
+			drawMouse(key_scancode[KEY_E], 100 + espaco, x, ALIGN_LEFT, screen_buffer);
+			espaco = espaco + SPACE_KEYS;
+			break;
+		}
+		case 'R':
+		{
+			drawMouse(key_scancode[KEY_R], 100 + espaco, x, ALIGN_LEFT, screen_buffer);
+			espaco = espaco + SPACE_KEYS;
+			break;
+		}
+		case 'T':
+		{
+			drawMouse(key_scancode[KEY_T], 100 + espaco, x, ALIGN_LEFT, screen_buffer);
+			espaco = espaco + SPACE_KEYS;
+			break;
+		}
+		case 'Y':
+		{
+			drawMouse(key_scancode[KEY_Y], 100 + espaco, x, ALIGN_LEFT, screen_buffer);
+			espaco = espaco + SPACE_KEYS;
+			break;
+		}
+		case 'U':
+		{
+			drawMouse(key_scancode[KEY_U], 100 + espaco, x, ALIGN_LEFT, screen_buffer);
+			espaco = espaco + SPACE_KEYS;
+			break;
+		}
+		case 'I':
+		{
+			drawMouse(key_scancode[KEY_I], 100 + espaco, x, ALIGN_LEFT, screen_buffer);
+			espaco = espaco + SPACE_KEYS;
+			break;
+		}
+		case 'O':
+		{
+			drawMouse(key_scancode[KEY_O], 100 + espaco, x, ALIGN_LEFT, screen_buffer);
+			espaco = espaco + SPACE_KEYS;
+			break;
+		}
+		case 'P':
+		{
+			drawMouse(key_scancode[KEY_P], 100 + espaco, x, ALIGN_LEFT, screen_buffer);
+			espaco = espaco + SPACE_KEYS;
+			break;
+		}
+		case 'A':
+		{
+			drawMouse(key_scancode[KEY_A], 100 + espaco, x, ALIGN_LEFT, screen_buffer);
+			espaco = espaco + SPACE_KEYS;
+			break;
+		}
+		case 'S':
+		{
+			drawMouse(key_scancode[KEY_S], 100 + espaco, x, ALIGN_LEFT, screen_buffer);
+			espaco = espaco + SPACE_KEYS;
+			break;
+		}
+		case 'D':
+		{
+			drawMouse(key_scancode[KEY_D], 100 + espaco, x, ALIGN_LEFT, screen_buffer);
+			espaco = espaco + SPACE_KEYS;
+			break;
+		}
+		case 'F':
+		{
+			drawMouse(key_scancode[KEY_F], 100 + espaco, x, ALIGN_LEFT, screen_buffer);
+			espaco = espaco + SPACE_KEYS;
+			break;
+		}
+		case 'G':
+		{
+			drawMouse(key_scancode[KEY_G], 100 + espaco, x, ALIGN_LEFT, screen_buffer);
+			espaco = espaco + SPACE_KEYS;
+			break;
+		}
+		case 'H':
+		{
+			drawMouse(key_scancode[KEY_H], 100 + espaco, x, ALIGN_LEFT, screen_buffer);
+			espaco = espaco + SPACE_KEYS;
+			break;
+		}
+		case 'J':
+		{
+			drawMouse(key_scancode[KEY_J], 100 + espaco, x, ALIGN_LEFT, screen_buffer);
+			espaco = espaco + SPACE_KEYS;
+			break;
+		}
+		case 'K':
+		{
+			drawMouse(key_scancode[KEY_K], 100 + espaco, x, ALIGN_LEFT, screen_buffer);
+			espaco = espaco + SPACE_KEYS;
+			break;
+		}
+		case 'L':
+		{
+			drawMouse(key_scancode[KEY_L], 100 + espaco, x, ALIGN_LEFT, screen_buffer);
+			espaco = espaco + SPACE_KEYS;
+			break;
+		}
+		case 'Z':
+		{
+			drawMouse(key_scancode[KEY_Z], 100 + espaco, x, ALIGN_LEFT, screen_buffer);
+			espaco = espaco + SPACE_KEYS;
+			break;
+		}
+		case 'X':
+		{
+			drawMouse(key_scancode[KEY_X], 100 + espaco, x, ALIGN_LEFT, screen_buffer);
+			espaco = espaco + SPACE_KEYS;
+			break;
+		}
+		case 'C':
+		{
+			drawMouse(key_scancode[KEY_C], 100 + espaco, x, ALIGN_LEFT, screen_buffer);
+			espaco = espaco + SPACE_KEYS;
+			break;
+		}
+		case 'V':
+		{
+			drawMouse(key_scancode[KEY_V], 100 + espaco, x, ALIGN_LEFT, screen_buffer);
+			espaco = espaco + SPACE_KEYS;
+			break;
+		}
+		case 'B':
+		{
+			drawMouse(key_scancode[KEY_B], 100 + espaco, x, ALIGN_LEFT, screen_buffer);
+			espaco = espaco + SPACE_KEYS;
+			break;
+		}
+		case 'N':
+		{
+			drawMouse(key_scancode[KEY_N], 100 + espaco, x, ALIGN_LEFT, screen_buffer);
+			espaco = espaco + SPACE_KEYS;
+			break;
+		}
+		case 'M':
+		{
+			drawMouse(key_scancode[KEY_M], 100 + espaco, x, ALIGN_LEFT, screen_buffer);
+			espaco = espaco + SPACE_KEYS;
+			break;
+		}
+		}
+	}
+
+
 
 }

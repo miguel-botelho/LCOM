@@ -27,12 +27,20 @@ extern char name[11];
 extern char word[11];
 extern char guess_ai[11];
 extern scores_t top_highscores;
+
 extern int espaco;
 extern int length;
 extern int length_word;
 extern int contador_high;
 extern int tentativas;
 extern int ai_or_pvp;
+extern int contador_c;
+
+extern char day;
+extern char year;
+extern char month;
+extern char hour;
+extern char minutes;
 
 int main(int argc, char **argv) {
 
@@ -50,6 +58,8 @@ int main(int argc, char **argv) {
 		return -1;
 	}
 
+
+	int pausa = 0;
 	// mouse
 	unsigned int i = 0;
 	unsigned int j = 0;
@@ -66,6 +76,7 @@ int main(int argc, char **argv) {
 
 	//timer
 	int temp_counter = 0;
+	int temp_counter_c = 0;
 
 	//keyboard
 	int key = 0;
@@ -108,8 +119,8 @@ int main(int argc, char **argv) {
 	vg_init(GRAPHIC_MODE_16_BITS);
 
 	// Mouse on the middle of the screen
-	mouse_t.x_mouse = getHRes() / 2;
-	mouse_t.y_mouse = getVRes() / 4;
+	mouse_t.x_mouse = 10;
+	mouse_t.y_mouse = 10;
 
 	char * mouse_buffer = getMouseBuffer();
 	char * screen_buffer = getScreenBuffer();
@@ -117,7 +128,7 @@ int main(int argc, char **argv) {
 	char * human_machine = getHumanMachine();
 
 	// Draw of the background
-	drawBitmap(bitmaps.background, 0, 0, ALIGN_LEFT, screen_buffer);
+	drawBitmap(bitmaps.background, INITIAL, INITIAL, ALIGN_LEFT, screen_buffer);
 
 	screen_to_mouse(screen_buffer, mouse_buffer);
 
@@ -128,7 +139,7 @@ int main(int argc, char **argv) {
 	mouse_to_video(mouse_buffer, video_memory);
 
 	// Draw Human Machine
-	drawBitmap(bitmaps.frame, 0, 0, ALIGN_LEFT, human_machine);
+	drawBitmap(bitmaps.frame, INITIAL, INITIAL, ALIGN_LEFT, human_machine);
 
 	//atributes
 	mouse_t.LB = 0; //to prevent the selection of the first menu
@@ -138,6 +149,8 @@ int main(int argc, char **argv) {
 
 	//Create 10 white bitmaps
 	createBitmapsUndoRedo();
+
+	Bitmap * random = randImage();
 
 	while (1) {
 
@@ -150,6 +163,31 @@ int main(int argc, char **argv) {
 			case HARDWARE: /* hardware interrupt notification */
 				if (msg.NOTIFY_ARG & irq_set_timer) /* subscribed interrupt for timer*/
 				{
+					if (OPTION == HUMAN_VS_MACHINE)
+					{
+						if (verdadeiro == 1)
+						{
+							random = randImage();
+							contador_c = CANVAS_Y_F;
+							verdadeiro = 0;
+							tentativas = 0;
+							tries = 0;
+						}
+						else
+						{
+							if (contador_c <= CANVAS_Y_I)
+							{
+
+							}
+							else
+							{
+								contador_c--;
+								drawBitmap(random, CANVAS_X_I,CANVAS_Y_I, ALIGN_LEFT, screen_buffer);
+								paintWhiteCanvas(CANVAS_X_I,CANVAS_X_F, CANVAS_Y_I,contador_c);
+							}
+						}
+
+					}
 
 					screen_to_mouse(screen_buffer, mouse_buffer);
 					drawMouse(bitmaps.mouse, mouse_t.x_mouse, mouse_t.y_mouse, ALIGN_LEFT, mouse_buffer);
@@ -183,7 +221,7 @@ int main(int argc, char **argv) {
 
 					if (OPTION == HUMAN_VS_MACHINE)
 					{
-						printMachine(bitmaps, key_scancode, key);
+						printMachine(bitmaps, key_scancode, key, numbers);
 					}
 					if (key == KEY_ESC) {
 						if (OPTION == GET_NAME) {
@@ -194,15 +232,14 @@ int main(int argc, char **argv) {
 							OPTION = MAIN_MENU;
 						}
 						OPTION = MAIN_MENU;
-						drawBitmap(bitmaps.background, 0, 0, ALIGN_LEFT, screen_buffer);
+						drawBitmap(bitmaps.background, INITIAL, INITIAL, ALIGN_LEFT, screen_buffer);
 
 						espaco = 0;
 						tentativas = 0;
 						tries = 0;
 						RTC_COUNTER = 60;
+						verdadeiro = 1;
 						cleanName();
-						cleanWord();
-						cleanGuess();
 					}
 				}
 
@@ -293,9 +330,16 @@ int main(int argc, char **argv) {
 				if (msg.NOTIFY_ARG & irq_set_rtc) /* subscribed interrupt for rtc */
 				{
 
-					if ((OPTION == HUMAN_VS_MACHINE) || (OPTION == HEAD_TO_HEAD)
-							|| (OPTION == ONLINE)) {
+					if ((OPTION == HUMAN_VS_MACHINE) || (OPTION == HEAD_TO_HEAD) || (OPTION == ONLINE))
+					{
 						RTC_COUNTER--;
+
+						year = read_rtc(YEAR);
+						month = read_rtc(MONTH);
+						day = read_rtc(MONTH_DAY);
+						hour = read_rtc(HOURS);
+						minutes = read_rtc(MINUTES);
+
 						if (RTC_COUNTER < 10) {
 							displayTimer(RTC_COUNTER, numbers, bitmaps);
 						} else {

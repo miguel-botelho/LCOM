@@ -65,13 +65,13 @@ void draw_line(mouse_st previous)
 		if(slopegt1)
 		{
 			screen_buffer = getScreenBuffer();
-			screen_buffer = screen_buffer + yi * 2 + 1024 * xi * 2;
+			screen_buffer = screen_buffer + yi * 2 + getHRes() * xi * 2;
 			*(uint16_t *)screen_buffer = colour;
 		}
 		else
 		{
 			screen_buffer = getScreenBuffer();
-			screen_buffer = screen_buffer + xi * 2 + 1024 * yi * 2;
+			screen_buffer = screen_buffer + xi * 2 + getHRes() * yi * 2;
 			*(uint16_t *)screen_buffer = colour;
 		}
 	}
@@ -98,8 +98,8 @@ void draw_brush()
 	while ( x >= y)
 	{
 		screen_buffer = getScreenBuffer();
-		screen_buffer += (x + x0)* 2 + (y + y0) * 1024 * 2;
-		if ( (x + x0 > 1020) || (y + y0 < 120) || (x + x0 > 717) || (y + y0 < 183) )
+		screen_buffer += (x + x0)* 2 + (y + y0) * getHRes() * 2;
+		if ( (x + x0 > CANVAS_X_F) || (y + y0 < CANVAS_X_I) || (x + x0 > CANVAS_Y_F) || (y + y0 < CANVAS_Y_I) )
 		{
 
 		}
@@ -108,56 +108,56 @@ void draw_brush()
 
 
 		screen_buffer = getScreenBuffer();
-		screen_buffer += (y + x0)* 2 + (x + y0) * 1024 * 2;
-		if ( (y + x0 > 1020) || (y + x0 < 120) || (x + y0 > 717) || (x + y0 < 187) )
+		screen_buffer += (y + x0)* 2 + (x + y0) * getHRes() * 2;
+		if ( (y + x0 > CANVAS_X_F) || (y + x0 < CANVAS_X_I) || (x + y0 > CANVAS_Y_F) || (x + y0 < CANVAS_Y_I) )
 		{
 
 		}
 		else *(uint16_t *)screen_buffer = colour;
 
 		screen_buffer = getScreenBuffer();
-		screen_buffer += (-x + x0)* 2 + (y + y0) * 1024 * 2;
-		if ( (-x + x0 > 1020) || (-x + x0 < 120) || (y + y0 > 717) || (y + y0 < 187) )
+		screen_buffer += (-x + x0)* 2 + (y + y0) * getHRes() * 2;
+		if ( (-x + x0 > CANVAS_X_F) || (-x + x0 < CANVAS_X_I) || (y + y0 > CANVAS_Y_F) || (y + y0 < CANVAS_Y_I) )
 		{
 
 		}
 		else *(uint16_t *)screen_buffer = colour;
 
 		screen_buffer = getScreenBuffer();
-		screen_buffer += (-y + x0)* 2 + (x + y0) * 1024 * 2;
-		if ( (-y + x0 > 1020) || (-y + x0 < 120) || (x + y0 > 717) || (x + y0 < 187) )
+		screen_buffer += (-y + x0)* 2 + (x + y0) * getHRes() * 2;
+		if ( (-y + x0 > CANVAS_X_F) || (-y + x0 < CANVAS_X_I) || (x + y0 > CANVAS_Y_F) || (x + y0 < CANVAS_Y_I) )
 		{
 
 		}
 		else *(uint16_t *)screen_buffer = colour;
 
 		screen_buffer = getScreenBuffer();
-		screen_buffer += (-x + x0)* 2 + (-y + y0) * 1024 * 2;
-		if ( (-x + x0 > 1020) || (-x + x0 < 120) || (-y + y0 > 717) || (-y + y0 < 187) )
+		screen_buffer += (-x + x0)* 2 + (-y + y0) * getHRes() * 2;
+		if ( (-x + x0 > CANVAS_X_F) || (-x + x0 < CANVAS_X_I) || (-y + y0 > CANVAS_Y_F) || (-y + y0 < CANVAS_Y_I) )
 		{
 
 		}
 		else *(uint16_t *)screen_buffer = colour;
 
 		screen_buffer = getScreenBuffer();
-		screen_buffer += (-y + x0)* 2 + (-x + y0) * 1024 * 2;
-		if ( (-y + x0 > 1020) || (-y + x0 < 120) || (-x + y0 > 717) || (-x + y0 < 187) )
+		screen_buffer += (-y + x0)* 2 + (-x + y0) * getHRes() * 2;
+		if ( (-y + x0 > CANVAS_X_F) || (-y + x0 < CANVAS_X_I) || (-x + y0 > CANVAS_Y_F) || (-x + y0 < CANVAS_Y_I) )
 		{
 
 		}
 		else *(uint16_t *)screen_buffer = colour;
 
 		screen_buffer = getScreenBuffer();
-		screen_buffer += (x + x0)* 2 + (-y + y0) * 1024 * 2;
-		if ( (x + x0 > 1020) || (x + x0 < 120) || (-y + y0 > 717) || (-y + y0 < 187) )
+		screen_buffer += (x + x0)* 2 + (-y + y0) * getHRes() * 2;
+		if ( (x + x0 > CANVAS_X_F) || (x + x0 < CANVAS_X_I) || (-y + y0 > CANVAS_Y_F) || (-y + y0 < CANVAS_Y_I) )
 		{
 
 		}
 		else *(uint16_t *)screen_buffer = colour;
 
 		screen_buffer = getScreenBuffer();
-		screen_buffer += (y + x0)* 2 + (-x + y0) * 1024 * 2;
-		if ( (y + x0 > 1020) || (y + x0 < 120) || (-x + y0 > 717) || (-x + y0 < 187) )
+		screen_buffer += (y + x0)* 2 + (-x + y0) * getHRes() * 2;
+		if ( (y + x0 > CANVAS_X_F) || (y + x0 < CANVAS_X_I) || (-x + y0 > CANVAS_Y_F) || (-x + y0 < CANVAS_Y_I) )
 		{
 
 		}
@@ -194,16 +194,16 @@ void draw_circle()
 		for (i = x0 - x; i <= x0 +x; i++)
 		{
 			screen_buffer = getScreenBuffer();
-			screen_buffer += i * 2 +(y0 +y) * 1024 * 2;
-			if ( (i < 120) || (i > 1020) || (y0 + y < 187) || (y0 + y > 717) )
+			screen_buffer += i * 2 +(y0 +y) * getHRes() * 2;
+			if ( (i < CANVAS_X_I) || (i > CANVAS_X_F) || (y0 + y < CANVAS_Y_I) || (y0 + y > CANVAS_Y_F) )
 			{
 
 			}
 			else *(uint16_t *)screen_buffer = colour;
 
 			screen_buffer = getScreenBuffer();
-			screen_buffer += i * 2 +(y0 -y) * 1024 * 2;
-			if ( (i < 120) || (i > 1020) || (y0 - y < 187) || (y0 - y > 717) )
+			screen_buffer += i * 2 +(y0 -y) * getHRes() * 2;
+			if ( (i < CANVAS_X_I) || (i > CANVAS_X_F) || (y0 - y < CANVAS_Y_I) || (y0 - y > CANVAS_Y_F) )
 			{
 
 			}
@@ -213,16 +213,16 @@ void draw_circle()
 		for (i = x0 -y; i <= x0 +y; i++)
 		{
 			screen_buffer = getScreenBuffer();
-			screen_buffer += i * 2 +(y0 +x) * 1024 * 2;
-			if ( (i < 120) || (i > 1020) || (y0 + x < 187) || (y0 + x > 717) )
+			screen_buffer += i * 2 +(y0 +x) * getHRes() * 2;
+			if ( (i < CANVAS_X_I) || (i > CANVAS_X_F) || (y0 + x < CANVAS_Y_I) || (y0 + x > CANVAS_Y_F) )
 			{
 
 			}
 			else *(uint16_t *)screen_buffer = colour;
 
 			screen_buffer = getScreenBuffer();
-			screen_buffer += i * 2 +(y0 -x) * 1024 * 2;
-			if ( (i < 120) || (i > 1020) || (y0 - x < 187) || (y0 - x > 717) )
+			screen_buffer += i * 2 +(y0 -x) * getHRes() * 2;
+			if ( (i < CANVAS_X_I) || (i > CANVAS_X_F) || (y0 - x < CANVAS_Y_I) || (y0 - x > CANVAS_Y_F) )
 			{
 
 			}
@@ -253,28 +253,28 @@ void draw_square()
 	int x = mouse_t.x_mouse;
 	int y = mouse_t.y_mouse;
 	/*
-	if (x - radius < 120)
+	if (x - radius < CANVAS_X_I)
 	{
-		xi = 120 - (x - radius);
+		xi = CANVAS_X_I - (x - radius);
 	}
 
-	if (x + radius > 1020)
+	if (x + radius > CANVAS_X_F)
 	{
-		xi = x + radius - 1020;
+		xi = x + radius - CANVAS_X_F;
 	}
 
-	if (y - radius < 183)
+	if (y - radius < CANVAS_Y_I)
 	{
-		yi = 183 - (y - radius);
+		yi = CANVAS_Y_I - (y - radius);
 	}
 
-	if (y + radius > 717)
+	if (y + radius > CANVAS_Y_F)
 	{
-		yi = y + radius - 717;
+		yi = y + radius - CANVAS_Y_F;
 	}
 	 */
-	char * screen_buffer = getScreenBuffer() + (x * 2) + (1024 * y) * 2;
-	screen_buffer = screen_buffer - (radius * 2) - (1024 * radius) * 2;
+	char * screen_buffer = getScreenBuffer() + (x * 2) + (getHRes() * y) * 2;
+	screen_buffer = screen_buffer - (radius * 2) - (getHRes() * radius) * 2;
 	unsigned int i = 0;
 	unsigned int j = 0;
 	int size = radius * 2;
@@ -283,7 +283,7 @@ void draw_square()
 	{
 		for (; j < size; j++)
 		{
-			if ((x - radius + j > 1020) || (x - radius + j < 120) || (y - radius + i > 717) || (y - radius + i < 187))
+			if ((x - radius + j > CANVAS_X_F) || (x - radius + j < CANVAS_X_I) || (y - radius + i > CANVAS_Y_F) || (y - radius + i < CANVAS_Y_I))
 			{
 
 			}
@@ -291,7 +291,7 @@ void draw_square()
 			screen_buffer+=2;
 		}
 		j = 0;
-		screen_buffer+= 1024 * 2 - size * 2;
+		screen_buffer+= getHRes() * 2 - size * 2;
 	}
 }
 
@@ -309,7 +309,7 @@ void undo()
 		screen_current--;
 		printf("Undo: screen_current=%d | screen_abs=%d\n", screen_current, screen_abs);
 		printf("Path Undo: %s\n", a);
-		drawBitmap(loadBitmap(a), 120, 183, ALIGN_LEFT, getScreenBuffer());
+		drawBitmap(loadBitmap(a), CANVAS_X_I, CANVAS_Y_I, ALIGN_LEFT, getScreenBuffer());
 	}
 }
 
@@ -327,45 +327,45 @@ void redo()
 		a[NUMBER_TO_CHANGE] = screen_current + '0';
 		printf("Redo: screen_current=%d | screen_abs=%d\n", screen_current, screen_abs);
 		printf("Path Redo: %s\n", a);
-		drawBitmap(loadBitmap(a), 120, 183, ALIGN_LEFT, getScreenBuffer());
+		drawBitmap(loadBitmap(a), CANVAS_X_I, CANVAS_Y_I, ALIGN_LEFT, getScreenBuffer());
 	}
 }
 
 void plus()
 {
-	if (radius > 100)
+	if (radius > MAX_RADIUS)
 	{
-		radius = 100;
+		radius = MAX_RADIUS;
 	}
 	else
 	{
-		radius = radius + 5;
+		radius = radius + RADIUS_INC;
 	}
 }
 
 void minus()
 {
-	if ((radius - 3) <= 3)
+	if ((radius - MIN_RADIUS) <= MIN_RADIUS)
 	{
-		radius = 3;
+		radius = MIN_RADIUS;
 	}
-	radius = radius - 5;
+	radius = radius - RADIUS_INC;
 }
 
 void draw_bucket()
 {
-	char * screen_buffer = getScreenBuffer() + mouse_t.x_mouse * 2 + mouse_t.y_mouse * 2 * 1024;
+	char * screen_buffer = getScreenBuffer() + mouse_t.x_mouse * 2 + mouse_t.y_mouse * 2 * getHRes();
 
 	int cor = *(uint16_t *)screen_buffer;
 
-	screen_buffer = getScreenBuffer() + 120 * 2 + 1024 * 183 * 2;
+	screen_buffer = getScreenBuffer() + CANVAS_X_I * 2 + getHRes() * CANVAS_Y_I * 2;
 
 	unsigned int i;
 	unsigned int j;
 	char bool = 1;
-	for (j = 183; j < 717; j++)
+	for (j = CANVAS_Y_I; j < CANVAS_Y_F; j++)
 	{
-		for (i = 120; i < 1020; i++)
+		for (i = CANVAS_X_I; i < CANVAS_X_F; i++)
 		{
 			if (cor == *(uint16_t *)screen_buffer)
 			{
@@ -375,7 +375,7 @@ void draw_bucket()
 			screen_buffer+=2;
 		}
 		i = 0;
-		screen_buffer = screen_buffer + 1024 * 2 - (1020 - 120) * 2;
+		screen_buffer = screen_buffer + getHRes() * 2 - (CANVAS_X_F - CANVAS_X_I) * 2;
 	}
 }
 
@@ -468,20 +468,40 @@ void white_screen()
 {
 	char * screen_buffer = getScreenBuffer();
 
-	screen_buffer = screen_buffer + 120 * 2 + 187 * 2 * 1024;
+	screen_buffer = screen_buffer + CANVAS_X_I * 2 + CANVAS_Y_I * 2 * getHRes();
 
 	unsigned int i = 0;
 	unsigned int j = 0;
 
 
-	for(; i < 717 - 187; i++)
+	for(; i < CANVAS_Y_F - CANVAS_Y_I; i++)
 	{
-		for (; j < 1020 - 120; j++)
+		for (; j < CANVAS_X_F - CANVAS_X_I; j++)
 		{
 			*(uint16_t *) screen_buffer = WHITE;
 			screen_buffer+=2;
 		}
 		j = 0;
-		screen_buffer = screen_buffer - (1020 - 120) * 2 + 1024 * 2;
+		screen_buffer = screen_buffer - (CANVAS_X_F - CANVAS_X_I) * 2 + getHRes() * 2;
+	}
+}
+
+void paintWhiteCanvas(int xi, int xf, int yi, int yf)
+{
+	char * screen_buffer = getScreenBuffer();
+	screen_buffer = screen_buffer + xi * 2 + yi * 2 * getHRes();
+
+	unsigned int i = 0;
+	unsigned int j = 0;
+
+	for(; j < yf - yi; j++)
+	{
+		for (; i < xf - xi; i++)
+		{
+			*(uint16_t *) screen_buffer = WHITE;
+			screen_buffer+=2;
+		}
+		i = 0;
+		screen_buffer = screen_buffer - (xf - xi) * 2 + getHRes() * 2;
 	}
 }

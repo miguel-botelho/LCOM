@@ -11,34 +11,34 @@ void fill_key_scancode(Bitmap ** scan_code)
 	scan_code[0x0007] = NULL;
 	scan_code[0x0008] = NULL;
 	scan_code[0x0009] = NULL;
-	scan_code[0x0010] = loadBitmap("home/lcom/proj/code/images/font/word/Q.bmp");
-	scan_code[0x0011] = loadBitmap("home/lcom/proj/code/images/font/word/W.bmp");
-	scan_code[0x0012] = loadBitmap("home/lcom/proj/code/images/font/word/E.bmp");
-	scan_code[0x0013] = loadBitmap("home/lcom/proj/code/images/font/word/R.bmp");
-	scan_code[0x0014] = loadBitmap("home/lcom/proj/code/images/font/word/T.bmp");
-	scan_code[0x0015] = loadBitmap("home/lcom/proj/code/images/font/word/Y.bmp");
-	scan_code[0x0016] = loadBitmap("home/lcom/proj/code/images/font/word/U.bmp");
-	scan_code[0x0017] = loadBitmap("home/lcom/proj/code/images/font/word/I.bmp");
-	scan_code[0x0018] = loadBitmap("home/lcom/proj/code/images/font/word/O.bmp");
-	scan_code[0x0019] = loadBitmap("home/lcom/proj/code/images/font/word/P.bmp");
+	scan_code[0x0010] = loadBitmap(FONT_PATH"Q.bmp");
+	scan_code[0x0011] = loadBitmap(FONT_PATH"W.bmp");
+	scan_code[0x0012] = loadBitmap(FONT_PATH"E.bmp");
+	scan_code[0x0013] = loadBitmap(FONT_PATH"R.bmp");
+	scan_code[0x0014] = loadBitmap(FONT_PATH"T.bmp");
+	scan_code[0x0015] = loadBitmap(FONT_PATH"Y.bmp");
+	scan_code[0x0016] = loadBitmap(FONT_PATH"U.bmp");
+	scan_code[0x0017] = loadBitmap(FONT_PATH"I.bmp");
+	scan_code[0x0018] = loadBitmap(FONT_PATH"O.bmp");
+	scan_code[0x0019] = loadBitmap(FONT_PATH"P.bmp");
 
-	scan_code[0x001E] = loadBitmap("home/lcom/proj/code/images/font/word/A.bmp");
-	scan_code[0x001F] = loadBitmap("home/lcom/proj/code/images/font/word/S.bmp");
-	scan_code[0x0020] = loadBitmap("home/lcom/proj/code/images/font/word/D.bmp");
-	scan_code[0x0021] = loadBitmap("home/lcom/proj/code/images/font/word/F.bmp");
-	scan_code[0x0022] = loadBitmap("home/lcom/proj/code/images/font/word/G.bmp");
-	scan_code[0x0023] = loadBitmap("home/lcom/proj/code/images/font/word/H.bmp");
-	scan_code[0x0024] = loadBitmap("home/lcom/proj/code/images/font/word/J.bmp");
-	scan_code[0x0025] = loadBitmap("home/lcom/proj/code/images/font/word/K.bmp");
-	scan_code[0x0026] = loadBitmap("home/lcom/proj/code/images/font/word/L.bmp");
+	scan_code[0x001E] = loadBitmap(FONT_PATH"A.bmp");
+	scan_code[0x001F] = loadBitmap(FONT_PATH"S.bmp");
+	scan_code[0x0020] = loadBitmap(FONT_PATH"D.bmp");
+	scan_code[0x0021] = loadBitmap(FONT_PATH"F.bmp");
+	scan_code[0x0022] = loadBitmap(FONT_PATH"G.bmp");
+	scan_code[0x0023] = loadBitmap(FONT_PATH"H.bmp");
+	scan_code[0x0024] = loadBitmap(FONT_PATH"J.bmp");
+	scan_code[0x0025] = loadBitmap(FONT_PATH"K.bmp");
+	scan_code[0x0026] = loadBitmap(FONT_PATH"L.bmp");
 
-	scan_code[0x002C] = loadBitmap("home/lcom/proj/code/images/font/word/Z.bmp");
-	scan_code[0x002D] = loadBitmap("home/lcom/proj/code/images/font/word/X.bmp");
-	scan_code[0x002E] = loadBitmap("home/lcom/proj/code/images/font/word/C.bmp");
-	scan_code[0x002F] = loadBitmap("home/lcom/proj/code/images/font/word/V.bmp");
-	scan_code[0x0030] = loadBitmap("home/lcom/proj/code/images/font/word/B.bmp");
-	scan_code[0x0031] = loadBitmap("home/lcom/proj/code/images/font/word/N.bmp");
-	scan_code[0x0032] = loadBitmap("home/lcom/proj/code/images/font/word/M.bmp");
+	scan_code[0x002C] = loadBitmap(FONT_PATH"Z.bmp");
+	scan_code[0x002D] = loadBitmap(FONT_PATH"X.bmp");
+	scan_code[0x002E] = loadBitmap(FONT_PATH"C.bmp");
+	scan_code[0x002F] = loadBitmap(FONT_PATH"V.bmp");
+	scan_code[0x0030] = loadBitmap(FONT_PATH"B.bmp");
+	scan_code[0x0031] = loadBitmap(FONT_PATH"N.bmp");
+	scan_code[0x0032] = loadBitmap(FONT_PATH"M.bmp");
 
 	unsigned int i = 51;
 	for (i; i < 86; i++)
@@ -49,16 +49,16 @@ void fill_key_scancode(Bitmap ** scan_code)
 
 void fill_number(Bitmap ** numbers)
 {
-	numbers[0] = loadBitmap("home/lcom/proj/code/images/numbers/0.bmp");
-	numbers[1] = loadBitmap("home/lcom/proj/code/images/numbers/1.bmp");
-	numbers[2] = loadBitmap("home/lcom/proj/code/images/numbers/2.bmp");
-	numbers[3] = loadBitmap("home/lcom/proj/code/images/numbers/3.bmp");
-	numbers[4] = loadBitmap("home/lcom/proj/code/images/numbers/4.bmp");
-	numbers[5] = loadBitmap("home/lcom/proj/code/images/numbers/5.bmp");
-	numbers[6] = loadBitmap("home/lcom/proj/code/images/numbers/6.bmp");
-	numbers[7] = loadBitmap("home/lcom/proj/code/images/numbers/7.bmp");
-	numbers[8] = loadBitmap("home/lcom/proj/code/images/numbers/8.bmp");
-	numbers[9] = loadBitmap("home/lcom/proj/code/images/numbers/9.bmp");
+	numbers[0] = loadBitmap(NUMBERS_PATH"0.bmp");
+	numbers[1] = loadBitmap(NUMBERS_PATH"1.bmp");
+	numbers[2] = loadBitmap(NUMBERS_PATH"2.bmp");
+	numbers[3] = loadBitmap(NUMBERS_PATH"3.bmp");
+	numbers[4] = loadBitmap(NUMBERS_PATH"4.bmp");
+	numbers[5] = loadBitmap(NUMBERS_PATH"5.bmp");
+	numbers[6] = loadBitmap(NUMBERS_PATH"6.bmp");
+	numbers[7] = loadBitmap(NUMBERS_PATH"7.bmp");
+	numbers[8] = loadBitmap(NUMBERS_PATH"8.bmp");
+	numbers[9] = loadBitmap(NUMBERS_PATH"9.bmp");
 	////////////////////////////////////////////////////////////////////////////////////////////////
 	////////////////////////////////////////////////////////////////////////////////////////////////
 	/////////////// NEEDS TO BE MADE ///////////////////////////////////////////////////////////////

@@ -30,11 +30,21 @@ extern char name[11];
 extern int length;
 extern int length_word;
 extern int colour;
+
 extern scores_t top_highscores;
+
 extern int espaco;
 extern int tentativas;
 extern int ai_or_pvp;
 extern int contador_high;
+extern int contador_c;
+extern int verdadeiro;
+
+extern char day;
+extern char year;
+extern char month;
+extern char hour;
+extern char minutes;
 
 /**
  * @brief Receives three colors, red, green and blue, and changes their values according to the selected colour
@@ -266,5 +276,13 @@ void printHead(bitmap_struct bitmaps, Bitmap ** key_scancode, int key);
 /**
  * @brief prints the Human Vs Machine
  */
-void printMachine(bitmap_struct bitmaps, Bitmap ** key_scancode, int key);
+void printMachine(bitmap_struct bitmaps, Bitmap ** key_scancode, int key, Bitmap ** numbers);
+
+/**
+ * @brief displays an highscore in the end of the game
+ *
+ * @param numbers the bitmap that contain the numbers
+ * @param player the information about the player
+ */
+void displayScore(Bitmap ** numbers, position_t player, Bitmap ** key_scancode);
 #endif
