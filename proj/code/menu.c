@@ -41,7 +41,7 @@ int exit_menu(bitmap_struct bitmaps, Bitmap ** numbers, Bitmap ** key_scancode)
 		printf("Failure to unsubscribe!! \n\n");
 		return -1;
 	}
-	write_all();
+	write_ev();
 	exit(0);
 }
 
@@ -183,11 +183,15 @@ int change_color(unsigned xi, unsigned xf, unsigned yi, unsigned yf, int color_i
 	return bool;
 }
 
-int HighScores_menu(bitmap_struct bitmaps)
+int HighScores_menu(bitmap_struct bitmaps, Bitmap ** numbers, Bitmap ** key_scancode)
 {
 	if (OPTION == HIGHSCORES)
 	{
-
+		displayHighScore(numbers, top_highscores.first, key_scancode, 200);
+		displayHighScore(numbers, top_highscores.second, key_scancode, 300);
+		displayHighScore(numbers, top_highscores.third, key_scancode, 400);
+		displayHighScore(numbers, top_highscores.fourth, key_scancode, 500);
+		displayHighScore(numbers, top_highscores.fifth, key_scancode, 600);
 	}
 
 	return 0;
@@ -323,10 +327,6 @@ int Head_to_Head(bitmap_struct bitmaps, Bitmap ** numbers)
 		}
 	}
 
-
-	//se ele acertar, ou acabar o timer, chamar is highscore
-	//pedir nome
-
 	return 0;
 }
 
@@ -358,7 +358,7 @@ int menu_handler (bitmap_struct bitmaps, Bitmap ** numbers, Bitmap ** key_scanco
 	}
 	case HIGHSCORES:
 	{
-		HighScores_menu(bitmaps);
+		HighScores_menu(bitmaps, numbers, key_scancode);
 		break;
 	}
 	case EXIT_OPT:
@@ -465,96 +465,84 @@ int toolHandler()
 	return 1;
 }
 
-int is_highscore(position_t *draw)
+int is_highscore(position_t draw)
 {
-	/*
+
 	int place = -1;
 	char discard1, discard2;
 
-	if (draw->score >= top_highscores.first.score)
+	if (draw.score >= top_highscores.first.score)
 	{
-		read_time(&(draw->year), &(draw->month), &(draw->day), &discard1, &(draw->hour), &(draw->minutes), &discard2);
 		top_highscores.fifth = top_highscores.fourth;
 		top_highscores.fourth = top_highscores.third;
 		top_highscores.third = top_highscores. second;
 		top_highscores.second = top_highscores.first;
-		top_highscores.first = (*draw);
+		top_highscores.first = draw;
 
-		remove(FILES_PATH"5.bmp");
-		rename(FILES_PATH"4.bmp", FILES_PATH"5.bmp");
-		rename(FILES_PATH"3.bmp", FILES_PATH"4.bmp");
-		rename(FILES_PATH"2.bmp", FILES_PATH"3.bmp");
-		rename(FILES_PATH"1.bmp", FILES_PATH"2.bmp");
-		rename(FILES_PATH"current_draw.bmp", FILES_PATH"1.bmp");
+		remove(FILE_PATH"5.bmp");
+		rename(FILE_PATH"4.bmp" , FILE_PATH"5.bmp");
+		rename(FILE_PATH"3.bmp", FILE_PATH"4.bmp");
+		rename(FILE_PATH"2.bmp", FILE_PATH"3.bmp");
+		rename(FILE_PATH"1.bmp", FILE_PATH"2.bmp");
+		rename(FILE_PATH"current_draw.bmp", FILE_PATH"1.bmp");
 
 		place = 1;
-		OPTION = GET_NAME;
 		return place;
 	}
-	else if(draw->score >= top_highscores.second.score)
+	else if(draw.score >= top_highscores.second.score)
 	{
-		read_time(&(draw->year), &(draw->month), &(draw->day), &discard1, &(draw->hour), &(draw->minutes), &discard2);
 		top_highscores.fifth = top_highscores.fourth;
 		top_highscores.fourth = top_highscores.third;
 		top_highscores.third = top_highscores. second;
-		top_highscores.second = (*draw);
+		top_highscores.second = draw;
 
-		remove(FILES_PATH"5.bmp");
-		rename(FILES_PATH"4.bmp", FILES_PATH"5.bmp");
-		rename(FILES_PATH"3.bmp", FILES_PATH"4.bmp");
-		rename(FILES_PATH"2.bmp", FILES_PATH"3.bmp");
-		rename(FILES_PATH"current_draw.bmp", FILES_PATH"2.bmp");
+		remove(FILE_PATH"5.bmp");
+		rename(FILE_PATH"4.bmp", FILE_PATH"5.bmp");
+		rename(FILE_PATH"3.bmp", FILE_PATH"4.bmp");
+		rename(FILE_PATH"2.bmp", FILE_PATH"3.bmp");
+		rename(FILE_PATH"current_draw.bmp", FILE_PATH"2.bmp");
 
 		place = 2;
-		OPTION = GET_NAME;
 		return place;
 	}
-	else if(draw->score >= top_highscores.third.score)
+	else if(draw.score >= top_highscores.third.score)
 	{
-		read_time(&(draw->year), &(draw->month), &(draw->day), &discard1, &(draw->hour), &(draw->minutes), &discard2);
 		top_highscores.fifth = top_highscores.fourth;
 		top_highscores.fourth = top_highscores.third;
-		top_highscores.third = (*draw);
+		top_highscores.third = draw;
 
-		remove(FILES_PATH"5.bmp");
-		rename(FILES_PATH"4.bmp", FILES_PATH"5.bmp");
-		rename(FILES_PATH"3.bmp", FILES_PATH"4.bmp");
-		rename(FILES_PATH"current_draw.bmp", FILES_PATH"3.bmp");
+		remove(FILE_PATH"5.bmp");
+		rename(FILE_PATH"4.bmp", FILE_PATH"5.bmp");
+		rename(FILE_PATH"3.bmp", FILE_PATH"4.bmp");
+		rename(FILE_PATH"current_draw.bmp", FILE_PATH"3.bmp");
 
 		place = 3;
-		OPTION = GET_NAME;
 		return place;
 	}
-	else if(draw->score >= top_highscores.fourth.score)
+	else if(draw.score >= top_highscores.fourth.score)
 	{
-		read_time(&(draw->year), &(draw->month), &(draw->day), &discard1, &(draw->hour), &(draw->minutes), &discard2);
 		top_highscores.fifth = top_highscores.fourth;
-		top_highscores.fourth = (*draw);
+		top_highscores.fourth = draw;
 
-		remove(FILES_PATH"5.bmp");
-		rename(FILES_PATH"4.bmp", FILES_PATH"5.bmp");
-		rename(FILES_PATH"current_draw.bmp", FILES_PATH"4.bmp");
-
+		remove(FILE_PATH"5.bmp");
+		rename(FILE_PATH"4.bmp", FILE_PATH"5.bmp");
+		rename(FILE_PATH"current_draw.bmp", FILE_PATH"4.bmp");
 
 		place = 4;
-		OPTION = GET_NAME;
 		return place;
 	}
-	else if(draw->score >= top_highscores.fifth.score)
+	else if(draw.score >= top_highscores.fifth.score)
 	{
-		read_time(&(draw->year), &(draw->month), &(draw->day), &discard1, &(draw->hour), &(draw->minutes), &discard2);
-		top_highscores.fifth = (*draw);
+		top_highscores.fifth = draw;
 
-		remove(FILES_PATH"5.bmp");
-		rename(FILES_PATH"current_draw.bmp", FILES_PATH"5.bmp");
+		remove(FILE_PATH"5.bmp");
+		rename(FILE_PATH"current_draw.bmp", FILE_PATH"5.bmp");
 
 		place = 5;
-		OPTION = GET_NAME;
 		return place;
 	}
 
 	return place;
-	 */
 }
 
 int score(int tick)
@@ -1508,7 +1496,7 @@ Bitmap* randImage()
 		guess_ai[3] = '0';
 		for (; i < 10; i++)
 		{
-			guess_ai[i] = '0';
+			guess_ai[i] = '1';
 		}
 		return loadBitmap(IMAGES_PATH"0.bmp");
 	}
@@ -1523,7 +1511,7 @@ Bitmap* randImage()
 		guess_ai[5] = '0';
 		for (; i < 10; i++)
 		{
-			guess_ai[i] = '0';
+			guess_ai[i] = '1';
 		}
 		return loadBitmap(IMAGES_PATH"1.bmp");
 	}
@@ -1539,7 +1527,7 @@ Bitmap* randImage()
 		guess_ai[6] = '0';
 		for (; i < 10; i++)
 		{
-			guess_ai[i] = '0';
+			guess_ai[i] = '1';
 		}
 		return loadBitmap(IMAGES_PATH"2.bmp");
 	}
@@ -1554,7 +1542,7 @@ Bitmap* randImage()
 		guess_ai[5] = '0';
 		for (; i < 10; i++)
 		{
-			guess_ai[i] = '0';
+			guess_ai[i] = '1';
 		}
 		return loadBitmap(IMAGES_PATH"3.bmp");
 	}
@@ -1568,7 +1556,7 @@ Bitmap* randImage()
 		guess_ai[4] = '0';
 		for (; i < 10; i++)
 		{
-			guess_ai[i] = '0';
+			guess_ai[i] = '1';
 		}
 		return loadBitmap(IMAGES_PATH"4.bmp");
 	}
@@ -1581,7 +1569,7 @@ Bitmap* randImage()
 		guess_ai[3] = '0';
 		for (; i < 10; i++)
 		{
-			guess_ai[i] = '0';
+			guess_ai[i] = '1';
 		}
 		return loadBitmap(IMAGES_PATH"5.bmp");
 	}
@@ -1597,7 +1585,7 @@ Bitmap* randImage()
 		guess_ai[6] = '0';
 		for (; i < 10; i++)
 		{
-			guess_ai[i] = '0';
+			guess_ai[i] = '1';
 		}
 		return loadBitmap(IMAGES_PATH"6.bmp");
 	}
@@ -1611,7 +1599,7 @@ Bitmap* randImage()
 		guess_ai[4] = '0';
 		for (; i < 10; i++)
 		{
-			guess_ai[i] = '0';
+			guess_ai[i] = '1';
 		}
 		return loadBitmap(IMAGES_PATH"7.bmp");
 	}
@@ -1629,7 +1617,7 @@ Bitmap* randImage()
 		guess_ai[8] = '0';
 		for (; i < 10; i++)
 		{
-			guess_ai[i] = '0';
+			guess_ai[i] = '1';
 		}
 		return loadBitmap(IMAGES_PATH"8.bmp");
 	}
@@ -1642,7 +1630,7 @@ Bitmap* randImage()
 		guess_ai[3] = '0';
 		for (; i < 10; i++)
 		{
-			guess_ai[i] = '0';
+			guess_ai[i] = '1';
 		}
 		return loadBitmap(IMAGES_PATH"9.bmp");
 	}
@@ -1742,7 +1730,7 @@ void printName(bitmap_struct bitmaps, Bitmap ** key_scancode, int key)
 	}
 }
 
-void printHead(bitmap_struct bitmaps, Bitmap ** key_scancode, int key)
+void printHead(bitmap_struct bitmaps, Bitmap ** key_scancode, int key, Bitmap ** numbers)
 {
 	char * screen_buffer = getScreenBuffer();
 	char * mouse_buffer = getMouseBuffer();
@@ -1806,10 +1794,45 @@ void printHead(bitmap_struct bitmaps, Bitmap ** key_scancode, int key)
 
 	if (key == KEY_TAB)
 	{
+		position_t jogador;
 		int score_conta;
 		score_conta = score(contador_high);
-		createBitmap();
+		jogador.score = score_conta;
+		int i = 0;
+		for(; i < 10; i++)
+		{
+			if ((name[i] >= 'A') && (name[i] <= 'Z'))
+			{
+				jogador.name[i] = name[i];
+			}
+			else
+			{
+				jogador.name[i] = '\0';
+				break;
+			}
+		}
+		i = 0;
+		for(; i < 10; i++)
+		{
+			if ((word[i] >= 'A') && (word[i] <= 'Z'))
+			{
+				jogador.word[i] = word[i];
+			}
+			else
+			{
+				break;
+			}
+		}
+		jogador.day = day;
+		jogador.month = month;
+		jogador.year = year;
+		jogador.hour = hour;
+		jogador.minutes = minutes;
+
 		drawBitmap(bitmaps.win, INITIAL,INITIAL, ALIGN_LEFT, getScreenBuffer());
+		createBitmap();
+		displayHighScore(numbers, jogador, key_scancode, getVRes() / 2);
+		is_highscore(jogador);
 		OPTION = STATIC;
 		tries = 0;
 		cleanName();
@@ -1918,10 +1941,30 @@ void printMachine(bitmap_struct bitmaps, Bitmap ** key_scancode, int key, Bitmap
 				int score_conta;
 				score_conta = score(contador_high);
 				jogador.score = score_conta;
-				for(i; i < 10; i++)
+				i = 0;
+				for(; i < 10; i++)
 				{
-					jogador.name[i] = name[i];
-					jogador.word[i] = word[i];
+					if ((name[i] >= 'A') && (name[i] <= 'Z'))
+					{
+						jogador.name[i] = name[i];
+					}
+					else
+					{
+						jogador.name[i] = '\0';
+						break;
+					}
+				}
+				i = 0;
+				for(; i < 10; i++)
+				{
+					if ((word[i] >= 'A') && (word[i] <= 'Z'))
+					{
+						jogador.word[i] = word[i];
+					}
+					else
+					{
+						break;
+					}
 				}
 				jogador.day = day;
 				jogador.month = month;
@@ -1929,10 +1972,9 @@ void printMachine(bitmap_struct bitmaps, Bitmap ** key_scancode, int key, Bitmap
 				jogador.hour = hour;
 				jogador.minutes = minutes;
 
-				//chamar is highscore
-
 				drawBitmap(bitmaps.win, INITIAL,INITIAL, ALIGN_LEFT, getScreenBuffer());
-				displayScore(numbers, jogador, key_scancode);
+				displayHighScore(numbers, jogador, key_scancode, getVRes() / 2);
+				is_highscore(jogador);
 
 				OPTION = STATIC;
 				tries = 0;
@@ -1958,18 +2000,196 @@ void printMachine(bitmap_struct bitmaps, Bitmap ** key_scancode, int key, Bitmap
 
 }
 
-void displayScore(Bitmap ** numbers, position_t player, Bitmap ** key_scancode)
+void displayScore(Bitmap ** numbers, position_t* player, Bitmap ** key_scancode, int x)
 {
-	int score = player.score;
-	int y = 800;
-	int x = getVRes() / 2;
+	int score = player->score;
 	int i = 0;
+	int y = 800;
 	char * screen_buffer = getScreenBuffer();
 	while(score != 0)
 	{
 		int temp = score % 10;
 		score = score / 10;
-		drawMouse(numbers[temp], y, getVRes() / 2, ALIGN_LEFT, screen_buffer);
+		drawMouse(numbers[temp], y, x, ALIGN_LEFT, screen_buffer);
+		y = y - SPACE_KEYS;
+	}
+
+	espaco = 0;
+	for(; i <= 10; i++)
+	{
+		switch (player->name[i])
+		{
+		case 'Q':
+		{
+			drawMouse(key_scancode[KEY_Q], 100 + espaco, x, ALIGN_LEFT, screen_buffer);
+			espaco = espaco + SPACE_KEYS;
+			break;
+		}
+		case 'W':
+		{
+			drawMouse(key_scancode[KEY_W], 100 + espaco, x, ALIGN_LEFT, screen_buffer);
+			espaco = espaco + SPACE_KEYS;
+			break;
+		}
+		case 'E':
+		{
+			drawMouse(key_scancode[KEY_E], 100 + espaco, x, ALIGN_LEFT, screen_buffer);
+			espaco = espaco + SPACE_KEYS;
+			break;
+		}
+		case 'R':
+		{
+			drawMouse(key_scancode[KEY_R], 100 + espaco, x, ALIGN_LEFT, screen_buffer);
+			espaco = espaco + SPACE_KEYS;
+			break;
+		}
+		case 'T':
+		{
+			drawMouse(key_scancode[KEY_T], 100 + espaco, x, ALIGN_LEFT, screen_buffer);
+			espaco = espaco + SPACE_KEYS;
+			break;
+		}
+		case 'Y':
+		{
+			drawMouse(key_scancode[KEY_Y], 100 + espaco, x, ALIGN_LEFT, screen_buffer);
+			espaco = espaco + SPACE_KEYS;
+			break;
+		}
+		case 'U':
+		{
+			drawMouse(key_scancode[KEY_U], 100 + espaco, x, ALIGN_LEFT, screen_buffer);
+			espaco = espaco + SPACE_KEYS;
+			break;
+		}
+		case 'I':
+		{
+			drawMouse(key_scancode[KEY_I], 100 + espaco, x, ALIGN_LEFT, screen_buffer);
+			espaco = espaco + SPACE_KEYS;
+			break;
+		}
+		case 'O':
+		{
+			drawMouse(key_scancode[KEY_O], 100 + espaco, x, ALIGN_LEFT, screen_buffer);
+			espaco = espaco + SPACE_KEYS;
+			break;
+		}
+		case 'P':
+		{
+			drawMouse(key_scancode[KEY_P], 100 + espaco, x, ALIGN_LEFT, screen_buffer);
+			espaco = espaco + SPACE_KEYS;
+			break;
+		}
+		case 'A':
+		{
+			drawMouse(key_scancode[KEY_A], 100 + espaco, x, ALIGN_LEFT, screen_buffer);
+			espaco = espaco + SPACE_KEYS;
+			break;
+		}
+		case 'S':
+		{
+			drawMouse(key_scancode[KEY_S], 100 + espaco, x, ALIGN_LEFT, screen_buffer);
+			espaco = espaco + SPACE_KEYS;
+			break;
+		}
+		case 'D':
+		{
+			drawMouse(key_scancode[KEY_D], 100 + espaco, x, ALIGN_LEFT, screen_buffer);
+			espaco = espaco + SPACE_KEYS;
+			break;
+		}
+		case 'F':
+		{
+			drawMouse(key_scancode[KEY_F], 100 + espaco, x, ALIGN_LEFT, screen_buffer);
+			espaco = espaco + SPACE_KEYS;
+			break;
+		}
+		case 'G':
+		{
+			drawMouse(key_scancode[KEY_G], 100 + espaco, x, ALIGN_LEFT, screen_buffer);
+			espaco = espaco + SPACE_KEYS;
+			break;
+		}
+		case 'H':
+		{
+			drawMouse(key_scancode[KEY_H], 100 + espaco, x, ALIGN_LEFT, screen_buffer);
+			espaco = espaco + SPACE_KEYS;
+			break;
+		}
+		case 'J':
+		{
+			drawMouse(key_scancode[KEY_J], 100 + espaco, x, ALIGN_LEFT, screen_buffer);
+			espaco = espaco + SPACE_KEYS;
+			break;
+		}
+		case 'K':
+		{
+			drawMouse(key_scancode[KEY_K], 100 + espaco, x, ALIGN_LEFT, screen_buffer);
+			espaco = espaco + SPACE_KEYS;
+			break;
+		}
+		case 'L':
+		{
+			drawMouse(key_scancode[KEY_L], 100 + espaco, x, ALIGN_LEFT, screen_buffer);
+			espaco = espaco + SPACE_KEYS;
+			break;
+		}
+		case 'Z':
+		{
+			drawMouse(key_scancode[KEY_Z], 100 + espaco, x, ALIGN_LEFT, screen_buffer);
+			espaco = espaco + SPACE_KEYS;
+			break;
+		}
+		case 'X':
+		{
+			drawMouse(key_scancode[KEY_X], 100 + espaco, x, ALIGN_LEFT, screen_buffer);
+			espaco = espaco + SPACE_KEYS;
+			break;
+		}
+		case 'C':
+		{
+			drawMouse(key_scancode[KEY_C], 100 + espaco, x, ALIGN_LEFT, screen_buffer);
+			espaco = espaco + SPACE_KEYS;
+			break;
+		}
+		case 'V':
+		{
+			drawMouse(key_scancode[KEY_V], 100 + espaco, x, ALIGN_LEFT, screen_buffer);
+			espaco = espaco + SPACE_KEYS;
+			break;
+		}
+		case 'B':
+		{
+			drawMouse(key_scancode[KEY_B], 100 + espaco, x, ALIGN_LEFT, screen_buffer);
+			espaco = espaco + SPACE_KEYS;
+			break;
+		}
+		case 'N':
+		{
+			drawMouse(key_scancode[KEY_N], 100 + espaco, x, ALIGN_LEFT, screen_buffer);
+			espaco = espaco + SPACE_KEYS;
+			break;
+		}
+		case 'M':
+		{
+			drawMouse(key_scancode[KEY_M], 100 + espaco, x, ALIGN_LEFT, screen_buffer);
+			espaco = espaco + SPACE_KEYS;
+			break;
+		}
+		}
+	}
+}
+
+void displayHighScore(Bitmap ** numbers, position_t player, Bitmap ** key_scancode, int x)
+{
+	int score = player.score;
+	int i = 0;
+	int y = 800;
+	char * screen_buffer = getScreenBuffer();
+	while(score != 0)
+	{
+		int temp = score % 10;
+		score = score / 10;
+		drawMouse(numbers[temp], y, x, ALIGN_LEFT, screen_buffer);
 		y = y - SPACE_KEYS;
 	}
 
@@ -2136,7 +2356,4 @@ void displayScore(Bitmap ** numbers, position_t player, Bitmap ** key_scancode)
 		}
 		}
 	}
-
-
-
 }

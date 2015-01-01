@@ -18,6 +18,7 @@
 #include "keyboard_mouse_macros.h"
 #include "device_interrupts.h"
 #include "video_gr_macros.h"
+#include "read_write.h"
 
 extern char OPTION;
 extern int RTC_COUNTER;
@@ -62,7 +63,7 @@ void getrgb(int *red, int *green, int *blue);
  *
  * @return the place of the user (1,2,3,4 or 5)
  */
-int is_highscore(position_t *draw);
+int is_highscore(position_t draw);
 
 /**
  * @brief Calculates the score of the user
@@ -138,7 +139,7 @@ int change_color(unsigned xi, unsigned xf, unsigned yi, unsigned yf, int color_i
  *
  * @return 0 if sucessfully, 1 otherwise
  */
-int HighScores_menu(bitmap_struct bitmaps);
+int HighScores_menu(bitmap_struct bitmaps, Bitmap ** numbers, Bitmap ** key_scancode);
 
 /**
  * @brief the serial port game option
@@ -271,7 +272,7 @@ void printName(bitmap_struct bitmaps, Bitmap ** key_scancode, int key);
 /**
  * @brief prints the Head to Head
  */
-void printHead(bitmap_struct bitmaps, Bitmap ** key_scancode, int key);
+void printHead(bitmap_struct bitmaps, Bitmap ** key_scancode, int key, Bitmap ** numbers);
 
 /**
  * @brief prints the Human Vs Machine
@@ -283,6 +284,18 @@ void printMachine(bitmap_struct bitmaps, Bitmap ** key_scancode, int key, Bitmap
  *
  * @param numbers the bitmap that contain the numbers
  * @param player the information about the player
+ * @param key_scancode the bitmap containing the ketters
+ * @param x the position in which to write
  */
-void displayScore(Bitmap ** numbers, position_t player, Bitmap ** key_scancode);
+void displayScore(Bitmap ** numbers, position_t* player, Bitmap ** key_scancode, int x);
+
+/**
+ * @brief displays the highscore read from txt
+ *
+ * @param numbers the bitmap that contain the numbers
+ * @param player the information about the player
+ * @param key_scancode the bitmap containing the ketters
+ * @param x the position in which to write
+ */
+void displayHighScore(Bitmap ** numbers, position_t player, Bitmap ** key_scancode, int x);
 #endif

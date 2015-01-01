@@ -44,14 +44,16 @@ void set(char year, char month, char month_day, char week_day, char hours, char 
 	write_rtc(SECONDS, seconds);
 }
 
-void read_time(char year, char month, char month_day, char hours, char minutes)
+void read_time(char *year, char *month, char *month_day, char *week_day, char *hours, char *minutes, char *seconds)
 {
-	year = read_rtc(YEAR);
-	month = read_rtc(MONTH);
-	month_day = read_rtc(MONTH_DAY);
-	//(*week_day) = read_rtc(WEEK_DAY);
-	hours = read_rtc(HOURS);
-	minutes = read_rtc(MINUTES);
-	//(*seconds) = read_rtc(SECONDS);
+	(*year) = read_rtc(YEAR);
+	(*month) = read_rtc(MONTH);
+
+	(*month_day) = read_rtc(MONTH_DAY);
+
+	(*week_day) = read_rtc(WEEK_DAY);
+	(*hours) = read_rtc(HOURS);
+	(*minutes) = read_rtc(MINUTES);
+	(*seconds) = read_rtc(SECONDS);
 }
 
