@@ -237,7 +237,7 @@ int main(int argc, char **argv) {
 						espaco = 0;
 						tentativas = 0;
 						tries = 0;
-						RTC_COUNTER = 60;
+						RTC_COUNTER = START_RTC_COUNTER;
 						verdadeiro = 1;
 						cleanName();
 					}
@@ -348,7 +348,7 @@ int main(int argc, char **argv) {
 					} else {
 						screen_abs = 0;
 						screen_current = 0;
-						RTC_COUNTER = 60;
+						RTC_COUNTER = START_RTC_COUNTER;
 					}
 				}
 				break;

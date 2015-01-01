@@ -9,6 +9,9 @@
 
 #define MAX_DRAW_SIZE			999
 
+/**
+ * @brief represents a player
+ */
 typedef struct
 {
 	char day;
@@ -26,6 +29,9 @@ typedef struct
 
 } position_t;
 
+/**
+ * @brief represents the highscores
+ */
 typedef struct
 {
 	position_t first;
