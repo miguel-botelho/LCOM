@@ -8,7 +8,7 @@ char tool = PENCIL;
 
 int colour = 0x001F;
 
-int RTC_COUNTER = 60; //começa a 60
+int RTC_COUNTER = START_RTC_COUNTER; //começa a 60
 
 char name[11];
 
@@ -29,6 +29,14 @@ int length_word = 0;
 int contador_high = 0;
 int tentativas = 0;
 int ai_or_pvp = 0; // 0 = ai; 1 = pvp
+int contador_c = CANVAS_Y_F;
+int verdadeiro = 0;
+
+char day = 0;
+char year = 0;
+char month = 0;
+char hour = 0;
+char minutes = 0;
 
 /*
  * NAO ESTA FEITO!! O SCORE NAO TEM O CASO QUE ACERTA (TEM QUE SER FEITO NO FINAL)

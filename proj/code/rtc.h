@@ -65,7 +65,7 @@ void set(char year, char month, char month_day, char week_day, char hours, char 
  *
  * @return Void
  */
-void read_time(char *year, char *month, char *month_day, char *week_day, char *hours, char *minutes, char *seconds);
+void read_time(char year, char month, char month_day, char hours, char minutes);
 
 /**
  * @brief Enables the RTC interrupts

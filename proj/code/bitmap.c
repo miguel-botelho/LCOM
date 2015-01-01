@@ -6,18 +6,18 @@ void createDBitmap()
 
 	char * screen_buffer = getScreenBuffer();
 	size_t ax, ay;
-	screen_buffer += ((1024 * 768) - 1) * 2;
+	screen_buffer += ((getHRes() * 768) - 1) * 2;
 
 	int red, green, blue;
-	////canvas: x = 120 a 1020; y = 187 a 717
+	////canvas: x = CANVAS_X_I a CANVAS_X_F; y = 187 a 717
 	int i, j;
-	bmp = bmp_create(1025 - 126, 717 - 186,16);
+	bmp = bmp_create(1025 - 126, 717 - CANVAS_Y_I,16);
 
 	for(i = 126; i < 1025; i++)
 	{
 		for (j = 187; j < 717; j++)
 		{
-			getrgbBitmap(&red, &green, &blue, *((uint16_t *)screen_buffer + i + j * 1024));
+			getrgbBitmap(&red, &green, &blue, *((uint16_t *)screen_buffer + i + j * getHRes()));
 			rgb_pixel_t pixel = {blue, green, red, 0};
 			bmp_set_pixel(bmp,(uint32_t)(i - 126),(uint32_t)(j - 187),pixel);
 		}
@@ -57,7 +57,7 @@ void createBitmapsUndoRedo()
 {
 	bmpfile_t *bmp;
 
-	bmp = bmp_create(1025 - 126, 717 - 186,16);
+	bmp = bmp_create(1025 - 126, 717 - CANVAS_Y_I,16);
 
 	int i, j;
 
@@ -91,27 +91,27 @@ void createBitmap()
 
 	int red, green, blue;
 
-	////canvas: x = 120 a 1020; y = 186 a 718
+	////canvas: x = CANVAS_X_I a CANVAS_X_F; y = CANVAS_Y_I a CANVAS_Y_F
 
 	int i, j;
 
-	bmp = bmp_create(1020 - 120, 718 - 186,16);
+	bmp = bmp_create(CANVAS_X_F - CANVAS_X_I, CANVAS_Y_F - CANVAS_Y_I,16);
 
-	for(i = 120; i < 1020; i++)
+	for(i = CANVAS_X_I; i < CANVAS_X_F; i++)
 
 	{
 
-		for (j = 186; j < 718; j++)
+		for (j = CANVAS_Y_I; j < CANVAS_Y_F; j++)
 
 		{
 
-			getrgbBitmap(&red, &green, &blue, *((uint16_t *)screen_buffer + i + j * 1024));
+			getrgbBitmap(&red, &green, &blue, *((uint16_t *)screen_buffer + i + j * getHRes()));
 
 			rgb_pixel_t pixel = {blue, green, red, 0};
 
 			//printf("*(uint16_t *)screen_buffer: 0x%X R: %d G: %d B: %d\n", *(uint16_t *)screen_buffer, red, green, blue);
 
-			bmp_set_pixel(bmp,(uint32_t)(i - 120),(uint32_t)(j - 186),pixel);
+			bmp_set_pixel(bmp,(uint32_t)(i - CANVAS_X_I),(uint32_t)(j - CANVAS_Y_I),pixel);
 
 		}
 

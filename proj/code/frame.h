@@ -11,6 +11,7 @@
 #include"video_gr.h"
 #include"global_variables.h"
 #include "bitmap.h"
+#include "menu_macros.h"
 
 extern int radius;
 extern int colour;

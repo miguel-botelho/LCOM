@@ -8,6 +8,7 @@
 #define __ARRAY_KEYBOARD_H
 
 #include "bitmap.h"
+#include "menu_macros.h"
 
 /**
  * @brief fills the array of bitmaps that have the fonts for the letter
