@@ -9,6 +9,7 @@
 
 #include "struct_bmp.h"
 #include "struct_scores.h"
+#include "menu_macros.h"
 extern scores_t top_highscores;
 
 /**
@@ -30,7 +31,7 @@ void read_position(FILE *fp, position_t *t);
  * @param *t struct to be filled
  *
  */
-void read_all();
+void read_ev();
 
 /**
  * @brief Write a struct to a file
@@ -51,6 +52,6 @@ void write_position(FILE *fp, position_t *t);
  * @param *t struct that has the information to be written
  *
  */
-void write_all();
+void write_ev();
 
 #endif

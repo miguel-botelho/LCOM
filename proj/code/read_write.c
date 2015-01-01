@@ -65,10 +65,10 @@ void read_position(FILE *fp, position_t *t)
 		(t->name)[i] = a[i];
 		i++;
 	}
-
 	// the new line '\n' is already ignored
 
 	//word
+	/*
 	char b[11];
 	fgets(b, 11, fp);
 	i = 0;
@@ -77,15 +77,16 @@ void read_position(FILE *fp, position_t *t)
 		(t->word)[i] = b[i];
 		i++;
 	}
+	*/
 
 	// the new line '\n' is already ignored
 }
 
-void read_all()
+void read_ev()
 {
 	FILE *fp;
 
-	fp = fopen("home/lcom/proj/code/files/scores.txt","r");
+	fp = fopen(FILE_PATH"scores.txt","r");
 
 	if( fp == NULL )
 	{
@@ -213,19 +214,25 @@ void write_position(FILE *fp, position_t *t)
 	fputc('\n', fp);
 
 	//name
+	/*
+	int i = 0;
+	while(t->name[i] != '0')
+	{
+		fputc(t->name[i], fp);
+	}
+	*/
 	fputs(t->name, fp);
-	//fputc('\n', fp);
 
 	//word
-	fputs(t->word, fp);
+	//fputs(t->word, fp);
 	//fputc('\n', fp);
 }
 
-void write_all()
+void write_ev()
 {
 	FILE *fp;
 
-	fp = fopen("home/lcom/proj/code/files/scores.txt","w");
+	fp = fopen(FILE_PATH"scores.txt","w");
 
 	if( fp == NULL )
 	{

@@ -145,7 +145,7 @@ int main(int argc, char **argv) {
 	mouse_t.LB = 0; //to prevent the selection of the first menu
 
 	//read highscore
-	read_all();
+	read_ev();
 
 	//Create 10 white bitmaps
 	createBitmapsUndoRedo();
@@ -216,7 +216,7 @@ int main(int argc, char **argv) {
 					}
 					if (OPTION == HEAD_TO_HEAD)
 					{
-						printHead(bitmaps, key_scancode, key);
+						printHead(bitmaps, key_scancode, key, numbers);
 					}
 
 					if (OPTION == HUMAN_VS_MACHINE)
@@ -365,10 +365,26 @@ int main(int argc, char **argv) {
 	deleteBitmap(bitmaps.background);
 	deleteBitmap(bitmaps.mouse);
 	deleteBitmap(bitmaps.frame);
+	deleteBitmap(bitmaps.highscores);
+	deleteBitmap(bitmaps.pre_head_to_head);
+	deleteBitmap(bitmaps.lost);
+	deleteBitmap(bitmaps.win);
+	deleteBitmap(random);
+	i = 0;
+	for(; i < 10; i++)
+	{
+		deleteBitmap(numbers[i]);
+	}
+	i = 16;
+	for(; i < 50; i++)
+	{
+		deleteBitmap(key_scancode[i]);
+	}
 
 	//Exit the graphic mode
 	vg_exit();
 
+	write_all();
 	//estas duas opearacoes sao feitas para assegurar o normal funcionamento do rato quando acabar a funcao
 	mouse_int_handler(DISABLE_STREAM); //desativa a stream
 	mouse_int_handler(SET_STREAM); //volta a ativar a stream, isto foi feito para desativar o envio dos pacotes
