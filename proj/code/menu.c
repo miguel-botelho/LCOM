@@ -1502,13 +1502,11 @@ Bitmap* randImage()
 	}
 	case 1:
 	{
-		i = 6;
-		guess_ai[0] = 'P';
-		guess_ai[1] = 'U';
-		guess_ai[2] = 'S';
-		guess_ai[3] = 'S';
-		guess_ai[4] = 'Y';
-		guess_ai[5] = '0';
+		i = 4;
+		guess_ai[0] = 'C';
+		guess_ai[1] = 'A';
+		guess_ai[2] = 'T';
+		guess_ai[3] = '0';
 		for (; i < 10; i++)
 		{
 			guess_ai[i] = '1';
@@ -1517,14 +1515,16 @@ Bitmap* randImage()
 	}
 	case 2:
 	{
-		i = 7;
-		guess_ai[0] = 'C';
-		guess_ai[1] = 'I';
-		guess_ai[2] = 'G';
-		guess_ai[3] = 'A';
-		guess_ai[4] = 'N';
-		guess_ai[5] = 'O';
-		guess_ai[6] = '0';
+		i = 9;
+		guess_ai[0] = 'Q';
+		guess_ai[1] = 'U';
+		guess_ai[2] = 'A';
+		guess_ai[3] = 'R';
+		guess_ai[4] = 'E';
+		guess_ai[5] = 'S';
+		guess_ai[6] = 'M';
+		guess_ai[7] = 'A';
+		guess_ai[8] = '0';
 		for (; i < 10; i++)
 		{
 			guess_ai[i] = '1';
@@ -1548,12 +1548,14 @@ Bitmap* randImage()
 	}
 	case 4:
 	{
-		i = 5;
+		i = 7;
 		guess_ai[0] = 'M';
-		guess_ai[1] = 'I';
-		guess_ai[2] = 'C';
-		guess_ai[3] = 'O';
-		guess_ai[4] = '0';
+		guess_ai[1] = 'O';
+		guess_ai[2] = 'N';
+		guess_ai[3] = 'K';
+		guess_ai[4] = 'E';
+		guess_ai[5] = 'Y';
+		guess_ai[6] = '0';
 		for (; i < 10; i++)
 		{
 			guess_ai[i] = '1';

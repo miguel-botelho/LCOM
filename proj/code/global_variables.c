@@ -1,22 +1,22 @@
 #include "global_variables.h"
 
-char OPTION = MAIN_MENU;
+char OPTION = MAIN_MENU; /* @brief OPTION is the menu state*/
 
-int radius = 10;
+int radius = 10; /* @brief radius is the size of the square, brush or circle*/
 
-char tool = PENCIL;
+char tool = PENCIL; /* @brief tool is the selected tool*/
 
-int colour = 0x001F;
+int colour = 0x001F; /* @brief colour is the selected color*/
 
-int RTC_COUNTER = START_RTC_COUNTER; //começa a 60
+int RTC_COUNTER = START_RTC_COUNTER; /* @brief RTC_COUNTER is the time that has passed drawing*/
 
-char name[11];
+char name[11]; /* @brief name is the username*/
 
-char word[11]; //nao tenho a certeza se isto ja nao e o mesmo que name[11], se for nao esquecer de mudar int score()
+char word[11]; /* @brief word is the username's guess*/
 
-char guess_ai[11];
+char guess_ai[11]; /* @brief guess_ai is the pc's random word*/
 
-int tries = 0; //começa a 0 ||| MAX = 4 (incluindo)
+int tries = 0; /* @brief tries number of tries*/
 
 scores_t top_highscores;
 
@@ -37,13 +37,3 @@ char year = 0;
 char month = 0;
 char hour = 0;
 char minutes = 0;
-
-/*
- * NAO ESTA FEITO!! O SCORE NAO TEM O CASO QUE ACERTA (TEM QUE SER FEITO NO FINAL)
- * score = 4 tentativas * 100 (perde)
- * score = numero de letras * 150 (ganha)
- */
-
-/*
- * Kengas ve o undo na parte do drawBitmap
- */

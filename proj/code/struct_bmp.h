@@ -9,6 +9,9 @@
 
 #include "bitmap.h"
 
+/**
+ * @brief struct that contains all the images used in the menu
+ */
 typedef struct
 {
 	Bitmap* background;
