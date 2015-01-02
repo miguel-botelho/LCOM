@@ -1,5 +1,5 @@
 /**
- * @file video_gr_macros.h
+ * @file read_write.h
  * @author Miguel Botelho and Antonio Ramadas
  * @brief The file containing the functions that allow reading and writing in txts
  */
