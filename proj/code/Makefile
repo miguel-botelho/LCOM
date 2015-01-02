@@ -1,4 +1,4 @@
-# Makefile for the lab3 driver (based on that of hello).
+# Makefile for the Artist Vs Guess
 
 COMPILER_TYPE= gnu
 

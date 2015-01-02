@@ -23,22 +23,22 @@ void createDBitmap()
 		}
 	}
 
-	char a[] = "home/lcom/proj/code/files/d0.bmp";
+	char a[] = FILE_PATH"d0.bmp";
 
 	if (screen_current >= 9)
 	{
 		screen_current = 9;
 		screen_abs = screen_current;
-		remove("home/lcom/proj/code/files/d0.bmp");
-		rename("home/lcom/proj/code/files/d1.bmp", "home/lcom/proj/code/files/d0.bmp");
-		rename("home/lcom/proj/code/files/d2.bmp", "home/lcom/proj/code/files/d1.bmp");
-		rename("home/lcom/proj/code/files/d3.bmp", "home/lcom/proj/code/files/d2.bmp");
-		rename("home/lcom/proj/code/files/d4.bmp", "home/lcom/proj/code/files/d3.bmp");
-		rename("home/lcom/proj/code/files/d5.bmp", "home/lcom/proj/code/files/d4.bmp");
-		rename("home/lcom/proj/code/files/d6.bmp", "home/lcom/proj/code/files/d5.bmp");
-		rename("home/lcom/proj/code/files/d7.bmp", "home/lcom/proj/code/files/d6.bmp");
-		rename("home/lcom/proj/code/files/d8.bmp", "home/lcom/proj/code/files/d7.bmp");
-		rename("home/lcom/proj/code/files/d9.bmp", "home/lcom/proj/code/files/d8.bmp");
+		remove(FILE_PATH"d0.bmp");
+		rename(FILE_PATH"d1.bmp", FILE_PATH"d0.bmp");
+		rename(FILE_PATH"d2.bmp", FILE_PATH"d1.bmp");
+		rename(FILE_PATH"d3.bmp", FILE_PATH"d2.bmp");
+		rename(FILE_PATH"d4.bmp", FILE_PATH"d3.bmp");
+		rename(FILE_PATH"d5.bmp", FILE_PATH"d4.bmp");
+		rename(FILE_PATH"d6.bmp", FILE_PATH"d5.bmp");
+		rename(FILE_PATH"d7.bmp", FILE_PATH"d6.bmp");
+		rename(FILE_PATH"d8.bmp", FILE_PATH"d7.bmp");
+		rename(FILE_PATH"d9.bmp", FILE_PATH"d8.bmp");
 	}
 	else
 	{
@@ -71,7 +71,7 @@ void createBitmapsUndoRedo()
 	}
 
 
-	char a[] = "home/lcom/proj/code/files/d0.bmp";
+	char a[] = FILE_PATH"d0.bmp";
 
 	for (i = 0; i < 10; i++)
 	{

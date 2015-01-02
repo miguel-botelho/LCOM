@@ -2,9 +2,9 @@
 #include "keyboard.h"
 
 static char *video_mem;		/* Process address to which VRAM is mapped */
-static char *mouse_buffer;
-static char *screen_buffer;
-static char *human_machine_screen;
+static char *mouse_buffer; /* the mouse buffer */
+static char *screen_buffer; /* the screen buffer */
+static char *human_machine_screen; /* an additional buffer*/
 static long vram_size;		/* Size of VRAM */
 static unsigned h_res;		/* Horizontal screen resolution in pixels */
 static unsigned v_res;		/* Vertical screen resolution in pixels */

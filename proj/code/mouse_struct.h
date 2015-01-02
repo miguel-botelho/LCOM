@@ -7,6 +7,9 @@
 #ifndef __MOUSE_STRUCT_H
 #define __MOUSE_STRUCT_H
 
+/**
+ * @brief the struct that has the mouse (all of its properties)
+ */
 typedef struct
 {
 	int LB;
