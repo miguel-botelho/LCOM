@@ -13,6 +13,10 @@
 #include "mouse_struct.h"
 #include "keyboard_mouse_macros.h"
 
+/** @defgroup Mouse Mouse
+ * @{
+ * Functions for manipulating the mouse
+ */
 
 /**
  * @brief Fill the mouse struct

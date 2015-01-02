@@ -10,6 +10,11 @@
 #include"serial_port_macros.h"
 #include"lib.h"
 
+/** @defgroup Serial_Port Serial Port
+ * @{
+ * Functions for the handling of the Serial Port
+ */
+
 /**
  * @brief Configures the serial port
  *

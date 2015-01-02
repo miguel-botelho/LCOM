@@ -11,4 +11,9 @@
 #include "video_gr_macros.h"
 #include "struct_scores.h"
 
+/** @defgroup Global_variables Global Variables
+ * @{
+ * Only Contains several global variables
+ */
+
 #endif

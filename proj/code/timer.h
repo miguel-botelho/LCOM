@@ -12,6 +12,11 @@
 #include "lib.h"
 #include "timer_macros.h"
 
+/** @defgroup Timer Timer
+ * @{
+ * Functions for the handling of the timer
+ */
+
 /**
  * @brief Configures a timer to generate a square wave
  *

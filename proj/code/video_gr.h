@@ -16,6 +16,10 @@
 #include "vbe_struct.h"
 #include "keyboard_mouse_macros.h"
 
+/** @defgroup Video_Gr Video Graphic
+ * @{
+ * Functions for the handling of the video card
+ */
 
 /**
  * @brief Initializes the video module in graphics mode

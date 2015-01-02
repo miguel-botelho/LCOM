@@ -29,6 +29,11 @@
 
 #include "lib.h"
 
+/** @defgroup bmpfile BMPFILE
+ * @{
+ * Functions that allow the handling of bitmaps (extensive)
+ */
+
 #ifdef __cplusplus
 #define BMP_BEGIN_DECLS extern "C" {
 #define BMP_END_DECLS }

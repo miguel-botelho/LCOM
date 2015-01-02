@@ -1,3 +1,7 @@
+/**
+ * @brief THE ARTIST VS GUESS GAME
+ */
+
 #include "global_variables.h"
 #include "lib.h"
 

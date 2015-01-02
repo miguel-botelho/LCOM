@@ -12,6 +12,11 @@
 #include "menu_macros.h"
 extern scores_t top_highscores;
 
+/** @defgroup Read_Write Load And Write
+ * @{
+ * Functions for manipulating the highscores txt
+ */
+
 /**
  * @brief Fill a struct from a file
  *

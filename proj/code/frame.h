@@ -20,6 +20,11 @@ extern int screen_current;
 
 #define NUMBER_TO_CHANGE			27
 
+/** @defgroup Frame Frame
+ * @{
+ * Functions for drawing in the canvas
+ */
+
 /**
  * @brief Draws a line in the painting screen
  *
