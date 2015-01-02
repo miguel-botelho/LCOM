@@ -12,6 +12,11 @@
 #include "lib.h"
 #include "keyboard_mouse_macros.h"
 
+/** @defgroup Keyboard Keyboard
+ * @{
+ * Functions for the handling of the keyboard
+ */
+
 /**
  * @brief receives a scancode and returns the right letter
  *

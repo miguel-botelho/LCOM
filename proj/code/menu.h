@@ -47,6 +47,11 @@ extern char month;
 extern char hour;
 extern char minutes;
 
+/** @defgroup Menu Menu
+ * @{
+ * Functions that allow the goood functioning of the menu
+ */
+
 /**
  * @brief Receives three colors, red, green and blue, and changes their values according to the selected colour
  *

@@ -10,6 +10,11 @@
 #include "bitmap.h"
 #include "menu_macros.h"
 
+/** @defgroup Array_ketboard Arrays of Bitmaps
+ * @{
+ * Fill the array with the letters and numbers
+ */
+
 /**
  * @brief fills the array of bitmaps that have the fonts for the letter
  *

@@ -12,6 +12,11 @@
 #include "rtc_macros.h"
 #include "rtc.h"
 
+/** @defgroup Device_interrupts Device Interrupts
+ * @{
+ * Functions to interrupt the devices
+ */
+
 // This file only subscribes and unsubscribes
 
 /**

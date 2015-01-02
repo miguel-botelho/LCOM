@@ -10,6 +10,11 @@
 #include "lib.h"
 #include "rtc_macros.h"
 
+/** @defgroup RTC RTC
+ * @{
+ * Functions for handling the RTC
+ */
+
 /**
  * @brief Read rtc
  *
