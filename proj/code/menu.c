@@ -1679,7 +1679,25 @@ void printName(bitmap_struct bitmaps, Bitmap ** key_scancode, int key)
 		{
 			length++;
 			name[length] = '\0';
+			if (ai_or_pvp == 1)
+			{
+				contador_high = 0;
+				OPTION = HEAD_TO_HEAD;
+			}
+			else
+			{
+				OPTION = HUMAN_VS_MACHINE;
+				contador_high = 0;
+				screen_to_mouse(screen_buffer, mouse_buffer);
+				drawMouse(bitmaps.mouse, mouse_t.x_mouse, mouse_t.y_mouse, ALIGN_LEFT, mouse_buffer);
+
+				mouse_to_video(mouse_buffer, video_memory);
+			}
+		}
+		else
+		{
 			OPTION = MAIN_MENU;
+			cleanName();
 		}
 	}
 	else if ((key == KEY_ENTER || key == KEY_NUM_ENTER) && (length > 0))
@@ -1745,128 +1763,30 @@ void printHead(bitmap_struct bitmaps, Bitmap ** key_scancode, int key, Bitmap **
 	unsigned int a = 0;
 	char * human_machine = getHumanMachine();
 	int j = 0;
-	if (key == KEY_BACKSPACE)
+
+	if (length_word >= 11)
 	{
+		cleanWord();
 		drawBitmap(bitmaps.frame, INITIAL, INITIAL, ALIGN_LEFT, human_machine);
 		human_machine = human_machine + ERASE_GUESS_X * 2 + getHRes() * ERASE_GUESS_Y * 2;
 		screen_buffer = screen_buffer + ERASE_GUESS_X * 2 + getHRes() * ERASE_GUESS_Y * 2;
 		for(; a < (183 - ERASE_GUESS_Y); a++)
 		{
-			for (; l < (470 - ERASE_GUESS_X);l++)
+			for (; l < (510 - ERASE_GUESS_X);l++)
 			{
 				*(uint16_t *)screen_buffer = *(uint16_t *)human_machine;
 				screen_buffer+=2;
 				human_machine+=2;
 			}
 			l = 0;
-			screen_buffer += getHRes() * 2 - (470 - ERASE_GUESS_X) * 2;
-			human_machine += getHRes() * 2 - (470 - ERASE_GUESS_X) * 2;
+			screen_buffer += getHRes() * 2 - (510 - ERASE_GUESS_X) * 2;
+			human_machine += getHRes() * 2 - (510 - ERASE_GUESS_X) * 2;
 		}
 		l = 0;
 		a = 0;
-
-		//cleanWord();
 	}
-	if (key == KEY_SPACE)
+	else
 	{
-		tries++;
-		drawBitmap(bitmaps.frame, INITIAL, INITIAL, ALIGN_LEFT, human_machine);
-		human_machine = human_machine + ERASE_GUESS_X * 2 + getHRes() * ERASE_GUESS_Y * 2;
-		screen_buffer = screen_buffer + ERASE_GUESS_X * 2 + getHRes() * ERASE_GUESS_Y * 2;
-		for(; a < (183 - ERASE_GUESS_Y); a++)
-		{
-			for (; l < (470 - ERASE_GUESS_X);l++)
-			{
-				*(uint16_t *)screen_buffer = *(uint16_t *)human_machine;
-				screen_buffer+=2;
-				human_machine+=2;
-			}
-			l = 0;
-			screen_buffer += getHRes() * 2 - (470 - ERASE_GUESS_X) * 2;
-			human_machine += getHRes() * 2 - (470 - ERASE_GUESS_X) * 2;
-		}
-		a = 0;
-		l = 0;
-
-		cleanWord();
-	}
-
-	if (get_char(key) >= 'A' && get_char(key) <= 'Z')
-	{
-		word[length_word] = get_char(key);
-		WriteArrayFrame2(word, length_word, key_scancode, bitmaps);
-		length_word++;
-	}
-
-	if (key == KEY_TAB)
-	{
-		position_t jogador;
-		int score_conta;
-		score_conta = score(contador_high);
-		jogador.score = score_conta;
-		int i = 0;
-		for(; i < 10; i++)
-		{
-			if ((name[i] >= 'A') && (name[i] <= 'Z'))
-			{
-				jogador.name[i] = name[i];
-			}
-			else
-			{
-				jogador.name[i] = '\0';
-				break;
-			}
-		}
-		i = 0;
-		for(; i < 10; i++)
-		{
-			if ((word[i] >= 'A') && (word[i] <= 'Z'))
-			{
-				jogador.word[i] = word[i];
-			}
-			else
-			{
-				break;
-			}
-		}
-		jogador.day = day;
-		jogador.month = month;
-		jogador.year = year;
-		jogador.hour = hour;
-		jogador.minutes = minutes;
-
-		drawBitmap(bitmaps.win, INITIAL,INITIAL, ALIGN_LEFT, getScreenBuffer());
-		createBitmap();
-		displayHighScore(numbers, jogador, key_scancode, getVRes() / 2);
-		is_highscore(jogador);
-		OPTION = STATIC;
-		tries = 0;
-		cleanName();
-		cleanWord();
-		RTC_COUNTER = START_RTC_COUNTER;
-		tries = 0;
-		tentativas = 0;
-	}
-}
-
-void printMachine(bitmap_struct bitmaps, Bitmap ** key_scancode, int key, Bitmap ** numbers)
-{
-	if (OPTION == HUMAN_VS_MACHINE)
-	{
-		/*if (verdadeiro == 1)
-		{
-			Bitmap* temp2 = randImage();
-			printf("entrei\n");
-			return temp2;
-		}
-		 */
-		unsigned int l = 0;
-		static int temp = 0;
-		unsigned int a = 0;
-		char * human_machine = getHumanMachine();
-		char * screen_buffer = getScreenBuffer();
-		int j = 0;
-		int bool = 1; //0 acertou, 1 falhou
 		if (key == KEY_BACKSPACE)
 		{
 			drawBitmap(bitmaps.frame, INITIAL, INITIAL, ALIGN_LEFT, human_machine);
@@ -1886,42 +1806,130 @@ void printMachine(bitmap_struct bitmaps, Bitmap ** key_scancode, int key, Bitmap
 			}
 			l = 0;
 			a = 0;
+			cleanWord();
+		}
+		if (key == KEY_SPACE)
+		{
+			tries++;
+			drawBitmap(bitmaps.frame, INITIAL, INITIAL, ALIGN_LEFT, human_machine);
+			human_machine = human_machine + ERASE_GUESS_X * 2 + getHRes() * ERASE_GUESS_Y * 2;
+			screen_buffer = screen_buffer + ERASE_GUESS_X * 2 + getHRes() * ERASE_GUESS_Y * 2;
+			for(; a < (183 - ERASE_GUESS_Y); a++)
+			{
+				for (; l < (470 - ERASE_GUESS_X);l++)
+				{
+					*(uint16_t *)screen_buffer = *(uint16_t *)human_machine;
+					screen_buffer+=2;
+					human_machine+=2;
+				}
+				l = 0;
+				screen_buffer += getHRes() * 2 - (470 - ERASE_GUESS_X) * 2;
+				human_machine += getHRes() * 2 - (470 - ERASE_GUESS_X) * 2;
+			}
+			a = 0;
+			l = 0;
 
 			cleanWord();
 		}
-		if (key == KEY_ENTER)
+
+		if (get_char(key) >= 'A' && get_char(key) <= 'Z')
 		{
+			word[length_word] = get_char(key);
+			WriteArrayFrame2(word, length_word, key_scancode, bitmaps);
+			length_word++;
+		}
+
+		if (key == KEY_TAB)
+		{
+			position_t jogador;
+			int score_conta;
+			score_conta = score(contador_high);
+			jogador.score = score_conta;
 			int i = 0;
-			if (temp == 0)
+			for(; i < 10; i++)
 			{
-				temp++;
-				tries--;
-			}
-			word[length_word] = '0';
-			j = 0;
-			for (; j < 11; j++)
-			{
-				if ((guess_ai[j] == '0') && (word[j] == '0'))
+				if ((name[i] >= 'A') && (name[i] <= 'Z'))
 				{
-					bool = 0;
-					break;
+					jogador.name[i] = name[i];
 				}
-				if (word[j] != guess_ai[j])
+				else
 				{
-					bool = 1;
-					break;
-				}
-				if (guess_ai[j] == '0')
-				{
-					bool = 1;
+					jogador.name[i] = '\0';
 					break;
 				}
 			}
-			if (bool == 1)
+			i = 0;
+			for(; i < 10; i++)
 			{
-				tries++;
-				human_machine = getHumanMachine();
-				screen_buffer = getScreenBuffer();
+				if ((word[i] >= 'A') && (word[i] <= 'Z'))
+				{
+					jogador.word[i] = word[i];
+				}
+				else
+				{
+					break;
+				}
+			}
+			jogador.day = day;
+			jogador.month = month;
+			jogador.year = year;
+			jogador.hour = hour;
+			jogador.minutes = minutes;
+
+			drawBitmap(bitmaps.win, INITIAL,INITIAL, ALIGN_LEFT, getScreenBuffer());
+			createBitmap();
+			displayHighScore(numbers, jogador, key_scancode, getVRes() / 2);
+			is_highscore(jogador);
+			OPTION = STATIC;
+			tries = 0;
+			cleanName();
+			cleanWord();
+			RTC_COUNTER = START_RTC_COUNTER;
+			tries = 0;
+			tentativas = 0;
+		}
+	}
+
+}
+
+void printMachine(bitmap_struct bitmaps, Bitmap ** key_scancode, int key, Bitmap ** numbers)
+{
+	if (OPTION == HUMAN_VS_MACHINE)
+	{
+
+		unsigned int l = 0;
+		static int temp = 0;
+		unsigned int a = 0;
+		char * human_machine = getHumanMachine();
+		char * screen_buffer = getScreenBuffer();
+		int j = 0;
+		int bool = 1; //0 acertou, 1 falhou
+
+		if (length_word >= 11)
+		{
+			cleanWord();
+			drawBitmap(bitmaps.frame, INITIAL, INITIAL, ALIGN_LEFT, human_machine);
+			human_machine = human_machine + ERASE_GUESS_X * 2 + getHRes() * ERASE_GUESS_Y * 2;
+			screen_buffer = screen_buffer + ERASE_GUESS_X * 2 + getHRes() * ERASE_GUESS_Y * 2;
+			for(; a < (183 - ERASE_GUESS_Y); a++)
+			{
+				for (; l < (510 - ERASE_GUESS_X);l++)
+				{
+					*(uint16_t *)screen_buffer = *(uint16_t *)human_machine;
+					screen_buffer+=2;
+					human_machine+=2;
+				}
+				l = 0;
+				screen_buffer += getHRes() * 2 - (510 - ERASE_GUESS_X) * 2;
+				human_machine += getHRes() * 2 - (510 - ERASE_GUESS_X) * 2;
+			}
+			l = 0;
+			a = 0;
+		}
+		else
+		{
+			if (key == KEY_BACKSPACE)
+			{
 				drawBitmap(bitmaps.frame, INITIAL, INITIAL, ALIGN_LEFT, human_machine);
 				human_machine = human_machine + ERASE_GUESS_X * 2 + getHRes() * ERASE_GUESS_Y * 2;
 				screen_buffer = screen_buffer + ERASE_GUESS_X * 2 + getHRes() * ERASE_GUESS_Y * 2;
@@ -1937,72 +1945,127 @@ void printMachine(bitmap_struct bitmaps, Bitmap ** key_scancode, int key, Bitmap
 					screen_buffer += getHRes() * 2 - (470 - ERASE_GUESS_X) * 2;
 					human_machine += getHRes() * 2 - (470 - ERASE_GUESS_X) * 2;
 				}
-				a = 0;
 				l = 0;
+				a = 0;
+
 				cleanWord();
 			}
-			else
+			if (key == KEY_ENTER)
 			{
-				position_t jogador;
-				int score_conta;
-				score_conta = score(contador_high);
-				jogador.score = score_conta;
-				i = 0;
-				for(; i < 10; i++)
+				int i = 0;
+				if (temp == 0)
 				{
-					if ((name[i] >= 'A') && (name[i] <= 'Z'))
+					temp++;
+					tries--;
+				}
+				word[length_word] = '0';
+				j = 0;
+				for (; j < 11; j++)
+				{
+					if ((guess_ai[j] == '0') && (word[j] == '0'))
 					{
-						jogador.name[i] = name[i];
+						bool = 0;
+						break;
 					}
-					else
+					if (word[j] != guess_ai[j])
 					{
-						jogador.name[i] = '\0';
+						bool = 1;
+						break;
+					}
+					if (guess_ai[j] == '0')
+					{
+						bool = 1;
 						break;
 					}
 				}
-				i = 0;
-				for(; i < 10; i++)
+				if (bool == 1)
 				{
-					if ((word[i] >= 'A') && (word[i] <= 'Z'))
+					tries++;
+					human_machine = getHumanMachine();
+					screen_buffer = getScreenBuffer();
+					drawBitmap(bitmaps.frame, INITIAL, INITIAL, ALIGN_LEFT, human_machine);
+					human_machine = human_machine + ERASE_GUESS_X * 2 + getHRes() * ERASE_GUESS_Y * 2;
+					screen_buffer = screen_buffer + ERASE_GUESS_X * 2 + getHRes() * ERASE_GUESS_Y * 2;
+					for(; a < (183 - ERASE_GUESS_Y); a++)
 					{
-						jogador.word[i] = word[i];
+						for (; l < (470 - ERASE_GUESS_X);l++)
+						{
+							*(uint16_t *)screen_buffer = *(uint16_t *)human_machine;
+							screen_buffer+=2;
+							human_machine+=2;
+						}
+						l = 0;
+						screen_buffer += getHRes() * 2 - (470 - ERASE_GUESS_X) * 2;
+						human_machine += getHRes() * 2 - (470 - ERASE_GUESS_X) * 2;
 					}
-					else
-					{
-						break;
-					}
+					a = 0;
+					l = 0;
+					cleanWord();
 				}
-				jogador.day = day;
-				jogador.month = month;
-				jogador.year = year;
-				jogador.hour = hour;
-				jogador.minutes = minutes;
+				else
+				{
+					position_t jogador;
+					int score_conta;
+					score_conta = score(contador_high);
+					jogador.score = score_conta;
+					i = 0;
+					for(; i < 10; i++)
+					{
+						if ((name[i] >= 'A') && (name[i] <= 'Z'))
+						{
+							jogador.name[i] = name[i];
+						}
+						else
+						{
+							jogador.name[i] = '\0';
+							break;
+						}
+					}
+					i = 0;
+					for(; i < 10; i++)
+					{
+						if ((word[i] >= 'A') && (word[i] <= 'Z'))
+						{
+							jogador.word[i] = word[i];
+						}
+						else
+						{
+							break;
+						}
+					}
+					jogador.day = day;
+					jogador.month = month;
+					jogador.year = year;
+					jogador.hour = hour;
+					jogador.minutes = minutes;
 
-				drawBitmap(bitmaps.win, INITIAL,INITIAL, ALIGN_LEFT, getScreenBuffer());
-				displayHighScore(numbers, jogador, key_scancode, getVRes() / 2);
-				is_highscore(jogador);
+					drawBitmap(bitmaps.win, INITIAL,INITIAL, ALIGN_LEFT, getScreenBuffer());
+					displayHighScore(numbers, jogador, key_scancode, getVRes() / 2);
+					is_highscore(jogador);
 
-				OPTION = STATIC;
-				tries = 0;
-				cleanName();
-				cleanWord();
-				RTC_COUNTER = START_RTC_COUNTER;
-				tries = 0;
-				tentativas = 0;
-				contador_c = CANVAS_Y_F;
-				verdadeiro = 1;
+					OPTION = STATIC;
+					tries = 0;
+					cleanName();
+					cleanWord();
+					RTC_COUNTER = START_RTC_COUNTER;
+					tries = 0;
+					tentativas = 0;
+					contador_c = CANVAS_Y_F;
+					verdadeiro = 1;
 
-				//acertou
+					//acertou
+				}
 			}
-		}
 
-		if (get_char(key) >= 'A' && get_char(key) <= 'Z')
-		{
-			word[length_word] = get_char(key);
-			WriteArrayFrame2(word, length_word, key_scancode, bitmaps);
-			length_word++;
+			if (get_char(key) >= 'A' && get_char(key) <= 'Z')
+			{
+				word[length_word] = get_char(key);
+				WriteArrayFrame2(word, length_word, key_scancode, bitmaps);
+				length_word++;
+			}
 		}
 	}
+
 
 }
 
