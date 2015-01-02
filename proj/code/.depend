@@ -467,6 +467,7 @@ menu.o:	menu.c
 menu.o:	menu.h
 menu.o:	menu_macros.h
 menu.o:	mouse_struct.h
+menu.o:	read_write.h
 menu.o:	rtc.h
 menu.o:	rtc_macros.h
 menu.o:	struct_bmp.h

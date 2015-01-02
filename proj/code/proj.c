@@ -202,6 +202,44 @@ int main(int argc, char **argv) {
 					if ((OPTION == HUMAN_VS_MACHINE) || (OPTION == HEAD_TO_HEAD))
 					{
 						temp_counter++;
+
+						int score_t = score(contador_high);
+						int i = 0;
+						int y = 410;
+						int a = 0;
+						int l = 0;
+
+						human_machine = getHumanMachine();
+						screen_buffer = getScreenBuffer();
+						drawBitmap(bitmaps.frame, INITIAL, INITIAL, ALIGN_LEFT, human_machine);
+						human_machine = human_machine + 274 * 2 + getHRes() * 722 * 2;
+						screen_buffer = screen_buffer + 274 * 2 + getHRes() * 722 * 2;
+						for(; a < 767 - 722; a++)
+						{
+							for (; l < 474 - 274;l++)
+							{
+								*(uint16_t *)screen_buffer = *(uint16_t *)human_machine;
+								screen_buffer+=2;
+								human_machine+=2;
+							}
+							l = 0;
+							screen_buffer += getHRes() * 2 - 200 * 2;
+							human_machine += getHRes() * 2 - 200 * 2;
+						}
+						human_machine = getHumanMachine();
+						screen_buffer = getScreenBuffer();
+
+
+						while(score_t != 0)
+						{
+							int temp = score_t % 10;
+							score_t = score_t / 10;
+							drawMouse(numbers[temp], y, 722, ALIGN_LEFT, screen_buffer);
+							y = y - SPACE_KEYS;
+						}
+
+
+
 						if (temp_counter == 60)
 						{
 
@@ -354,6 +392,12 @@ int main(int argc, char **argv) {
 						screen_current = 0;
 						RTC_COUNTER = START_RTC_COUNTER;
 					}
+					int rtc_temp = 0;
+					for(; rtc_temp < 10000; rtc_temp++)
+					{
+
+					}
+					read_rtc(REGISTER_C);
 				}
 				break;
 			default:
@@ -362,7 +406,7 @@ int main(int argc, char **argv) {
 		} else { /* received a standard message, not a notification */
 			/* no standard messages expected: do nothing */
 		}
-		read_rtc(REGISTER_C);
+		//read_rtc(REGISTER_C);
 	}
 
 	//Delete from memory

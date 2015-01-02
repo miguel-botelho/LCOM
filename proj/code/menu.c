@@ -1689,10 +1689,14 @@ void printName(bitmap_struct bitmaps, Bitmap ** key_scancode, int key)
 		drawBitmap(bitmaps.frame, INITIAL,INITIAL, ALIGN_LEFT, screen_buffer);
 		WriteArrayFrame(name, length, key_scancode, bitmaps);
 		if (ai_or_pvp == 1)
+		{
+			contador_high = 0;
 			OPTION = HEAD_TO_HEAD;
+		}
 		else
 		{
 			OPTION = HUMAN_VS_MACHINE;
+			contador_high = 0;
 			screen_to_mouse(screen_buffer, mouse_buffer);
 			drawMouse(bitmaps.mouse, mouse_t.x_mouse, mouse_t.y_mouse, ALIGN_LEFT, mouse_buffer);
 
